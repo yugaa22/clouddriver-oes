@@ -1,4 +1,4 @@
-FROM quay.io/opsmxpublic/ubi8-jre-11:v1
+FROM  quay.io/opsmxpublic/ubifips:8.7
 MAINTAINER sig-platform@spinnaker.io
 LABEL name='clouddriver'
 LABEL maintainer='info@opsmx.io'
@@ -11,7 +11,7 @@ COPY clouddriver-web/build/install/clouddriver /opt/clouddriver
 
 ENV KUBECTL_VERSION v1.22.0
 
-RUN yum -y install bash unzip wget unzip procps java-11-openjdk java-11-openjdk-devel.x86_64 python2 vim  net-tools curl git && \
+RUN yum -y install bash unzip wget unzip procps java-17-openjdk-devel python2 vim  net-tools curl git && \
   wget -nv https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.zip && \
   unzip -qq google-cloud-sdk.zip -d /opt && \
   rm google-cloud-sdk.zip && \

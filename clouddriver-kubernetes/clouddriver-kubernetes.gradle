@@ -1,5 +1,5 @@
 plugins {
-  id("net.ltgt.errorprone") version "1.2.1"
+  id("net.ltgt.errorprone") version "3.0.1"
   id 'com.adarshr.test-logger' version '2.1.0'
 }
 
@@ -44,11 +44,13 @@ tasks.withType(JavaCompile) {
   options.errorprone.disable(
     "EmptyCatch",
     "MissingOverride",
+    "UnusedMethod",
+    "ReturnValueIgnored",
   )
 }
 
 dependencies {
-  errorprone("com.google.errorprone:error_prone_core:2.4.0")
+  errorprone("com.google.errorprone:error_prone_core:2.18.0")
   implementation project(":clouddriver-api")
   implementation project(":clouddriver-artifacts")
   implementation project(":clouddriver-core")
@@ -61,14 +63,14 @@ dependencies {
   annotationProcessor "org.projectlombok:lombok"
   testAnnotationProcessor "org.projectlombok:lombok"
 
-  implementation "org.codehaus.groovy:groovy"
+  implementation "org.apache.groovy:groovy:4.0.9"
 
   implementation "com.google.code.findbugs:jsr305"
   implementation "com.google.guava:guava"
   implementation 'com.jayway.jsonpath:json-path:2.3.0'
   implementation "com.github.ben-manes.caffeine:guava"
   implementation "com.github.wnameless.json:json-flattener:0.11.1"
-  implementation "com.netflix.frigga:frigga"
+  implementation "com.netflix.frigga:frigga:0.26.0"
   implementation "com.netflix.spectator:spectator-api"
   implementation "io.spinnaker.fiat:fiat-core:$fiatVersion"
   implementation "io.spinnaker.kork:kork-annotations"
@@ -144,4 +146,12 @@ task integrationTest(type: Test) {
     showFailedStandardStreams true
     showPassed false
   }
+}
+
+tasks.withType(Tar){
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.withType(Zip){
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

@@ -31,14 +31,14 @@ dependencies {
   implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml"
   implementation "com.google.apis:google-api-services-storage:v1-rev141-1.25.0"
   implementation 'com.google.auth:google-auth-library-oauth2-http'
-  implementation "com.netflix.frigga:frigga"
+  implementation "com.netflix.frigga:frigga:0.26.0"
   implementation "io.spinnaker.kork:kork-artifacts"
   implementation "io.spinnaker.kork:kork-credentials"
   implementation "io.spinnaker.kork:kork-annotations"
   implementation "io.spinnaker.kork:kork-exceptions"
   implementation "io.spinnaker.kork:kork-security"
-  implementation "com.netflix.spectator:spectator-api"
-  implementation("com.netflix.spectator:spectator-ext-aws") {
+  implementation "com.netflix.spectator:spectator-api:1.5.3"
+  implementation("com.netflix.spectator:spectator-ext-aws:1.5.3") {
     // exclude transitives to keep spectator's version of the aws sdk from
     // overriding what we specify elsewhere.  It's not so much the aws sdk that
     // causes problems, but its transitive dependencies -- jackson and then
@@ -46,12 +46,12 @@ dependencies {
     transitive = false
   }
   implementation "com.oracle.oci.sdk:oci-java-sdk-core"
-  implementation "com.squareup.okhttp:okhttp"
+  implementation "com.squareup.okhttp:okhttp:2.7.5"
   implementation "com.sun.jersey:jersey-client:1.9.1"
   implementation "org.apache.commons:commons-lang3"
   implementation "org.apache.ivy:ivy:2.4.0"
   implementation "org.apache.maven:maven-resolver-provider:3.5.4"
-  implementation "org.codehaus.groovy:groovy"
+  implementation "org.apache.groovy:groovy:4.0.9"
   implementation "org.springframework.boot:spring-boot-actuator"
   implementation "org.springframework.boot:spring-boot-starter-web"
 
@@ -79,7 +79,7 @@ dependencies {
   integrationImplementation "mysql:mysql-connector-java"
   integrationImplementation ("io.rest-assured:rest-assured:4.0.0") {
     // Exclude groovy pulled in by rest-assured, so we use kork's version
-    exclude group: "org.codehaus.groovy", module: "groovy"
+    exclude group: "org.apache.groovy", module: "groovy:4.0.9"
   }
 }
 
@@ -103,4 +103,12 @@ task integrationTest(type: Test) {
     showFailedStandardStreams true
     showPassed false
   }
+}
+
+tasks.withType(Tar){
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.withType(Zip){
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

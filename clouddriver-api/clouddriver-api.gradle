@@ -24,7 +24,7 @@ dependencies {
   api("io.spinnaker.kork:kork-credentials-api")
   api("io.spinnaker.fiat:fiat-core:$fiatVersion")
 
-  implementation "com.netflix.frigga:frigga"
+  implementation "com.netflix.frigga:frigga:0.26.0"
   implementation "io.spinnaker.kork:kork-moniker"
 
   compileOnly("org.projectlombok:lombok")

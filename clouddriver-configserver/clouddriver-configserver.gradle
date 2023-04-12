@@ -22,3 +22,11 @@ dependencies {
   implementation "org.springframework.cloud:spring-cloud-config-server"
   implementation "com.github.wnameless.json:json-flattener:0.14.2"
 }
+
+tasks.withType(Tar){
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.withType(Zip){
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}

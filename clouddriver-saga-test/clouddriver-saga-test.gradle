@@ -21,14 +21,14 @@ dependencies {
   implementation "io.spinnaker.kork:kork-exceptions"
   implementation "com.fasterxml.jackson.module:jackson-module-kotlin"
 
-  implementation "cglib:cglib-nodep"
-  implementation "org.objenesis:objenesis"
+  implementation "cglib:cglib-nodep:3.3.0"
+  implementation "org.objenesis:objenesis:3.3"
   implementation "org.junit.platform:junit-platform-runner"
   implementation "org.junit.jupiter:junit-jupiter-api"
   implementation "org.springframework:spring-test"
   implementation "org.springframework.boot:spring-boot-test"
   implementation "org.assertj:assertj-core"
   implementation "io.strikt:strikt-core"
-  implementation "dev.minutest:minutest"
-  implementation "io.mockk:mockk"
+  implementation "dev.minutest:minutest:2.0.0-rc4"
+  implementation "io.mockk:mockk:1.13.4"
 }

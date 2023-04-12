@@ -27,12 +27,12 @@ dependencies {
   implementation "io.spinnaker.kork:kork-secrets"
   implementation "io.spinnaker.kork:kork-sql"
   implementation "io.spinnaker.kork:kork-telemetry"
-  implementation "de.huxhorn.sulky:de.huxhorn.sulky.ulid"
+  implementation "de.huxhorn.sulky:de.huxhorn.sulky.ulid:8.3.0"
   implementation "org.jooq:jooq"
   implementation "org.hibernate.validator:hibernate-validator"
   implementation "com.fasterxml.jackson.core:jackson-annotations"
   implementation "com.fasterxml.jackson.core:jackson-databind"
-  implementation "javax.validation:validation-api"
+  implementation "jakarta.validation:jakarta.validation-api:3.0.2"
 
   testImplementation project(":clouddriver-core-tck")
 
@@ -40,8 +40,8 @@ dependencies {
   testImplementation "org.testcontainers:mysql"
   testImplementation "mysql:mysql-connector-java"
 
-  testImplementation "cglib:cglib-nodep"
-  testImplementation "org.objenesis:objenesis"
+  testImplementation "cglib:cglib-nodep:3.3.0"
+  testImplementation "org.objenesis:objenesis:3.3"
   testImplementation "org.junit.platform:junit-platform-runner"
   testImplementation "org.junit.jupiter:junit-jupiter-api"
   testImplementation "org.springframework:spring-test"

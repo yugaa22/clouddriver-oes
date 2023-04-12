@@ -4,13 +4,13 @@ dependencies {
   implementation project(":clouddriver-security")
   implementation project(":cats:cats-core")
 
-  implementation "com.netflix.frigga:frigga"
-  implementation "com.netflix.spectator:spectator-api"
+  implementation "com.netflix.frigga:frigga:0.26.0"
+  implementation "com.netflix.spectator:spectator-api:1.5.3"
   implementation "io.spinnaker.fiat:fiat-api:$fiatVersion"
   implementation "io.spinnaker.fiat:fiat-core:$fiatVersion"
   implementation "io.spinnaker.kork:kork-exceptions"
   implementation "io.spinnaker.kork:kork-moniker"
-  implementation "org.codehaus.groovy:groovy"
+  implementation "org.apache.groovy:groovy:4.0.9"
   implementation "org.springframework.boot:spring-boot-actuator"
   implementation "org.springframework.boot:spring-boot-starter-web"
   implementation "com.azure.resourcemanager:azure-resourcemanager:2.19.0"

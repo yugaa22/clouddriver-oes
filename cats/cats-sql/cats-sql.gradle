@@ -33,7 +33,7 @@ dependencies {
   implementation "io.spinnaker.fiat:fiat-core:$fiatVersion"
   implementation "io.spinnaker.kork:kork-core"
   implementation "io.spinnaker.kork:kork-sql"
-  implementation "de.huxhorn.sulky:de.huxhorn.sulky.ulid"
+  implementation "de.huxhorn.sulky:de.huxhorn.sulky.ulid:8.3.0"
   implementation "io.github.resilience4j:resilience4j-retry"
   implementation "io.strikt:strikt-core"
   implementation "io.vavr:vavr:0.10.0"
@@ -47,7 +47,7 @@ dependencies {
 
   testImplementation project(":cats:cats-test")
 
-  testImplementation "cglib:cglib-nodep"
+  testImplementation "cglib:cglib-nodep:3.3.0"
   testImplementation "io.spinnaker.kork:kork-sql-test"
   testImplementation "com.nhaarman:mockito-kotlin"
   testImplementation "junit:junit"
@@ -64,10 +64,4 @@ dependencies {
   testImplementation "org.testcontainers:postgresql"
   testImplementation "mysql:mysql-connector-java"
   testImplementation "org.postgresql:postgresql"
-}
-
-test {
-  useJUnitPlatform {
-    includeEngines "junit-vintage", "junit-jupiter"
-  }
 }

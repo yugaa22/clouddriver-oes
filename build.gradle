@@ -17,7 +17,7 @@
 
 buildscript {
   ext {
-    kotlinVersion = "1.4.10"
+    kotlinVersion = "1.7.21"
     junitPlatformVersion = "1.0.2"
   }
 
@@ -35,10 +35,15 @@ plugins {
   id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion"
   id 'org.jetbrains.kotlin.plugin.allopen' version "$kotlinVersion" apply false
   id "com.google.protobuf" version "0.8.12" apply false
+  id 'org.springframework.boot' version '3.0.0' apply true
 }
 
 allprojects {
   apply plugin: 'io.spinnaker.project'
+  repositories {mavenCentral()}
+  tasks.withType(Copy).all {
+    duplicatesStrategy 'exclude'
+  }
 }
 
 subprojects {
@@ -56,6 +61,7 @@ subprojects {
 
     dependencies {
       implementation enforcedPlatform("io.spinnaker.kork:kork-bom:$korkVersion")
+      implementation "org.jetbrains:annotations:24.0.1"
 
       annotationProcessor platform("io.spinnaker.kork:kork-bom:$korkVersion")
       annotationProcessor "org.projectlombok:lombok"
@@ -111,3 +117,15 @@ subprojects {
 }
 
 defaultTasks ':clouddriver-web:run'
+
+bootJar {
+  enabled = false
+}
+
+jar {
+  enabled = true
+}
+
+configurations.all {
+  exclude group: 'org.jetbrains', module: 'annotations'
+}
