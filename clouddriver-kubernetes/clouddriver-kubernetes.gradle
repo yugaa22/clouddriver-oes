@@ -91,6 +91,7 @@ dependencies {
   implementation "org.springframework.cloud:spring-cloud-config-server"
   implementation "io.github.resilience4j:resilience4j-retry"
   implementation "io.github.resilience4j:resilience4j-micrometer"
+  implementation "joda-time:joda-time:2.12.5"
 
   testImplementation "io.spinnaker.kork:kork-test"
   testImplementation "org.apache.commons:commons-exec"
