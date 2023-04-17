@@ -16,11 +16,14 @@
 
 package com.netflix.spinnaker.clouddriver;
 
+import com.netflix.spectator.api.DefaultRegistry;
 import com.netflix.spectator.api.Registry;
 import com.netflix.spinnaker.clouddriver.configuration.CredentialsConfiguration;
 import com.netflix.spinnaker.clouddriver.requestqueue.RequestQueue;
 import com.netflix.spinnaker.clouddriver.requestqueue.RequestQueueConfiguration;
+import com.netflix.spinnaker.fiat.shared.EnableFiatAutoConfig;
 import com.netflix.spinnaker.filters.AuthenticatedRequestFilter;
+import com.netflix.spinnaker.kork.discovery.DiscoveryStatusListener;
 import com.netflix.spinnaker.kork.dynamicconfig.DynamicConfigService;
 import com.netflix.spinnaker.kork.web.context.MdcCopyingAsyncTaskExecutor;
 import com.netflix.spinnaker.kork.web.interceptors.MetricsInterceptor;
@@ -49,16 +52,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
   "com.netflix.spinnaker.clouddriver.listeners",
   "com.netflix.spinnaker.clouddriver.security",
 })
+@EnableFiatAutoConfig
 @EnableConfigurationProperties({CredentialsConfiguration.class, RequestQueueConfiguration.class})
 public class WebConfig implements WebMvcConfigurer {
-  private final Registry registry;
+  private Registry registry;
   private final AsyncTaskExecutor asyncTaskExecutor;
 
   @Autowired
   public WebConfig(
-      Registry registry,
+      // Registry registry,
       @Qualifier("threadPoolTaskScheduler") AsyncTaskExecutor asyncTaskExecutor) {
-    this.registry = registry;
+    // this.registry = registry;
     this.asyncTaskExecutor = asyncTaskExecutor;
   }
 
@@ -66,7 +70,8 @@ public class WebConfig implements WebMvcConfigurer {
   public void addInterceptors(InterceptorRegistry registry) {
     registry.addInterceptor(
         new MetricsInterceptor(
-            this.registry,
+            // this.registry,
+            getRegistry(),
             "controller.invocations",
             List.of("account", "region"),
             List.of("BasicErrorController")));
@@ -109,5 +114,15 @@ public class WebConfig implements WebMvcConfigurer {
   @Override
   public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
     configurer.setTaskExecutor(new MdcCopyingAsyncTaskExecutor(asyncTaskExecutor));
+  }
+
+  @Bean
+  Registry getRegistry() {
+    return new DefaultRegistry();
+  }
+
+  @Bean
+  public DiscoveryStatusListener discoveryStatusListener() {
+    return new DiscoveryStatusListener();
   }
 }

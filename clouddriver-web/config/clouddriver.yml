@@ -54,15 +54,15 @@ default:
 
 aws:
   enabled: ${AWS_ENABLED:false}
-#  features:
-#    launch-templates:
-#      enabled: true
-#      allowed-applications: app1:account1:region1,app2:account1:region1
-#      all-applications: false
-#      allowed-accounts-regions: account1:region1
-#      allowed-accounts: account1,account2
-#      excluded-applications: ""
-#      excluded-accounts: account3,account4
+  #  features:
+  #    launch-templates:
+  #      enabled: true
+  #      allowed-applications: app1:account1:region1,app2:account1:region1
+  #      all-applications: false
+  #      allowed-accounts-regions: account1:region1
+  #      allowed-accounts: account1,account2
+  #      excluded-applications: ""
+  #      excluded-accounts: account3,account4
   # proxy:
   #  proxyHost: 10.0.0.54
   #  proxyPort: 8888
@@ -77,12 +77,12 @@ aws:
       deviceName: /dev/sdb
       size: 40
     instanceClassBlockDevices:
-    - instanceClass: m3
-      blockDevices:
-      - deviceName: /dev/sdb
-        virtualName: ephemeral0
-      - deviceName: /dev/sdc
-        virtualName: ephemeral1
+      - instanceClass: m3
+        blockDevices:
+          - deviceName: /dev/sdb
+            virtualName: ephemeral0
+          - deviceName: /dev/sdc
+            virtualName: ephemeral1
   defaultRegions:
     - name: us-east-1
   defaultKeyPairTemplate: '{{name}}-keypair'
@@ -105,30 +105,30 @@ azure:
       defaultResourceGroup: ${AZURE_DEFAULT_RESOURCE_GROUP:"SpinnakerDefault"}
       defaultKeyVault: ${AZURE_DEFAULT_KEYVAULT}
       vmImages:
-      - publisher: "MicrosoftWindowsServer"
-        offer: "WindowsServer"
-        sku: "2012-R2-Datacenter"
-        version: "4.0.20151214"
-      - publisher: "Canonical"
-        offer: "UbuntuServer"
-        sku: "14.04.5-LTS"
-        version: "14.04.201612130"
-      - publisher: "credativ"
-        offer: "Debian"
-        sku: "8"
-        version: "8.0.201602010"
-      - publisher: "OpenLogic"
-        offer: "CentOS"
-        sku: "7.1"
-        version: "7.1.20150731"
-      - publisher: "SUSE"
-        offer: "openSUSE-Leap"
-        sku: "42.1"
-        version: "2016.01.14"
-      - publisher: "SUSE"
-        offer: "SLES"
-        sku: "12-SP1"
-        version: "2015.12.15"
+        - publisher: "MicrosoftWindowsServer"
+          offer: "WindowsServer"
+          sku: "2012-R2-Datacenter"
+          version: "4.0.20151214"
+        - publisher: "Canonical"
+          offer: "UbuntuServer"
+          sku: "14.04.5-LTS"
+          version: "14.04.201612130"
+        - publisher: "credativ"
+          offer: "Debian"
+          sku: "8"
+          version: "8.0.201602010"
+        - publisher: "OpenLogic"
+          offer: "CentOS"
+          sku: "7.1"
+          version: "7.1.20150731"
+        - publisher: "SUSE"
+          offer: "openSUSE-Leap"
+          sku: "42.1"
+          version: "2016.01.14"
+        - publisher: "SUSE"
+          offer: "SLES"
+          sku: "12-SP1"
+          version: "2015.12.15"
   # Example how to set the Azure storage connection string related entries for retrieving the list of available custom VM images,
   #  where "scs" represents the Azure Storage connection string and "blobDir" is the relative path to the custom images container
   #
@@ -151,15 +151,15 @@ cloudrun:
 google:
   enabled: false
   baseImageProjects:
-  - centos-cloud
-  - coreos-cloud
-  - cos-cloud
-  - debian-cloud
-  - opensuse-cloud
-  - rhel-cloud
-  - suse-cloud
-  - ubuntu-os-cloud
-  - windows-cloud
+    - centos-cloud
+    - coreos-cloud
+    - cos-cloud
+    - debian-cloud
+    - opensuse-cloud
+    - rhel-cloud
+    - suse-cloud
+    - ubuntu-os-cloud
+    - windows-cloud
   accounts:
     - name: my-gcp-account
       project: my-gcp-project
@@ -170,87 +170,87 @@ google:
         - my-gcp-image-project
   defaults:
     fallbackInstanceTypeDisks:
-    - type: pd-ssd
-      sizeGb: 10
+      - type: pd-ssd
+        sizeGb: 10
     instanceTypeDisks:
-    - instanceType: n1-standard-1
-      disks:
-      - type: pd-ssd
-        sizeGb: 10
-    - instanceType: n1-standard-2
-      disks:
-      - type: pd-ssd
-        sizeGb: 10
-    - instanceType: n1-standard-4
-      disks:
-      - type: pd-ssd
-        sizeGb: 10
-    - instanceType: n1-standard-8
-      disks:
-      - type: pd-ssd
-        sizeGb: 10
-    - instanceType: n1-standard-16
-      disks:
-      - type: pd-ssd
-        sizeGb: 10
-    - instanceType: n1-standard-32
-      disks:
-      - type: pd-ssd
-        sizeGb: 10
-    - instanceType: f1-micro
-      supportsLocalSSD: false
-      disks:
-      - type: pd-standard
-        sizeGb: 10
-    - instanceType: g1-small
-      supportsLocalSSD: false
-      disks:
-      - type: pd-standard
-        sizeGb: 10
-    - instanceType: n1-highmem-2
-      disks:
-      - type: pd-ssd
-        sizeGb: 10
-    - instanceType: n1-highmem-4
-      disks:
-      - type: pd-ssd
-        sizeGb: 10
-    - instanceType: n1-highmem-8
-      disks:
-      - type: pd-ssd
-        sizeGb: 10
-    - instanceType: n1-highmem-16
-      disks:
-      - type: pd-ssd
-        sizeGb: 10
-    - instanceType: n1-highmem-32
-      disks:
-      - type: pd-ssd
-        sizeGb: 10
-    - instanceType: n1-highcpu-2
-      disks:
-      - type: pd-ssd
-        sizeGb: 10
-    - instanceType: n1-highcpu-4
-      disks:
-      - type: pd-ssd
-        sizeGb: 10
-    - instanceType: n1-highcpu-8
-      disks:
-      - type: pd-ssd
-        sizeGb: 10
-    - instanceType: n1-highcpu-16
-      disks:
-      - type: pd-ssd
-        sizeGb: 10
-    - instanceType: n1-highcpu-32
-      disks:
-      - type: pd-ssd
-        sizeGb: 10
-    - instanceType: default
-      disks:
-      - type: pd-ssd
-        sizeGb: 10
+      - instanceType: n1-standard-1
+        disks:
+          - type: pd-ssd
+            sizeGb: 10
+      - instanceType: n1-standard-2
+        disks:
+          - type: pd-ssd
+            sizeGb: 10
+      - instanceType: n1-standard-4
+        disks:
+          - type: pd-ssd
+            sizeGb: 10
+      - instanceType: n1-standard-8
+        disks:
+          - type: pd-ssd
+            sizeGb: 10
+      - instanceType: n1-standard-16
+        disks:
+          - type: pd-ssd
+            sizeGb: 10
+      - instanceType: n1-standard-32
+        disks:
+          - type: pd-ssd
+            sizeGb: 10
+      - instanceType: f1-micro
+        supportsLocalSSD: false
+        disks:
+          - type: pd-standard
+            sizeGb: 10
+      - instanceType: g1-small
+        supportsLocalSSD: false
+        disks:
+          - type: pd-standard
+            sizeGb: 10
+      - instanceType: n1-highmem-2
+        disks:
+          - type: pd-ssd
+            sizeGb: 10
+      - instanceType: n1-highmem-4
+        disks:
+          - type: pd-ssd
+            sizeGb: 10
+      - instanceType: n1-highmem-8
+        disks:
+          - type: pd-ssd
+            sizeGb: 10
+      - instanceType: n1-highmem-16
+        disks:
+          - type: pd-ssd
+            sizeGb: 10
+      - instanceType: n1-highmem-32
+        disks:
+          - type: pd-ssd
+            sizeGb: 10
+      - instanceType: n1-highcpu-2
+        disks:
+          - type: pd-ssd
+            sizeGb: 10
+      - instanceType: n1-highcpu-4
+        disks:
+          - type: pd-ssd
+            sizeGb: 10
+      - instanceType: n1-highcpu-8
+        disks:
+          - type: pd-ssd
+            sizeGb: 10
+      - instanceType: n1-highcpu-16
+        disks:
+          - type: pd-ssd
+            sizeGb: 10
+      - instanceType: n1-highcpu-32
+        disks:
+          - type: pd-ssd
+            sizeGb: 10
+      - instanceType: default
+        disks:
+          - type: pd-ssd
+            sizeGb: 10
 
 kubernetes:
   enabled: false
@@ -300,7 +300,7 @@ resilience4j.retry:
       waitDuration: 100ms
       enableExponentialBackoff: false
       ignoreExceptions:
-      - com.netflix.spinnaker.clouddriver.event.exceptions.AggregateChangeRejectedException
+        - com.netflix.spinnaker.clouddriver.event.exceptions.AggregateChangeRejectedException
     sqlRead:
       maxRetryAttempts: 5
       waitDuration: 100ms
@@ -309,15 +309,18 @@ resilience4j.retry:
 ---
 
 spring:
-  profiles: prod
+  spring:
+    config:
+      activate:
+        on-profile: prod
 
-# example https configuration for client auth to services:
-#default:
-  # legacyServerPort is a non-ssl listener when the main listener has SSL enabled
-  #legacyServerPort: 8501
+    # example https configuration for client auth to services:
+    #default:
+    # legacyServerPort is a non-ssl listener when the main listener has SSL enabled
+    #legacyServerPort: 8501
 
-#server:
-  #ssl:
+    #server:
+    #ssl:
     # enabled: true
     # keyStore: clouddriver-keystore.p12
     # keyStoreType: PKCS12
@@ -327,11 +330,11 @@ spring:
     # trustStorePassword: changeme
     # clientAuth: need
 
-#aws:
-  # example configuration for managing multiple accounts
-  # role in managed account to assume:
-  #defaultAssumeRole: role/myrole
-  #accounts:
+    #aws:
+    # example configuration for managing multiple accounts
+    # role in managed account to assume:
+    #defaultAssumeRole: role/myrole
+    #accounts:
     # - name: account-display-name
     #   defaultKeyPair: key-pair
     #   edda: http://edda.{{region}}.host.net:7001
@@ -347,7 +350,10 @@ spring:
 # local profile is activated by default when running the application - override values here for local development
 #  for production, set spring.profiles.active to select the appropriate profile for your environment
 spring:
-  profiles: local
+  spring:
+    config:
+      activate:
+        on-profile:local
 
 # an AWSCredentialsProvider that obtains session credentials via SSH through a bastion instance (useful for local development):
 #bastion:
@@ -359,8 +365,13 @@ spring:
 ---
 # This profile is used in HA deployments for a clouddriver that handles read-only requests from
 # other services
+#spring:
+#  profiles: ro
 spring:
-  profiles: ro
+  spring:
+    config:
+      activate:
+        on-profile: ro
 
 redis:
   connection: ${services.redisRo.baseUrl:${services.redis.baseUrl}}
@@ -372,7 +383,10 @@ caching:
 # This profile is used in HA deployments for a clouddriver that handles mutating requests from
 # other services, but does not run caching agents
 spring:
-  profiles: rw
+  spring:
+    config:
+      activate:
+        on-profile: rw
 
 caching:
   writeEnabled: false

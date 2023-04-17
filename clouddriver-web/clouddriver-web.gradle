@@ -67,3 +67,6 @@ tasks.withType(Tar){
 tasks.withType(Zip){
   duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
+run {
+  jvmArgs = ['--add-opens=java.base/sun.net=ALL-UNNAMED', '--add-exports=java.base/sun.net=ALL-UNNAMED', '--add-opens=java.base/java.time=ALL-UNNAMED']
+}
