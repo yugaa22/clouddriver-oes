@@ -9,7 +9,7 @@ env:
   GRADLE_OPTS: -Dorg.gradle.daemon=false -Xmx6g -Xms6g
 
 jobs:
-  publish-kork:
+  publish-clouddriver:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -76,7 +76,7 @@ jobs:
              
               done
              
-              ls -l cats/ | grep '^d' > ds.txt
+              ls -l cats/ | grep '^d' | awk '{print $9}' > ds.txt
 
               for i in $(cat ds.txt) 
               do
