@@ -64,7 +64,7 @@ jobs:
 
               EOF
              
-              ls -d */  | grep "clouddriver\|cat" | sed 's/\///g' > ds.txt
+              ls -d */  | grep "clouddriver" | sed 's/\///g' > ds.txt
               
               cat ds.txt
               
@@ -75,6 +75,16 @@ jobs:
                cat patchnew >> $i/$i.gradle
              
               done
+             
+              ls -l cats/ | grep '^d' > ds.txt
+
+              for i in $(cat ds.txt) 
+              do
+               sed  s/NEXUSARTIID/$i/g patch > patchnew
+               cat patchnew >> $i/$i.gradle
+             
+              done
+ 
              
               sed -e '/components\.java/ s/^#*/\/\//' -i clouddriver-bom/clouddriver-bom.gradle
           
