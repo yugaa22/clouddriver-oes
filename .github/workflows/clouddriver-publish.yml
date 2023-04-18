@@ -81,7 +81,7 @@ jobs:
               for i in $(cat ds.txt) 
               do
                sed  s/NEXUSARTIID/$i/g patch > patchnew
-               cat patchnew >> $i/$i.gradle
+               cat patchnew >> cats/$i/$i.gradle
              
               done
  
