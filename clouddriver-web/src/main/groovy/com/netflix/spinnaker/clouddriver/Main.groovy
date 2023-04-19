@@ -67,7 +67,7 @@ class Main extends SpringBootServletInitializer {
      * frequently, so it's best to tell the JVM to avoid caching DNS results internally.
      */
     InetAddressCachePolicy.cachePolicy = InetAddressCachePolicy.NEVER
-    Security.setProperty('networkaddress.cache.ttl', '0')
+    Security.setProperty('networkaddress.cache.ttl', '0')// to cache the successful lookup for 0 seconds
     System.setProperty("spring.main.allow-bean-definition-overriding", "true")
   }
 

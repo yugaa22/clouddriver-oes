@@ -20,7 +20,7 @@ dependencies {
   // which appears to require consumers to have core groovy on the classpath
   api "org.apache.groovy:groovy:4.0.9"
 
-  implementation "javax.inject:javax.inject:1"
+  implementation "jakarta.inject:jakarta.inject-api:2.0.1"
   implementation "jakarta.validation:jakarta.validation-api:3.0.2"
   implementation "net.logstash.logback:logstash-logback-encoder:7.3"
   implementation "com.fasterxml.jackson.module:jackson-module-kotlin"
