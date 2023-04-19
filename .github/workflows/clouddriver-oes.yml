@@ -41,8 +41,16 @@ jobs:
       - name: Build
         env:
           ORG_GRADLE_PROJECT_version: ${{ steps.build_variables.outputs.VERSION }}
-        run: ./gradlew --no-daemon -PenableCrossCompilerPlugin=true clouddriver-web:installDist -x test 
-
+        run: |
+     
+          ./gradlew --no-daemon -PenableCrossCompilerPlugin=true clouddriver-web:installDist -x test 
+          
+              extra_opts='"-Djava.security.egd=file:/dev/./urandom" "-Dspring.config.import=optional:/opt/spinnaker/config/" "--add-opens=java.base/sun.net=ALL-UNNAMED" "--add-exports=java.base/sun.net=ALL-UNNAMED" "--add-opens=java.base/java.time=ALL-UNNAMED"'
+              
+              extra_opts_escaped=$(sed 's/[\/&]/\\&/g' <<< "$extra_opts")
+              
+              sed "s/^\(DEFAULT_JVM_OPTS=\'.*\)\'$/\1 $extra_opts_escaped\'/" -i clouddriver-web/build/install/igor/bin/clouddriver
+              
       - name: dockerBuildpush
         uses: docker/build-push-action@v2
         with:
