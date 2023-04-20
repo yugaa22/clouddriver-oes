@@ -49,7 +49,7 @@ jobs:
               
               extra_opts_escaped=$(sed 's/[\/&]/\\&/g' <<< "$extra_opts")
               
-              sed "s/^\(DEFAULT_JVM_OPTS=\'.*\)\'$/\1 $extra_opts_escaped\'/" -i clouddriver-web/build/install/igor/bin/clouddriver
+              sed "s/^\(DEFAULT_JVM_OPTS=\'.*\)\'$/\1 $extra_opts_escaped\'/" -i clouddriver-web/build/install/clouddriver/bin/clouddriver
               
       - name: dockerBuildpush
         uses: docker/build-push-action@v2
