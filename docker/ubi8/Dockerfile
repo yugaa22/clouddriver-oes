@@ -2,8 +2,6 @@ FROM  quay.io/opsmxpublic/ubifips:8.7
 MAINTAINER sig-platform@spinnaker.io
 LABEL name='clouddriver'
 LABEL maintainer='info@opsmx.io'
-LABEL release=1
-LABEL version='1.28.4'
 LABEL summary='Red Hat certified Open Enterprise Spinnaker ubi8 container image for clouddriver'
 LABEL description='Certified Open Enterprise Spinnaker is an Enterprise grade, Red Hat certified and OpsMx supported release of the popular and critically acclaimed Continuous Delivery platform Spinnaker'
 LABEL vendor='OpsMx'
@@ -22,7 +20,7 @@ ENV ECR_TOKEN_VERSION=v1.0.2
 ENV PATH "$PATH:/usr/local/bin/:/opt/google-cloud-sdk/bin/:/usr/local/bin/aws-iam-authenticator"
 
 USER root
-RUN yum -y install bash jq  tar unzip wget unzip procps java-11-openjdk java-11-openjdk-devel.x86_64 vim  net-tools curl git 
+RUN yum -y install bash jq  tar unzip wget unzip procps  java-17-openjdk-devel.x86_64 vim  net-tools curl git 
 
 # AWS CLI
 RUN yum -y install python2-pip && \
