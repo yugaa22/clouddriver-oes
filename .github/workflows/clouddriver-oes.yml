@@ -64,6 +64,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
+          build-args: |
+            TARGETARCH=amd64
           file: docker/ubi8/Dockerfile
           push: true
           tags: |
