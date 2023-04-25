@@ -891,7 +891,7 @@ class AzureServerGroupResourceTemplate {
     String publisher
     String type
     String typeHandlerVersion // This will need to be updated every time the custom script extension major version is updated
-    Boolean autoUpgradeMinorVersion = true
+    Boolean autoUpgradeMinorVersion // = true
     IExtensionSettings settings
   }
 
