@@ -33,7 +33,6 @@ import com.netflix.spinnaker.clouddriver.security.AuthorizedRolesExtractor;
 import com.netflix.spinnaker.clouddriver.security.DefaultAccountSecurityPolicy;
 import com.netflix.spinnaker.credentials.definition.CredentialsDefinition;
 import com.netflix.spinnaker.fiat.shared.FiatPermissionEvaluator;
-import com.netflix.spinnaker.kork.secrets.SecretEngineRegistry;
 import com.netflix.spinnaker.kork.secrets.SecretManager;
 import com.netflix.spinnaker.kork.secrets.SecretSession;
 import com.netflix.spinnaker.kork.secrets.user.UserSecretManager;
@@ -73,12 +72,6 @@ import org.springframework.util.ClassUtils;
 public class AccountDefinitionConfiguration {
 
   private final Properties properties;
-
-  @Bean
-  @ConditionalOnMissingBean
-  public UserSecretManager getUserSecretManager() {
-    return new UserSecretManager(new SecretEngineRegistry());
-  }
 
   @Bean
   @ConditionalOnMissingBean
