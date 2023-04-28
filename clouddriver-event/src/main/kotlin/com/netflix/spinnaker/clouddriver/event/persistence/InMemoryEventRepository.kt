@@ -68,7 +68,7 @@ class InMemoryEventRepository(
     }
 
     events.getOrPut(aggregate) { mutableListOf() }.let { aggregateEvents ->
-      val currentSequence = aggregateEvents.map { it.getMetadata().sequence }.max() ?: 0
+      val currentSequence = aggregateEvents.maxOfOrNull { it.getMetadata().sequence } ?: 0
 
       newEvents.forEachIndexed { index, newEvent ->
         // TODO(rz): Plugin more metadata (provenance, serviceVersion, etc)
