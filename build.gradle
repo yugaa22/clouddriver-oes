@@ -35,7 +35,6 @@ plugins {
   id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion"
   id 'org.jetbrains.kotlin.plugin.allopen' version "$kotlinVersion" apply false
   id "com.google.protobuf" version "0.8.12" apply false
-  id 'org.springframework.boot' version '3.0.0' apply true
 }
 
 allprojects {
@@ -125,14 +124,6 @@ subprojects {
 }
 
 defaultTasks ':clouddriver-web:run'
-
-bootJar {
-  enabled = false
-}
-
-jar {
-  enabled = true
-}
 
 configurations.all {
   exclude group: 'org.jetbrains', module: 'annotations'
