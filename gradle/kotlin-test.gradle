@@ -17,14 +17,14 @@
 apply plugin: "kotlin"
 
 dependencies {
-  testImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+  testImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10"
 
   testImplementation "org.junit.jupiter:junit-jupiter-api"
   testImplementation "org.junit.platform:junit-platform-runner"
   testImplementation "org.assertj:assertj-core"
   testImplementation "io.strikt:strikt-core"
   testImplementation "dev.minutest:minutest"
-  testImplementation "io.mockk:mockk"
+  testImplementation "io.mockk:mockk:1.13.4"
 
   testRuntimeOnly "org.junit.platform:junit-platform-launcher"
   testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
@@ -38,7 +38,7 @@ test {
 
 compileTestKotlin {
   kotlinOptions {
-    languageVersion = "1.4"
-    jvmTarget = "11"
+    languageVersion = "1.7"
+    jvmTarget = "17"
   }
 }
