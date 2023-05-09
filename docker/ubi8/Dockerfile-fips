@@ -50,6 +50,14 @@ RUN wget https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_RE
 COPY clouddriver-web/build/install/clouddriver /opt/clouddriver
 
 RUN yum -y remove  tar wget curl vim  jq unzip git
+
+
+RUN yum -y remove  tar wget curl 
+
+
+RUN yum -y remove  vim  jq unzip git
+
+
 RUN yum -y remove clean all && rm -rf /var/cache
 
 RUN adduser spinnaker
