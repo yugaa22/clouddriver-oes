@@ -67,6 +67,7 @@ dependencies {
   testImplementation "org.testcontainers:testcontainers"
   testImplementation "org.testcontainers:localstack"
   testImplementation "ru.lanwen.wiremock:wiremock-junit5:1.2.0"
+  testImplementation "com.jcraft:jsch.agentproxy.connector-factory:0.0.9"
 
   testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
 
@@ -76,7 +77,7 @@ dependencies {
   integrationImplementation "org.testcontainers:testcontainers"
   integrationImplementation "org.testcontainers:mysql"
   integrationImplementation "org.testcontainers:junit-jupiter"
-  integrationImplementation "mysql:mysql-connector-java"
+  integrationImplementation "mysql:mysql-connector-java:8.0.20"
   integrationImplementation ("io.rest-assured:rest-assured:4.0.0") {
     // Exclude groovy pulled in by rest-assured, so we use kork's version
     exclude group: "org.apache.groovy", module: "groovy:4.0.9"

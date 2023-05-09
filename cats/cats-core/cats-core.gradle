@@ -12,5 +12,6 @@ dependencies {
 
   testImplementation project(":cats:cats-test")
 
-  testImplementation "org.spockframework:spock-core"
+  testImplementation "org.spockframework:spock-core:2.4-M1-groovy-4.0"
+  testImplementation "org.junit.jupiter:junit-jupiter-api:5.9.3"
 }

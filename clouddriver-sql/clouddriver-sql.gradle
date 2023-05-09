@@ -38,7 +38,7 @@ dependencies {
 
   testImplementation "io.spinnaker.kork:kork-sql-test"
   testImplementation "org.testcontainers:mysql"
-  testImplementation "mysql:mysql-connector-java"
+  testImplementation "mysql:mysql-connector-java:8.0.20"
 
   testImplementation "cglib:cglib-nodep:3.3.0"
   testImplementation "org.objenesis:objenesis:3.3"
@@ -48,8 +48,8 @@ dependencies {
   testImplementation "org.springframework.boot:spring-boot-test"
   testImplementation "org.assertj:assertj-core"
   testImplementation "io.strikt:strikt-core"
-  testImplementation "dev.minutest:minutest"
-  testImplementation "io.mockk:mockk"
+  testImplementation "dev.minutest:minutest:1.13.0"
+  testImplementation "io.mockk:mockk:1.13.5"
   testImplementation "com.fasterxml.jackson.module:jackson-module-kotlin"
   testImplementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
 

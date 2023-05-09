@@ -61,16 +61,17 @@ dependencies {
   implementation "com.github.wnameless.json:json-flattener:0.11.1"
 
   testImplementation "io.spinnaker.kork:kork-exceptions"
-  testImplementation "cglib:cglib-nodep"
-  testImplementation "com.natpryce:hamkrest"
+  testImplementation "cglib:cglib-nodep:3.3.0"
+  testImplementation "com.natpryce:hamkrest:1.4.2.2"
   testImplementation "com.google.guava:guava"
   testImplementation "org.junit.jupiter:junit-jupiter-api"
   testImplementation "org.junit.platform:junit-platform-runner"
-  testImplementation "org.objenesis:objenesis"
-  testImplementation "org.spockframework:spock-core"
+  testImplementation "org.objenesis:objenesis:2.5.1"
+  testImplementation "org.spockframework:spock-core:2.4-M1-groovy-4.0"
   testImplementation "org.spockframework:spock-spring"
   testImplementation "org.springframework.boot:spring-boot-starter-test"
   testImplementation "org.springframework:spring-test"
+  testImplementation "net.bytebuddy:byte-buddy:1.6.5"
 
   integrationImplementation project(":clouddriver-web")
   integrationImplementation "org.springframework:spring-test"
