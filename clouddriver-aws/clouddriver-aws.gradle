@@ -71,7 +71,6 @@ dependencies {
   testImplementation "org.spockframework:spock-spring"
   testImplementation "org.springframework.boot:spring-boot-starter-test"
   testImplementation "org.springframework:spring-test"
-  testImplementation "net.bytebuddy:byte-buddy:1.6.5"
 
   integrationImplementation project(":clouddriver-web")
   integrationImplementation "org.springframework:spring-test"

@@ -44,10 +44,10 @@ dependencies {
   implementation "org.springframework.boot:spring-boot-starter-web"
   implementation "org.yaml:snakeyaml"
 
-  testImplementation "cglib:cglib-nodep"
+  testImplementation "cglib:cglib-nodep:3.3.0"
   testImplementation "junit:junit"
   testImplementation "org.hamcrest:hamcrest-core"
-  testImplementation "org.objenesis:objenesis"
+  testImplementation "org.objenesis:objenesis:2.5.1"
   testImplementation "org.slf4j:slf4j-simple"
   testImplementation "org.spockframework:spock-core"
   testImplementation "org.spockframework:spock-spring"
@@ -69,7 +69,6 @@ task cleanGenerated(type: Delete) {
 }
 
 clean.dependsOn cleanGenerated
-
 protobuf {
   protoc {
     artifact = "com.google.protobuf:protoc:$protobufVersion"
