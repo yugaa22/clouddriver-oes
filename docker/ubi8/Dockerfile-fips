@@ -42,7 +42,9 @@ ENV ECR_TOKEN_VERSION=v1.0.2
 ENV PATH "$PATH:/usr/local/bin/:/opt/google-cloud-sdk/bin/:/usr/local/bin/aws-iam-authenticator"
 
 USER root
-RUN yum -y install bash jq  tar unzip wget procps  java-17-openjdk-devel.x86_64 vim  net-tools curl git 
+#RUN yum -y install bash jq  tar unzip wget procps  java-17-openjdk-devel.x86_64 vim  net-tools curl git 
+
+RUN yum -y install  wget git
 
 # AWS CLI
 RUN yum -y install python2-pip && \
@@ -71,8 +73,8 @@ RUN wget https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_RE
 
 COPY clouddriver-web/build/install/clouddriver /opt/clouddriver
 
-#RUN yum -y remove  tar wget curl 
-#RUN yum -y remove  vim  jq unzip git
+#RUN yum -y remove  tar  curl 
+#RUN yum -y remove  vim  jq unzip 
 RUN yum -y remove clean all && rm -rf /var/cache
 
 RUN adduser spinnaker
