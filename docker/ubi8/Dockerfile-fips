@@ -72,7 +72,8 @@ RUN wget https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_RE
     && ln -sf /usr/local/bin/aws-iam-authenticator /usr/local/bin/heptio-authenticator-aws
 
 COPY clouddriver-web/build/install/clouddriver /opt/clouddriver
-
+RUN mkdir -p /opt/jaeger
+COPY jaeger/opentelemetry-javaagent.jar /opt/jaeger/opentelemetry-javaagent.jar
 #RUN yum -y remove  tar  curl 
 #RUN yum -y remove  vim  jq unzip 
 RUN yum -y remove clean all && rm -rf /var/cache
