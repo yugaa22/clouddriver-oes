@@ -76,7 +76,7 @@ jobs:
           context: .
           build-args: |
             TARGETARCH=amd64
-          file: docker/ubi8/Dockerfile-fips-jaeger
+          file: docker/ubi8/Dockerfile-dev
           push: true
           tags: |
-            "${{ env.CONTAINER_REGISTRY }}/${{ steps.build_variables.outputs.REPO }}:${{ steps.build_variables.outputs.VERSION }}-jaeger"            
+            "${{ env.CONTAINER_REGISTRY }}/${{ steps.build_variables.outputs.REPO }}:${{ steps.build_variables.outputs.VERSION }}-dev"            
