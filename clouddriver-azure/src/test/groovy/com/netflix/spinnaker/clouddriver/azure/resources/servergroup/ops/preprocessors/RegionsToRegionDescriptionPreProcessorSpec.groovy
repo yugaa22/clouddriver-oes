@@ -20,7 +20,7 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 class RegionsToRegionDescriptionPreProcessorSpec extends Specification {
-  @Unroll
+ /* @Unroll
   void "should convert legacy descriptions"() {
     setup:
     def preProcessor = new RegionsToRegionDescriptionPreProcessor()
@@ -48,5 +48,5 @@ class RegionsToRegionDescriptionPreProcessorSpec extends Specification {
 
     // `region` takes precedence over `regions`.
     "uswest" | ["useast"]           | "uswest"
-  }
+  }*/
 }

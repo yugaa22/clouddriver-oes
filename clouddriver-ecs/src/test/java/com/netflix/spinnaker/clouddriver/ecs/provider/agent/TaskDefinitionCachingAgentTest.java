@@ -21,7 +21,7 @@ import static com.netflix.spinnaker.clouddriver.ecs.cache.Keys.Namespace.TASK_DE
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Matchers.any;
+
 import static org.mockito.Mockito.when;
 
 import com.amazonaws.services.ecs.model.DescribeTaskDefinitionRequest;

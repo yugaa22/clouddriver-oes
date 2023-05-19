@@ -20,7 +20,7 @@ import static com.netflix.spinnaker.clouddriver.ecs.cache.Keys.Namespace.SERVICE
 import static com.netflix.spinnaker.clouddriver.ecs.cache.Keys.Namespace.TASK_DEFINITIONS;
 import static junit.framework.TestCase.*;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Matchers.any;
+
 import static org.mockito.Mockito.when;
 
 import com.amazonaws.services.ecs.model.*;
