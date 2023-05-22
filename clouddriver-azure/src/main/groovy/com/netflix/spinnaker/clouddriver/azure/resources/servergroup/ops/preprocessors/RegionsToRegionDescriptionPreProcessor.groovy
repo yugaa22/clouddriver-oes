@@ -31,7 +31,7 @@ class RegionsToRegionDescriptionPreProcessor implements AtomicOperationDescripti
 
   @Override
   Map process(Map description) {
-   /* description.with {
+    description.with {
       if (!region && regions) {
         region = regions[0]
 
@@ -44,7 +44,6 @@ class RegionsToRegionDescriptionPreProcessor implements AtomicOperationDescripti
       description.remove("regions")
 
       return description
-    }*/
-    return null
+    }
   }
 }
