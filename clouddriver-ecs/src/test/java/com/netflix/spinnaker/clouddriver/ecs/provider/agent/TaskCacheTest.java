@@ -17,7 +17,8 @@
 package com.netflix.spinnaker.clouddriver.ecs.provider.agent;
 
 import static com.netflix.spinnaker.clouddriver.ecs.cache.Keys.Namespace.TASKS;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 import static org.mockito.Mockito.when;
 
@@ -36,7 +37,7 @@ import com.netflix.spinnaker.clouddriver.ecs.cache.client.TaskCacheClient;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import spock.lang.Subject;
 
 public class TaskCacheTest extends CommonCachingAgent {
@@ -63,6 +64,7 @@ public class TaskCacheTest extends CommonCachingAgent {
     task.setLastStatus(STATUS);
     task.setDesiredStatus(STATUS);
     task.setStartedAt(new Date());
+
     task.setAvailabilityZone(REGION + "a");
 
     when(ecs.listClusters(any(ListClustersRequest.class)))

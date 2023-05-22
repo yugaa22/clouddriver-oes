@@ -26,7 +26,8 @@ import com.netflix.spectator.api.Registry;
 import com.netflix.spinnaker.cats.provider.ProviderCache;
 import com.netflix.spinnaker.clouddriver.aws.security.AmazonClientProvider;
 import com.netflix.spinnaker.clouddriver.aws.security.NetflixAmazonCredentials;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeAll;
+
 
 public class CommonCachingAgent {
   static final String REGION = "us-west-2";
@@ -79,7 +80,7 @@ public class CommonCachingAgent {
     when(netflixAmazonCredentials.getAccountId()).thenReturn(ACCOUNT_ID);
   }
 
-  @BeforeClass
+  @BeforeAll
   public static void setUp() {
     when(clientProvider.getAmazonEcs(eq(netflixAmazonCredentials), anyString(), anyBoolean()))
         .thenReturn(ecs);
