@@ -37,6 +37,7 @@ import com.netflix.spinnaker.clouddriver.yandex.service.YandexCloudFacade;
 import java.util.HashMap;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class YandexNetworkLoadBalancerCachingAgentTest {
@@ -81,7 +82,7 @@ class YandexNetworkLoadBalancerCachingAgentTest {
     OnDemandAgent.OnDemandResult result = agent.handle(providerCache, params);
     assertNotNull(result);
     assertFalse(result.getCacheResult().getCacheResults().isEmpty());
-    assertTrue(result.getCacheResult().getEvictions().isEmpty());
+   Assertions.assertTrue(result.getCacheResult().getEvictions().isEmpty());
   }
 
   @NotNull

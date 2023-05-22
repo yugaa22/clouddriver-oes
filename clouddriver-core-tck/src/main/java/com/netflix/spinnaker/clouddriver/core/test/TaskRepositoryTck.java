@@ -29,7 +29,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+
 
 public abstract class TaskRepositoryTck<T extends TaskRepository> {
 
