@@ -38,7 +38,7 @@ import com.netflix.spinnaker.clouddriver.google.security.GoogleNamedAccountCrede
 import com.netflix.spinnaker.clouddriver.google.security.TestDefaults
 import com.netflix.spinnaker.clouddriver.google.batch.GoogleBatchRequest
 import com.netflix.spinnaker.config.GoogleConfiguration
-import groovy.mock.interceptor.MockFor
+import org.mockito.Mock
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -59,10 +59,10 @@ class CreateGoogleInstanceAtomicOperationUnitSpec extends Specification implemen
 
   void "should create instance"() {
     setup:
-      def computeMock = new MockFor(Compute)
-      def googleBatchMock = new MockFor(GoogleBatchRequest)
+      def computeMock = Mock(Compute)
+      def googleBatchMock = Mock(GoogleBatchRequest)
       def imageProjects = [PROJECT_NAME] + BASE_IMAGE_PROJECTS
-      def listMock = new MockFor(Compute.Images.List)
+      def listMock = Mock(Compute.Images.List)
 
       def googleNetworkProviderMock = Mock(GoogleNetworkProvider)
       def instancesMock = Mock(Compute.Instances)
@@ -161,10 +161,10 @@ class CreateGoogleInstanceAtomicOperationUnitSpec extends Specification implemen
 
   void "should fail to create instance because image is invalid"() {
     setup:
-      def computeMock = new MockFor(Compute)
-      def batchMock = new MockFor(BatchRequest)
+      def computeMock = Mock(Compute)
+      def batchMock = Mock(BatchRequest)
       def imageProjects = [PROJECT_NAME] + BASE_IMAGE_PROJECTS
-      def listMock = new MockFor(Compute.Images.List)
+      def listMock = Mock(Compute.Images.List)
 
       def httpTransport = GoogleNetHttpTransport.newTrustedTransport()
       def jsonFactory = JacksonFactory.defaultInstance

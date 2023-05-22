@@ -32,7 +32,7 @@ import com.netflix.spinnaker.clouddriver.google.deploy.exception.GoogleResourceN
 import com.netflix.spinnaker.clouddriver.google.security.GoogleNamedAccountCredentials
 import com.netflix.spinnaker.clouddriver.google.security.TestDefaults
 import com.netflix.spinnaker.clouddriver.google.batch.GoogleBatchRequest
-import groovy.mock.interceptor.MockFor
+
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -53,10 +53,10 @@ class UpsertGoogleImageTagsAtomicOperationUnitSpec extends Specification impleme
 
   void "should set labels on image with no existing labels"() {
     setup:
-      def computeMock = new MockFor(Compute)
-      def googleBatchMock = new MockFor(GoogleBatchRequest)
+      def computeMock = Mock(Compute)
+      def googleBatchMock = Mock(GoogleBatchRequest)
       def imageProjects = [PROJECT_NAME] + BASE_IMAGE_PROJECTS
-      def listMock = new MockFor(Compute.Images.List)
+      def listMock = Mock(Compute.Images.List)
 
       def imagesMock = Mock(Compute.Images)
       def setLabelsMock = Mock(Compute.Images.SetLabels)
@@ -123,10 +123,10 @@ class UpsertGoogleImageTagsAtomicOperationUnitSpec extends Specification impleme
 
   void "should add to labels on image with existing labels"() {
     setup:
-      def computeMock = new MockFor(Compute)
-      def googleBatchMock = new MockFor(GoogleBatchRequest)
+      def computeMock = Mock(Compute)
+      def googleBatchMock = Mock(GoogleBatchRequest)
       def imageProjects = [PROJECT_NAME] + BASE_IMAGE_PROJECTS
-      def listMock = new MockFor(Compute.Images.List)
+      def listMock = Mock(Compute.Images.List)
 
       def imagesMock = Mock(Compute.Images)
       def setLabelsMock = Mock(Compute.Images.SetLabels)
@@ -193,10 +193,10 @@ class UpsertGoogleImageTagsAtomicOperationUnitSpec extends Specification impleme
 
   void "should fail to create instance because image is invalid"() {
     setup:
-      def computeMock = new MockFor(Compute)
-      def googleBatchMock = new MockFor(GoogleBatchRequest)
+      def computeMock = Mock(Compute)
+      def googleBatchMock = Mock(GoogleBatchRequest)
       def imageProjects = [PROJECT_NAME] + BASE_IMAGE_PROJECTS
-      def listMock = new MockFor(Compute.Images.List)
+      def listMock = Mock(Compute.Images.List)
 
       def httpTransport = GoogleNetHttpTransport.newTrustedTransport()
       def jsonFactory = JacksonFactory.defaultInstance
