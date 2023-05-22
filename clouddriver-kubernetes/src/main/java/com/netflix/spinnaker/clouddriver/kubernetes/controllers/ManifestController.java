@@ -30,8 +30,6 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,8 +50,8 @@ public class ManifestController {
     this.requestQueue = requestQueue;
   }
 
-  @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
-  @PostAuthorize("hasPermission(returnObject?.moniker?.app, 'APPLICATION', 'READ')")
+  // @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
+  // @PostAuthorize("hasPermission(returnObject?.moniker?.app, 'APPLICATION', 'READ')")
   @RequestMapping(value = "/{account:.+}/_/{name:.+}", method = RequestMethod.GET)
   Manifest getForAccountAndName(
       @PathVariable String account,
@@ -63,8 +61,8 @@ public class ManifestController {
     return getForAccountLocationAndName(account, "", name, includeEvents);
   }
 
-  @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
-  @PostAuthorize("hasPermission(returnObject?.moniker?.app, 'APPLICATION', 'READ')")
+  // @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
+  // @PostAuthorize("hasPermission(returnObject?.moniker?.app, 'APPLICATION', 'READ')")
   @RequestMapping(value = "/{account:.+}/{location:.+}/{name:.+}", method = RequestMethod.GET)
   Manifest getForAccountLocationAndName(
       @PathVariable String account,
