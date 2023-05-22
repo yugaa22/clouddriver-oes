@@ -31,12 +31,11 @@ import com.netflix.spinnaker.clouddriver.google.security.GoogleNamedAccountCrede
 import com.netflix.spinnaker.credentials.CredentialsRepository;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.Before;
-import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
-@RunWith(JUnit4.class)
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+
 public class SetStatefulDiskAtomicOperationConverterTest {
 
   private static final String ACCOUNT_NAME = "spinnaker-account";
@@ -46,7 +45,7 @@ public class SetStatefulDiskAtomicOperationConverterTest {
 
   SetStatefulDiskAtomicOperationConverter converter;
 
-  @Before
+  @BeforeAll
   public void setUp() {
     GoogleClusterProvider clusterProvider = mock(GoogleClusterProvider.class);
     GoogleComputeApiFactory serverGroupManagersFactory = mock(GoogleComputeApiFactory.class);
