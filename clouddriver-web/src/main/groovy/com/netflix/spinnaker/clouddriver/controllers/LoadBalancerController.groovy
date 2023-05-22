@@ -37,8 +37,8 @@ class LoadBalancerController {
   @Autowired
   List<LoadBalancerProvider> loadBalancerProviders
 
-  @PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ')")
-  @PostAuthorize("@authorizationSupport.filterForAccounts(returnObject)")
+  //@PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ')")
+  //@PostAuthorize("@authorizationSupport.filterForAccounts(returnObject)")
   @RequestMapping(value = "/applications/{application}/loadBalancers", method = RequestMethod.GET)
   List<LoadBalancer> list(@PathVariable String application) {
     loadBalancerProviders.findResults {
@@ -48,8 +48,8 @@ class LoadBalancerController {
     .sort { a, b -> a.name.toLowerCase() <=> b.name.toLowerCase() } as List<LoadBalancer>
   }
 
-  @PreAuthorize("@fiatPermissionEvaluator.storeWholePermission()")
-  @PostAuthorize("@authorizationSupport.filterLoadBalancerProviderItems(returnObject)")
+  //@PreAuthorize("@fiatPermissionEvaluator.storeWholePermission()")
+  //@PostAuthorize("@authorizationSupport.filterLoadBalancerProviderItems(returnObject)")
   @RequestMapping(value = "/{cloudProvider:.+}/loadBalancers", method = RequestMethod.GET)
   List<LoadBalancerProvider.Item> listForCloudProvider(@PathVariable String cloudProvider) {
     return findLoadBalancerProviders(cloudProvider).stream()
@@ -57,7 +57,7 @@ class LoadBalancerController {
         .collect(Collectors.toList())
   }
 
-  @PostAuthorize("@authorizationSupport.filterLoadBalancerProviderItems(returnObject)")
+  //@PostAuthorize("@authorizationSupport.filterLoadBalancerProviderItems(returnObject)")
   @RequestMapping(value = "/{cloudProvider:.+}/loadBalancers/{name:.+}", method = RequestMethod.GET)
   LoadBalancerProvider.Item get(@PathVariable String cloudProvider,
                                 @PathVariable String name) {
@@ -69,7 +69,7 @@ class LoadBalancerController {
         .orElse(null)
   }
 
-  @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
+  //@PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
   @RequestMapping(value = "/{cloudProvider:.+}/loadBalancers/{account:.+}/{region:.+}/{name:.+}",
                   method = RequestMethod.GET)
   List<LoadBalancerProvider.Details> getByAccountRegionName(@PathVariable String cloudProvider,

@@ -62,8 +62,8 @@ class ServerGroupController {
   @Autowired
   Optional<List<ServerGroupViewModelPostProcessor>> serverGroupViewModelPostProcessors = Optional.empty()
 
-  @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
-  @PostAuthorize("hasPermission(returnObject?.moniker?.app, 'APPLICATION', 'READ')")
+  //@PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
+  //@PostAuthorize("hasPermission(returnObject?.moniker?.app, 'APPLICATION', 'READ')")
   @RequestMapping(value = "/applications/{application}/serverGroups/{account}/{region}/{name:.+}", method = RequestMethod.GET)
   ServerGroup getServerGroupByApplication(@PathVariable String application, // needed to not break api
                                           @PathVariable String account,
@@ -74,8 +74,8 @@ class ServerGroupController {
     return getServerGroup(account, region, name, includeDetails)
   }
 
-  @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
-  @PostAuthorize("hasPermission(returnObject?.moniker?.app, 'APPLICATION', 'READ')")
+  //@PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
+  //@PostAuthorize("hasPermission(returnObject?.moniker?.app, 'APPLICATION', 'READ')")
   @RequestMapping(value = "/serverGroups/{account}/{region}/{name:.+}", method = RequestMethod.GET)
   // TODO: /application and /serverGroup endpoints should be in their own controllers. See https://github.com/spinnaker/spinnaker/issues/2023
   ServerGroup getServerGroupByMoniker(@PathVariable String account,
@@ -185,8 +185,8 @@ class ServerGroupController {
     return serverGroupViews
   }
 
-  @PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ')")
-  @PostAuthorize("@authorizationSupport.filterForAccounts(returnObject)")
+  //@PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ')")
+  //@PostAuthorize("@authorizationSupport.filterForAccounts(returnObject)")
   @RequestMapping(value = "/applications/{application}/serverGroups", method = RequestMethod.GET)
   List<Object> list(@PathVariable String application,
                     @RequestParam(required = false, value = "expand", defaultValue = "false") String expand,
@@ -208,7 +208,7 @@ class ServerGroupController {
   }
 
   @PostFilter("hasPermission(filterObject?.application, 'APPLICATION', 'READ')")
-  @PostAuthorize("@authorizationSupport.filterForAccounts(returnObject)")
+  //@PostAuthorize("@authorizationSupport.filterForAccounts(returnObject)")
   @RequestMapping(value = "/serverGroups", method = RequestMethod.GET)
   List<ServerGroupViewModel> getServerGroups(
     @RequestParam(required = false, value = "applications") List<String> applications,
