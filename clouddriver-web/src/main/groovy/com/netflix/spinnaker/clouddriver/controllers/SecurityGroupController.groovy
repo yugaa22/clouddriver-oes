@@ -42,8 +42,8 @@ class SecurityGroupController {
   @Autowired
   List<SecurityGroupProvider> securityGroupProviders
 
-  //@PreAuthorize("@fiatPermissionEvaluator.storeWholePermission()")
-  //@PostAuthorize("@authorizationSupport.filterForAccounts(returnObject)")
+  @PreAuthorize("@fiatPermissionEvaluator.storeWholePermission()")
+  @PostAuthorize("@authorizationSupport.filterForAccounts(returnObject)")
   @RequestMapping(method = RequestMethod.GET)
   Map<String, Map<String, Map<String, Set<SecurityGroupSummary>>>> list() {
     rx.Observable.from(securityGroupProviders).flatMap { secGrpProv ->
@@ -67,7 +67,7 @@ class SecurityGroupController {
     } toBlocking() first()
   }
 
-  //@PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
+  @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
   @RequestMapping(method = RequestMethod.GET, value = "/{account}")
   Map<String, Map<String, Set<SecurityGroupSummary>>> listByAccount(@PathVariable String account) {
     rx.Observable.from(securityGroupProviders).flatMap { secGrpProv ->
@@ -86,7 +86,7 @@ class SecurityGroupController {
     }) toBlocking() first()
   }
 
-  //@PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
+  @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
   @RequestMapping(method = RequestMethod.GET, value = "/{account}", params = ['region'])
   Map<String, Set<SecurityGroupSummary>> listByAccountAndRegion(@PathVariable String account,
                                                                 @RequestParam("region") String region) {
@@ -103,7 +103,7 @@ class SecurityGroupController {
     }) toBlocking() first()
   }
 
-  //@PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
+  @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
   @RequestMapping(method = RequestMethod.GET, value = "/{account}/{cloudProvider}")
   Map<String, Set<SecurityGroupSummary>> listByAccountAndCloudProvider(@PathVariable String account,
                                                               @PathVariable String cloudProvider) {
@@ -120,7 +120,7 @@ class SecurityGroupController {
     }) toBlocking() first()
   }
 
-  //@PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
+  @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
   @RequestMapping(method = RequestMethod.GET, value = "/{account}/{cloudProvider}", params = ['region'])
   Set<SecurityGroupSummary> listByAccountAndCloudProviderAndRegion(@PathVariable String account,
                                                           @PathVariable String cloudProvider,
@@ -135,7 +135,7 @@ class SecurityGroupController {
     }) toBlocking() first()
   }
 
-  //@PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
+  @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
   @RequestMapping(method = RequestMethod.GET, value = "/{account}/{cloudProvider}/{securityGroupName:.+}")
   Map<String, Set<SecurityGroupSummary>> listByAccountAndCloudProviderAndName(@PathVariable String account,
                                                                      @PathVariable String cloudProvider,
@@ -153,7 +153,7 @@ class SecurityGroupController {
     }) toBlocking() first()
   }
 
-  //@PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
+  @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
   @RequestMapping(method = RequestMethod.GET, value = "/{account}/{cloudProvider}/{region}/{securityGroupNameOrId:.+}")
   SecurityGroup get(
     @PathVariable String account,

@@ -24,7 +24,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,7 +48,7 @@ public class EntityTagsController {
   }
 
   @RequestMapping(method = RequestMethod.GET)
-  // @PreAuthorize("@fiatPermissionEvaluator.storeWholePermission()")
+  @PreAuthorize("@fiatPermissionEvaluator.storeWholePermission()")
   @PostFilter("hasPermission(filterObject.getEntityRef().getApplication(), 'APPLICATION', 'READ')")
   public Collection<EntityTags> list(
       @RequestParam(value = "cloudProvider", required = false) String cloudProvider,
@@ -81,8 +83,8 @@ public class EntityTagsController {
   }
 
   @RequestMapping(value = "/**", method = RequestMethod.GET)
-  // @PreAuthorize("@fiatPermissionEvaluator.storeWholePermission()")
-  // @PostAuthorize("@authorizationSupport.authorizeEntityTags(returnObject)")
+  @PreAuthorize("@fiatPermissionEvaluator.storeWholePermission()")
+  @PostAuthorize("@authorizationSupport.authorizeEntityTags(returnObject)")
   public EntityTags get(HttpServletRequest request) {
     String pattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
     String id = new AntPathMatcher().extractPathWithinPattern(pattern, request.getServletPath());
