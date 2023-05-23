@@ -19,7 +19,7 @@ package com.netflix.spinnaker.clouddriver.yandex.provider.agent;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -37,6 +37,7 @@ import com.netflix.spinnaker.clouddriver.yandex.service.YandexCloudFacade;
 import java.util.HashMap;
 import java.util.Map;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class YandexNetworkLoadBalancerCachingAgentTest {
@@ -81,7 +82,7 @@ class YandexNetworkLoadBalancerCachingAgentTest {
     OnDemandAgent.OnDemandResult result = agent.handle(providerCache, params);
     assertNotNull(result);
     assertFalse(result.getCacheResult().getCacheResults().isEmpty());
-    assertTrue(result.getCacheResult().getEvictions().isEmpty());
+   Assertions.assertTrue(result.getCacheResult().getEvictions().isEmpty());
   }
 
   @NotNull

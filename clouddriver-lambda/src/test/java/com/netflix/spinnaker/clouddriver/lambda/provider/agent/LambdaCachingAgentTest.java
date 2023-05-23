@@ -33,7 +33,7 @@ import com.netflix.spinnaker.clouddriver.lambda.service.config.LambdaServiceConf
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class LambdaCachingAgentTest {
   private ObjectMapper objectMapper = new ObjectMapper();

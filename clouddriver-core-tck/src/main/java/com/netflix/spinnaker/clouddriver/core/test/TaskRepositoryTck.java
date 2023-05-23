@@ -31,6 +31,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+
 public abstract class TaskRepositoryTck<T extends TaskRepository> {
 
   protected TaskRepository subject;

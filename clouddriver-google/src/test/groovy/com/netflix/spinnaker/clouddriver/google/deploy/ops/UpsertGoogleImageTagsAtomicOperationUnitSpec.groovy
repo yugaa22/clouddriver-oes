@@ -32,7 +32,7 @@ import com.netflix.spinnaker.clouddriver.google.deploy.exception.GoogleResourceN
 import com.netflix.spinnaker.clouddriver.google.security.GoogleNamedAccountCredentials
 import com.netflix.spinnaker.clouddriver.google.security.TestDefaults
 import com.netflix.spinnaker.clouddriver.google.batch.GoogleBatchRequest
-import groovy.mock.interceptor.MockFor
+import static org.mockito.Mockito.mock
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -53,13 +53,13 @@ class UpsertGoogleImageTagsAtomicOperationUnitSpec extends Specification impleme
 
   void "should set labels on image with no existing labels"() {
     setup:
-      def computeMock = new MockFor(Compute)
-      def googleBatchMock = new MockFor(GoogleBatchRequest)
+      def computeMock = mock(Compute)
+      def googleBatchMock = mock(GoogleBatchRequest)
       def imageProjects = [PROJECT_NAME] + BASE_IMAGE_PROJECTS
-      def listMock = new MockFor(Compute.Images.List)
+      def listMock = mock(Compute.Images.List)
 
-      def imagesMock = Mock(Compute.Images)
-      def setLabelsMock = Mock(Compute.Images.SetLabels)
+      def imagesMock = mock(Compute.Images)
+      def setLabelsMock = mock(Compute.Images.SetLabels)
       def globalSetLabelsRequest
 
       def httpTransport = GoogleNetHttpTransport.newTrustedTransport()
@@ -123,13 +123,13 @@ class UpsertGoogleImageTagsAtomicOperationUnitSpec extends Specification impleme
 
   void "should add to labels on image with existing labels"() {
     setup:
-      def computeMock = new MockFor(Compute)
-      def googleBatchMock = new MockFor(GoogleBatchRequest)
+      def computeMock = mock(Compute)
+      def googleBatchMock = mock(GoogleBatchRequest)
       def imageProjects = [PROJECT_NAME] + BASE_IMAGE_PROJECTS
-      def listMock = new MockFor(Compute.Images.List)
+      def listMock = mock(Compute.Images.List)
 
-      def imagesMock = Mock(Compute.Images)
-      def setLabelsMock = Mock(Compute.Images.SetLabels)
+      def imagesMock = mock(Compute.Images)
+      def setLabelsMock = mock(Compute.Images.SetLabels)
       def globalSetLabelsRequest
 
       def httpTransport = GoogleNetHttpTransport.newTrustedTransport()
@@ -193,10 +193,10 @@ class UpsertGoogleImageTagsAtomicOperationUnitSpec extends Specification impleme
 
   void "should fail to create instance because image is invalid"() {
     setup:
-      def computeMock = new MockFor(Compute)
-      def googleBatchMock = new MockFor(GoogleBatchRequest)
+      def computeMock = mock(Compute)
+      def googleBatchMock = mock(GoogleBatchRequest)
       def imageProjects = [PROJECT_NAME] + BASE_IMAGE_PROJECTS
-      def listMock = new MockFor(Compute.Images.List)
+      def listMock = mock(Compute.Images.List)
 
       def httpTransport = GoogleNetHttpTransport.newTrustedTransport()
       def jsonFactory = JacksonFactory.defaultInstance

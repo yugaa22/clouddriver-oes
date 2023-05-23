@@ -17,10 +17,9 @@
 package com.netflix.spinnaker.clouddriver.ecs.provider.agent;
 
 import static com.netflix.spinnaker.clouddriver.ecs.cache.Keys.Namespace.IAM_ROLE;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyString;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
+
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -38,7 +37,8 @@ import com.netflix.spinnaker.clouddriver.ecs.cache.model.IamRole;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 import spock.lang.Subject;
 
 public class IamRoleCacheTest extends CommonCachingAgent {

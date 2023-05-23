@@ -16,14 +16,16 @@
 
 package com.netflix.spinnaker.clouddriver.ecs.security;
 
-import static org.junit.Assert.assertTrue;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 import com.netflix.spinnaker.clouddriver.aws.security.NetflixAmazonCredentials;
 import com.netflix.spinnaker.clouddriver.aws.security.config.AccountsConfiguration.Account;
 import com.netflix.spinnaker.fiat.model.resources.Permissions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 
 public class EcsAccountBuilderTest {
 

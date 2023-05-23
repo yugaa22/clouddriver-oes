@@ -17,7 +17,8 @@
 package com.netflix.spinnaker.clouddriver.google.deploy.converters;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -30,12 +31,17 @@ import com.netflix.spinnaker.clouddriver.google.security.GoogleNamedAccountCrede
 import com.netflix.spinnaker.credentials.CredentialsRepository;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
-@RunWith(JUnit4.class)
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {TestConfiguration.class })
 public class SetStatefulDiskAtomicOperationConverterTest {
 
   private static final String ACCOUNT_NAME = "spinnaker-account";
@@ -45,7 +51,7 @@ public class SetStatefulDiskAtomicOperationConverterTest {
 
   SetStatefulDiskAtomicOperationConverter converter;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     GoogleClusterProvider clusterProvider = mock(GoogleClusterProvider.class);
     GoogleComputeApiFactory serverGroupManagersFactory = mock(GoogleComputeApiFactory.class);
