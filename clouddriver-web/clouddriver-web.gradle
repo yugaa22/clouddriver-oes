@@ -37,7 +37,7 @@ dependencies {
   implementation "commons-io:commons-io"
   implementation "io.reactivex.rxjava3:rxjava:3.1.6"
   implementation "io.swagger:swagger-annotations:1.5.20"
-  implementation "org.apache.groovy:groovy:4.0.9"
+  implementation "org.apache.groovy:groovy-all:4.0.9"
   implementation "org.slf4j:slf4j-api"
   implementation "org.springframework.boot:spring-boot-starter-actuator"
   implementation "org.springframework.boot:spring-boot-starter-json"
@@ -70,4 +70,7 @@ tasks.withType(Zip){
 
 run {
   jvmArgs = ['--add-opens=java.base/sun.net=ALL-UNNAMED', '--add-exports=java.base/sun.net=ALL-UNNAMED', '--add-opens=java.base/java.time=ALL-UNNAMED']
+}
+tasks.withType(Test).configureEach{
+  jvmArgs = ['--add-opens=java.base/sun.net=ALL-UNNAMED']
 }
