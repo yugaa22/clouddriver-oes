@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -38,7 +40,7 @@ public class FunctionController {
     this.functionProviders = functionProviders.orElse(Collections.emptyList());
   }
 
-  // @PostAuthorize("@authorizationSupport.filterForAccounts(returnObject)")
+  @PostAuthorize("@authorizationSupport.filterForAccounts(returnObject)")
   @RequestMapping(value = "/functions", method = RequestMethod.GET)
   @ResponseBody
   public List<Function> list(
@@ -65,8 +67,8 @@ public class FunctionController {
     }
   }
 
-  // @PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ')")
-  // @PostAuthorize("@authorizationSupport.filterForAccounts(returnObject)")
+  @PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ')")
+  @PostAuthorize("@authorizationSupport.filterForAccounts(returnObject)")
   @RequestMapping(value = "/applications/{application}/functions", method = RequestMethod.GET)
   List<Function> list(@PathVariable String application) {
     List<Function> appFunctions =

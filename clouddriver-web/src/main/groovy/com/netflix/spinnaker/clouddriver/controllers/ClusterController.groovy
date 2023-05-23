@@ -69,8 +69,8 @@ class ClusterController {
   @Autowired
   Optional<List<ServerGroupViewModelPostProcessor>> serverGroupExtensions = Optional.empty()
 
-  //@PreAuthorize("@fiatPermissionEvaluator.storeWholePermission() and hasPermission(#application, 'APPLICATION', 'READ')")
-  //@PostAuthorize("@authorizationSupport.filterForAccounts(returnObject)")
+  @PreAuthorize("@fiatPermissionEvaluator.storeWholePermission() and hasPermission(#application, 'APPLICATION', 'READ')")
+  @PostAuthorize("@authorizationSupport.filterForAccounts(returnObject)")
   @RequestMapping(method = RequestMethod.GET)
   Map<String, Set<String>> listByAccount(@PathVariable String application) {
     List<Application> apps = applicationProviders.stream()
@@ -103,7 +103,7 @@ class ClusterController {
     return map
   }
 
-  //@PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ') && hasPermission(#account, 'ACCOUNT', 'READ')")
+  @PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ') && hasPermission(#account, 'ACCOUNT', 'READ')")
   @RequestMapping(value = "/{account:.+}", method = RequestMethod.GET)
   Set<ClusterViewModel> getForAccount(@PathVariable String application, @PathVariable String account) {
 
@@ -121,7 +121,7 @@ class ClusterController {
     clusters
   }
 
-  //@PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ') && hasPermission(#account, 'ACCOUNT', 'READ')")
+  @PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ') && hasPermission(#account, 'ACCOUNT', 'READ')")
   @RequestMapping(value = "/{account:.+}/{name:.+}", method = RequestMethod.GET)
   Set<Cluster> getForAccountAndName(@PathVariable String application,
                                     @PathVariable String account,
@@ -142,7 +142,7 @@ class ClusterController {
     return clusters
   }
 
-  //@PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ') && hasPermission(#account, 'ACCOUNT', 'READ')")
+  @PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ') && hasPermission(#account, 'ACCOUNT', 'READ')")
   @RequestMapping(value = "/{account:.+}/{name:.+}/{type}", method = RequestMethod.GET)
   Cluster getForAccountAndNameAndType(@PathVariable String application,
                                       @PathVariable String account,
@@ -166,7 +166,7 @@ class ClusterController {
     return cluster
   }
 
-  //@PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ') && hasPermission(#account, 'ACCOUNT', 'READ')")
+  @PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ') && hasPermission(#account, 'ACCOUNT', 'READ')")
   @RequestMapping(value = "/{account:.+}/{clusterName:.+}/{type}/serverGroups", method = RequestMethod.GET)
   Set<ServerGroup> getServerGroups(@PathVariable String application,
                                    @PathVariable String account,
@@ -189,7 +189,7 @@ class ClusterController {
     return result
   }
 
-  //@PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ') && hasPermission(#account, 'ACCOUNT', 'READ')")
+  @PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ') && hasPermission(#account, 'ACCOUNT', 'READ')")
   @RequestMapping(value = "/{account:.+}/{clusterName:.+}/{type}/serverGroups/{serverGroupName:.+}", method = RequestMethod.GET)
   def getServerGroup(@PathVariable String application,
                      @PathVariable String account,
@@ -244,7 +244,7 @@ class ClusterController {
    * @param scope Should be either a region or zone, depending on the cloud provider.
    * @return A dynamically determined server group using a {@code TargetServerGroup} specifier.
    */
-  //@PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ') && hasPermission(#account, 'ACCOUNT', 'READ')")
+  @PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ') && hasPermission(#account, 'ACCOUNT', 'READ')")
   @RequestMapping(value = "/{account:.+}/{clusterName:.+}/{cloudProvider}/{scope}/serverGroups/target/{target:.+}", method = RequestMethod.GET)
   ServerGroup getTargetServerGroup(@PathVariable String application,
                                    @PathVariable String account,
@@ -361,7 +361,7 @@ class ClusterController {
     return result
   }
 
-  //@PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ') && hasPermission(#account, 'ACCOUNT', 'READ')")
+  @PreAuthorize("hasPermission(#application, 'APPLICATION', 'READ') && hasPermission(#account, 'ACCOUNT', 'READ')")
   @RequestMapping(value = "/{account:.+}/{clusterName:.+}/{cloudProvider}/{scope}/serverGroups/target/{target:.+}/{summaryType:.+}", method = RequestMethod.GET)
   Summary getServerGroupSummary(@PathVariable String application,
                                 @PathVariable String account,
