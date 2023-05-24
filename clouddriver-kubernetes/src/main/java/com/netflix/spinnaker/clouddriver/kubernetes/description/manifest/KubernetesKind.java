@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterators;
 import com.netflix.spinnaker.kork.annotations.NonnullByDefault;
-import io.kubernetes.client.openapi.models.V1beta1CustomResourceDefinition;
+import io.kubernetes.client.proto.V1beta1Apiextensions;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -144,7 +144,8 @@ public class KubernetesKind {
     return aliasMap.getOrDefault(result, result);
   }
 
-  public static KubernetesKind fromCustomResourceDefinition(V1beta1CustomResourceDefinition crd) {
+  public static KubernetesKind fromCustomResourceDefinition(
+      V1beta1Apiextensions.CustomResourceDefinition crd) {
     return from(
         crd.getSpec().getNames().getKind(),
         KubernetesApiGroup.fromString(crd.getSpec().getGroup()));
