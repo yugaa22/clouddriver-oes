@@ -29,15 +29,12 @@ import com.netflix.spinnaker.clouddriver.kubernetes.description.manifest.Kuberne
 import com.netflix.spinnaker.kork.artifacts.model.Artifact;
 import io.kubernetes.client.openapi.JSON;
 import io.kubernetes.client.openapi.models.V1ConfigMapEnvSource;
-import io.kubernetes.client.openapi.models.V1ConfigMapKeySelector;
 import io.kubernetes.client.openapi.models.V1Container;
 import io.kubernetes.client.openapi.models.V1ContainerPort;
 import io.kubernetes.client.openapi.models.V1CrossVersionObjectReference;
 import io.kubernetes.client.openapi.models.V1Deployment;
 import io.kubernetes.client.openapi.models.V1DeploymentSpec;
 import io.kubernetes.client.openapi.models.V1EnvFromSource;
-import io.kubernetes.client.openapi.models.V1EnvVar;
-import io.kubernetes.client.openapi.models.V1EnvVarSource;
 import io.kubernetes.client.openapi.models.V1HorizontalPodAutoscaler;
 import io.kubernetes.client.openapi.models.V1HorizontalPodAutoscalerSpec;
 import io.kubernetes.client.openapi.models.V1LabelSelector;
@@ -543,13 +540,11 @@ final class ArtifactReplacerTest {
                                     new V1PodSpec()
                                         .addContainersItem(
                                             new V1Container()
-                                                .addEnvItem(
-                                                    new V1EnvVar()
-                                                        .valueFrom(
-                                                            new V1EnvVarSource()
-                                                                .configMapKeyRef(
-                                                                    new V1ConfigMapKeySelector()
-                                                                        .name(configMapRef))))))))
+                                                .addEnvFromItem(
+                                                    new V1EnvFromSource()
+                                                        .configMapRef(
+                                                            new V1ConfigMapEnvSource()
+                                                                .name(configMapRef)))))))
             //            new V1ReplicaSetBuilder()
             //                .withNewMetadata()
             //                .withName("my-app-deployment")
