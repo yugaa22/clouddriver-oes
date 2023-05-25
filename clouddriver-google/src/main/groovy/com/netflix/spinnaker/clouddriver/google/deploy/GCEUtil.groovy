@@ -396,7 +396,7 @@ class GCEUtil {
       it.name in forwardingRuleNames
     }
 
-    if (foundForwardingRules.size == forwardingRuleNames.size) {
+    if (foundForwardingRules.size() == forwardingRuleNames.size()) {
       return foundForwardingRules
     } else {
       def foundNames = foundForwardingRules.collect { it.name }
