@@ -448,8 +448,8 @@ class GCEUtil {
       }
     }.flatten() - null
 
-    if (foundInstances.size == instanceLocalNames.size) {
-      return foundInstances.collect { it.selfLink }
+    if (foundInstances.size() == instanceLocalNames.size()) {
+      return foundInstances.collect { it.getProperties().get("selfLink") }
     } else {
       def foundNames = foundInstances.collect { it.name }
 
