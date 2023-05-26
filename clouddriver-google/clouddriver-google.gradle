@@ -51,4 +51,5 @@ dependencies {
   testImplementation "org.spockframework:spock-spring"
   testImplementation "org.springframework:spring-test"
   testImplementation "org.springframework.boot:spring-boot-test"
+  testImplementation "org.apache.groovy:groovy-test:4.0.11"
 }

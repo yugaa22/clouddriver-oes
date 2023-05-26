@@ -396,7 +396,7 @@ class GCEUtil {
       it.name in forwardingRuleNames
     }
 
-    if (foundForwardingRules.size == forwardingRuleNames.size) {
+    if (foundForwardingRules.size() == forwardingRuleNames.size()) {
       return foundForwardingRules
     } else {
       def foundNames = foundForwardingRules.collect { it.name }
@@ -448,8 +448,8 @@ class GCEUtil {
       }
     }.flatten() - null
 
-    if (foundInstances.size == instanceLocalNames.size) {
-      return foundInstances.collect { it.selfLink }
+    if (foundInstances.size() == instanceLocalNames.size()) {
+      return foundInstances.collect { it.getProperties().get("selfLink") }
     } else {
       def foundNames = foundInstances.collect { it.name }
 

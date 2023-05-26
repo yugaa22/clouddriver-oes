@@ -1,5 +1,5 @@
 databaseChangeLog:
-  - changeSet:
+- changeSet:
       id: create-task-outputs-table
       author: apoorvmahajan
       changes:
@@ -38,6 +38,6 @@ databaseChangeLog:
             dbms: mysql
             append:
               value: " engine innodb"
-    rollback:
+      rollback:
       - dropTable:
           tableName: task_outputs
