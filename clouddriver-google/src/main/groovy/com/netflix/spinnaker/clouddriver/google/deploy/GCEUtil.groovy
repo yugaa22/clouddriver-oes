@@ -57,7 +57,7 @@ import static com.netflix.spinnaker.clouddriver.google.cache.Keys.Namespace.HTTP
 
 @Slf4j
 class GCEUtil {
-  public static final String GCE_IMAGE_TYPE = "gce/image"
+  public static final String GCE_IMAGE_TYPE = "gce/image";
   private static final String DISK_TYPE_PERSISTENT = "PERSISTENT"
   private static final String DISK_TYPE_SCRATCH = "SCRATCH"
   private static final String GCE_API_PREFIX = "https://compute.googleapis.com/compute/v1/projects/"
@@ -189,12 +189,12 @@ class GCEUtil {
       return false
     }
 
-    boolean isUefiCompatible = false
-    boolean isSecureBootCompatible = false
+    boolean isUefiCompatible = false;
+    boolean isSecureBootCompatible = false;
 
     guestOsFeatureList.each { feature ->
       if (feature.getType() == "UEFI_COMPATIBLE") {
-        isUefiCompatible = true
+        isUefiCompatible= true
         return
       }
 
@@ -466,8 +466,7 @@ class GCEUtil {
                                                                 SafeRetry safeRetry,
                                                                 GoogleExecutorTraits executor) {
     return safeRetry.doRetry(
-      {
-        return executor.timeExecute(
+      { return executor.timeExecute(
           credentials.compute.regionInstanceGroupManagers().get(projectName, region, serverGroupName),
           "compute.regionInstanceGroupManagers.get",
           executor.TAG_SCOPE, executor.SCOPE_REGIONAL, executor.TAG_REGION, region)
@@ -490,8 +489,7 @@ class GCEUtil {
                                                              SafeRetry safeRetry,
                                                              GoogleExecutorTraits executor) {
     return safeRetry.doRetry(
-      {
-        return executor.timeExecute(
+      { return executor.timeExecute(
           credentials.compute.instanceGroupManagers().get(projectName, zone, serverGroupName),
           "compute.instanceGroupManagers.get",
           executor.TAG_SCOPE, executor.SCOPE_ZONAL, executor.TAG_ZONE, zone)
@@ -619,7 +617,7 @@ class GCEUtil {
 
     def image
     def disks
-    ArrayList<String> diskProperty = instanceTemplateProperties.get("disks")
+    ArrayList<ArrayList<AttachedDisk>> diskProperty = instanceTemplateProperties.get("disks")
     if (diskProperty == null) {
       throw new GoogleOperationException("Instance templates must have at least one disk defined. Instance template " +
         "$instanceTemplate.name has no disk type defined")
@@ -877,7 +875,7 @@ class GCEUtil {
 
       if (scalingSchedules) {
         gceAutoscalingPolicy.scalingSchedules = scalingSchedules.collectEntries { scalingSchedule ->
-          [scalingSchedule.scheduleName, new AutoscalingPolicyScalingSchedule(description: scalingSchedule.scheduleDescription,
+          [scalingSchedule.scheduleName , new AutoscalingPolicyScalingSchedule(description: scalingSchedule.scheduleDescription,
             disabled: !scalingSchedule.enabled,
             durationSec: scalingSchedule.duration,
             minRequiredReplicas: scalingSchedule.minimumRequiredInstances,
@@ -1749,8 +1747,7 @@ class GCEUtil {
     def proxyGet = null
     switch (targetProxyType) {
       case GoogleTargetProxyType.HTTP:
-        proxyGet = {
-          executor.timeExecute(
+        proxyGet = { executor.timeExecute(
             compute.targetHttpProxies().get(project, targetProxyName),
             "compute.targetHttpProxies.get",
             executor.TAG_SCOPE, executor.SCOPE_GLOBAL)
@@ -1758,8 +1755,7 @@ class GCEUtil {
         operationName = "compute.targetHttpProxies.get"
         break
       case GoogleTargetProxyType.HTTPS:
-        proxyGet = {
-          executor.timeExecute(
+        proxyGet = { executor.timeExecute(
             compute.targetHttpsProxies().get(project, targetProxyName),
             "compute.targetHttpsProxies.get",
             executor.TAG_SCOPE, executor.SCOPE_GLOBAL)
@@ -1767,8 +1763,7 @@ class GCEUtil {
         operationName = "compute.targetHttpsProxies.get"
         break
       case GoogleTargetProxyType.SSL:
-        proxyGet = {
-          executor.timeExecute(
+        proxyGet = { executor.timeExecute(
             compute.targetSslProxies().get(project, targetProxyName),
             "compute.targetSslProxies.get",
             executor.TAG_SCOPE, executor.SCOPE_GLOBAL)
@@ -1776,8 +1771,7 @@ class GCEUtil {
         operationName = "compute.targetSslProxies.get"
         break
       case GoogleTargetProxyType.TCP:
-        proxyGet = {
-          executor.timeExecute(
+        proxyGet = { executor.timeExecute(
             compute.targetTcpProxies().get(project, targetProxyName),
             "compute.targetTcpProxies.get",
             executor.TAG_SCOPE, executor.SCOPE_GLOBAL)
@@ -1810,8 +1804,7 @@ class GCEUtil {
     def proxyGet = null
     switch (targetProxyType) {
       case GoogleTargetProxyType.HTTP:
-        proxyGet = {
-          executor.timeExecute(
+        proxyGet = { executor.timeExecute(
             compute.regionTargetHttpProxies().get(project, region, targetProxyName),
             "compute.regionTargetHttpProxies.get",
             executor.TAG_SCOPE, executor.SCOPE_REGIONAL)
@@ -1819,8 +1812,7 @@ class GCEUtil {
         operationName = "compute.regionTargetHttpProxies.get"
         break
       case GoogleTargetProxyType.HTTPS:
-        proxyGet = {
-          executor.timeExecute(
+        proxyGet = { executor.timeExecute(
             compute.regionTargetHttpsProxies().get(project, region, targetProxyName),
             "compute.regionTargetHttpsProxies.get",
             executor.TAG_SCOPE, executor.SCOPE_REGIONAL)
@@ -1857,8 +1849,7 @@ class GCEUtil {
                                         SafeRetry safeRetry,
                                         GoogleExecutorTraits executor) {
     ForwardingRule ruleToDelete = safeRetry.doRetry(
-      {
-        executor.timeExecute(
+      { executor.timeExecute(
           compute.globalForwardingRules().get(project, forwardingRuleName),
           "compute.globalForwardingRules.get",
           executor.TAG_SCOPE, executor.SCOPE_GLOBAL)
@@ -1934,7 +1925,6 @@ class GCEUtil {
       return result
     }
   }
-
   static Operation deleteRegionalListener(Compute compute,
                                           String project,
                                           String region,
@@ -1943,8 +1933,7 @@ class GCEUtil {
                                           SafeRetry safeRetry,
                                           GoogleExecutorTraits executor) {
     ForwardingRule ruleToDelete = safeRetry.doRetry(
-      {
-        executor.timeExecute(
+      { executor.timeExecute(
           compute.forwardingRules().get(project, region, forwardingRuleName),
           "compute.forwardingRules.get",
           executor.TAG_SCOPE, executor.SCOPE_REGIONAL, executor.TAG_REGION, region)
@@ -2176,7 +2165,7 @@ class GCEUtil {
         break
       case GoogleHealthCheck.HealthCheckType.SSL:
         newHealthCheck.type = 'SSL'
-        newHealthCheck.sslHealthCheck = new SSLHealthCheck(port: descriptionHealthCheck.port)
+        newHealthCheck.sslHealthCheck = new SSLHealthCheck(port:  descriptionHealthCheck.port)
         break
 //      case GoogleHealthCheck.HealthCheckType.UDP:
 //        newHealthCheck.type = 'UDP'
