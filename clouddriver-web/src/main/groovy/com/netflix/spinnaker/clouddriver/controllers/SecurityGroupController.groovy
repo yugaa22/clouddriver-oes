@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import io.reactivex.rxjava3.core.Observable
 
 @RequestMapping("/securityGroups")
 @RestController
@@ -46,8 +47,8 @@ class SecurityGroupController {
   @PostAuthorize("@authorizationSupport.filterForAccounts(returnObject)")
   @RequestMapping(method = RequestMethod.GET)
   Map<String, Map<String, Map<String, Set<SecurityGroupSummary>>>> list() {
-    rx.Observable.from(securityGroupProviders).flatMap { secGrpProv ->
-      rx.Observable.from(secGrpProv.getAll(false))
+    Observable.fromIterable(securityGroupProviders).flatMap { secGrpProv ->
+      Observable.fromIterable(secGrpProv.getAll(false))
     } filter {
       it != null
     } reduce([:], { Map objs, SecurityGroup obj ->
@@ -70,8 +71,8 @@ class SecurityGroupController {
   @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
   @RequestMapping(method = RequestMethod.GET, value = "/{account}")
   Map<String, Map<String, Set<SecurityGroupSummary>>> listByAccount(@PathVariable String account) {
-    rx.Observable.from(securityGroupProviders).flatMap { secGrpProv ->
-      rx.Observable.from(secGrpProv.getAllByAccount(false, account))
+    Observable.fromIterable(securityGroupProviders).flatMap { secGrpProv ->
+      Observable.fromIterable(secGrpProv.getAllByAccount(false, account))
     } filter {
       it != null
     } reduce([:], { Map objs, SecurityGroup obj ->
@@ -90,8 +91,8 @@ class SecurityGroupController {
   @RequestMapping(method = RequestMethod.GET, value = "/{account}", params = ['region'])
   Map<String, Set<SecurityGroupSummary>> listByAccountAndRegion(@PathVariable String account,
                                                                 @RequestParam("region") String region) {
-    rx.Observable.from(securityGroupProviders).flatMap { secGrpProv ->
-      rx.Observable.from(secGrpProv.getAllByAccountAndRegion(false, account, region))
+    Observable.fromIterable(securityGroupProviders).flatMap { secGrpProv ->
+      Observable.fromIterable(secGrpProv.getAllByAccountAndRegion(false, account, region))
     } filter {
       it != null
     } reduce([:], { Map objs, SecurityGroup obj ->
@@ -107,10 +108,10 @@ class SecurityGroupController {
   @RequestMapping(method = RequestMethod.GET, value = "/{account}/{cloudProvider}")
   Map<String, Set<SecurityGroupSummary>> listByAccountAndCloudProvider(@PathVariable String account,
                                                               @PathVariable String cloudProvider) {
-    rx.Observable.from(securityGroupProviders).filter { secGrpProv ->
+    Observable.fromIterable(securityGroupProviders).filter { secGrpProv ->
       secGrpProv.cloudProvider == cloudProvider
     } flatMap {
-      rx.Observable.from(it.getAllByAccount(false, account))
+      Observable.fromIterable(it.getAllByAccount(false, account))
     } reduce([:], { Map objs, SecurityGroup obj ->
       if (!objs.containsKey(obj.region)) {
         objs[obj.region] = sortedTreeSet
@@ -125,10 +126,10 @@ class SecurityGroupController {
   Set<SecurityGroupSummary> listByAccountAndCloudProviderAndRegion(@PathVariable String account,
                                                           @PathVariable String cloudProvider,
                                                           @RequestParam("region") String region) {
-    rx.Observable.from(securityGroupProviders).filter { secGrpProv ->
+    Observable.fromIterable(securityGroupProviders).filter { secGrpProv ->
       secGrpProv.cloudProvider == cloudProvider
     } flatMap {
-      rx.Observable.from(it.getAllByAccountAndRegion(false, account, region))
+      Observable.fromIterable(it.getAllByAccountAndRegion(false, account, region))
     } reduce(sortedTreeSet, { Set objs, SecurityGroup obj ->
       objs << obj.summary
       objs
@@ -140,10 +141,10 @@ class SecurityGroupController {
   Map<String, Set<SecurityGroupSummary>> listByAccountAndCloudProviderAndName(@PathVariable String account,
                                                                      @PathVariable String cloudProvider,
                                                                      @PathVariable String securityGroupName) {
-    rx.Observable.from(securityGroupProviders).filter { secGrpProv ->
+    Observable.fromIterable(securityGroupProviders).filter { secGrpProv ->
       secGrpProv.cloudProvider == cloudProvider
     } flatMap {
-      rx.Observable.from(it.getAllByAccountAndName(false, account, securityGroupName))
+      Observable.fromIterable(it.getAllByAccountAndName(false, account, securityGroupName))
     } reduce([:], { Map objs, SecurityGroup obj ->
       if (!objs.containsKey(obj.region)) {
         objs[obj.region] = sortedTreeSet
