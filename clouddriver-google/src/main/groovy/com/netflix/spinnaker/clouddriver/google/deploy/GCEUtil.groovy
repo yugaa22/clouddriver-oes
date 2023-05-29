@@ -383,7 +383,7 @@ class GCEUtil {
         compute.forwardingRules().list(projectName, region),
         "compute.forwardingRules.list",
         executor.TAG_SCOPE, executor.SCOPE_GLOBAL
-      ).items
+        ).items
       },
       "regional forwarding rules",
       task,
@@ -467,9 +467,9 @@ class GCEUtil {
                                                                 GoogleExecutorTraits executor) {
     return safeRetry.doRetry(
       { return executor.timeExecute(
-        credentials.compute.regionInstanceGroupManagers().get(projectName, region, serverGroupName),
-        "compute.regionInstanceGroupManagers.get",
-        executor.TAG_SCOPE, executor.SCOPE_REGIONAL, executor.TAG_REGION, region)
+          credentials.compute.regionInstanceGroupManagers().get(projectName, region, serverGroupName),
+          "compute.regionInstanceGroupManagers.get",
+          executor.TAG_SCOPE, executor.SCOPE_REGIONAL, executor.TAG_REGION, region)
       },
       "regional managed instance group",
       task,
@@ -490,9 +490,9 @@ class GCEUtil {
                                                              GoogleExecutorTraits executor) {
     return safeRetry.doRetry(
       { return executor.timeExecute(
-        credentials.compute.instanceGroupManagers().get(projectName, zone, serverGroupName),
-        "compute.instanceGroupManagers.get",
-        executor.TAG_SCOPE, executor.SCOPE_ZONAL, executor.TAG_ZONE, zone)
+          credentials.compute.instanceGroupManagers().get(projectName, zone, serverGroupName),
+          "compute.instanceGroupManagers.get",
+          executor.TAG_SCOPE, executor.SCOPE_ZONAL, executor.TAG_ZONE, zone)
       },
       "zonal managed instance group",
       task,
@@ -598,36 +598,46 @@ class GCEUtil {
   }
 
   static BaseGoogleInstanceDescription buildInstanceDescriptionFromTemplate(String project, InstanceTemplate instanceTemplate) {
-    def instanceTemplateProperties = instanceTemplate?.properties
+    Map<String, Object> instanceTemplateProperties = instanceTemplate?.properties
 
     if (instanceTemplateProperties == null) {
       throw new GoogleOperationException("Unable to determine properties of instance template " +
         "$instanceTemplate.name.")
     }
 
-    if (instanceTemplateProperties.networkInterfaces?.size != 1) {
+    ArrayList<NetworkInterface> networkInterfaces = instanceTemplateProperties.get("networkInterfaces")
+    if (networkInterfaces == null) {
       throw new GoogleOperationException("Instance templates must have exactly one network interface defined. " +
-        "Instance template $instanceTemplate.name has ${instanceTemplateProperties.networkInterfaces?.size}.")
+        "Instance template $instanceTemplate.name has no network interfaces defined")
+    }
+    if (networkInterfaces.size() != 1) {
+      throw new GoogleOperationException("Instance templates must have exactly one network interface defined. " +
+        "Instance template $instanceTemplate.name has ${networkInterfaces.size()}")
     }
 
     def image
     def disks
-
-    if (instanceTemplateProperties.disks) {
-      def bootDisk = instanceTemplateProperties.disks.find { it.getBoot() }
-
-      image = getLocalName(bootDisk?.initializeParams?.sourceImage)
-      disks = instanceTemplateProperties.disks.collect { attachedDisk ->
-        def initializeParams = attachedDisk.initializeParams
+    ArrayList<ArrayList<AttachedDisk>> diskProperty = instanceTemplateProperties.get("disks")
+    if (diskProperty == null) {
+      throw new GoogleOperationException("Instance templates must have at least one disk defined. Instance template " +
+        "$instanceTemplate.name has no disk type defined")
+    }
+    else if (diskProperty != null && !diskProperty.isEmpty()) {
+      AttachedDisk bootDisk = diskProperty.get(0)
+      AttachedDiskInitializeParams attachedDiskInitializeParams = bootDisk.getInitializeParams()
+      image = getLocalName(attachedDiskInitializeParams.getSourceImage())
+      disks = diskProperty.stream().map(attachedDisk -> {
+        AttachedDiskInitializeParams initializeParams = attachedDisk.get("initializeParams")
 
         new GoogleDisk(type: initializeParams.diskType,
           sizeGb: initializeParams.diskSizeGb,
-          autoDelete: attachedDisk.autoDelete,
+          autoDelete: attachedDisk.getProperties().get("autoDelete"),
           labels: instanceTemplateProperties.labels)
       }
+      )
     } else {
       throw new GoogleOperationException("Instance templates must have at least one disk defined. Instance template " +
-        "$instanceTemplate.name has ${instanceTemplateProperties.disks?.size}.")
+        "$instanceTemplate.name has ${diskProperty.size()}")
     }
 
     def networkInterface = instanceTemplateProperties.networkInterfaces[0]
@@ -1738,33 +1748,33 @@ class GCEUtil {
     switch (targetProxyType) {
       case GoogleTargetProxyType.HTTP:
         proxyGet = { executor.timeExecute(
-          compute.targetHttpProxies().get(project, targetProxyName),
-          "compute.targetHttpProxies.get",
-          executor.TAG_SCOPE, executor.SCOPE_GLOBAL)
+            compute.targetHttpProxies().get(project, targetProxyName),
+            "compute.targetHttpProxies.get",
+            executor.TAG_SCOPE, executor.SCOPE_GLOBAL)
         }
         operationName = "compute.targetHttpProxies.get"
         break
       case GoogleTargetProxyType.HTTPS:
         proxyGet = { executor.timeExecute(
-          compute.targetHttpsProxies().get(project, targetProxyName),
-          "compute.targetHttpsProxies.get",
-          executor.TAG_SCOPE, executor.SCOPE_GLOBAL)
+            compute.targetHttpsProxies().get(project, targetProxyName),
+            "compute.targetHttpsProxies.get",
+            executor.TAG_SCOPE, executor.SCOPE_GLOBAL)
         }
         operationName = "compute.targetHttpsProxies.get"
         break
       case GoogleTargetProxyType.SSL:
         proxyGet = { executor.timeExecute(
-          compute.targetSslProxies().get(project, targetProxyName),
-          "compute.targetSslProxies.get",
-          executor.TAG_SCOPE, executor.SCOPE_GLOBAL)
+            compute.targetSslProxies().get(project, targetProxyName),
+            "compute.targetSslProxies.get",
+            executor.TAG_SCOPE, executor.SCOPE_GLOBAL)
         }
         operationName = "compute.targetSslProxies.get"
         break
       case GoogleTargetProxyType.TCP:
         proxyGet = { executor.timeExecute(
-          compute.targetTcpProxies().get(project, targetProxyName),
-          "compute.targetTcpProxies.get",
-          executor.TAG_SCOPE, executor.SCOPE_GLOBAL)
+            compute.targetTcpProxies().get(project, targetProxyName),
+            "compute.targetTcpProxies.get",
+            executor.TAG_SCOPE, executor.SCOPE_GLOBAL)
         }
         operationName = "compute.targetTcpProxies.get"
         break
@@ -1795,17 +1805,17 @@ class GCEUtil {
     switch (targetProxyType) {
       case GoogleTargetProxyType.HTTP:
         proxyGet = { executor.timeExecute(
-          compute.regionTargetHttpProxies().get(project, region, targetProxyName),
-          "compute.regionTargetHttpProxies.get",
-          executor.TAG_SCOPE, executor.SCOPE_REGIONAL)
+            compute.regionTargetHttpProxies().get(project, region, targetProxyName),
+            "compute.regionTargetHttpProxies.get",
+            executor.TAG_SCOPE, executor.SCOPE_REGIONAL)
         }
         operationName = "compute.regionTargetHttpProxies.get"
         break
       case GoogleTargetProxyType.HTTPS:
         proxyGet = { executor.timeExecute(
-          compute.regionTargetHttpsProxies().get(project, region, targetProxyName),
-          "compute.regionTargetHttpsProxies.get",
-          executor.TAG_SCOPE, executor.SCOPE_REGIONAL)
+            compute.regionTargetHttpsProxies().get(project, region, targetProxyName),
+            "compute.regionTargetHttpsProxies.get",
+            executor.TAG_SCOPE, executor.SCOPE_REGIONAL)
         }
         operationName = "compute.regionTargetHttpsProxies.get"
         break
@@ -1840,9 +1850,9 @@ class GCEUtil {
                                         GoogleExecutorTraits executor) {
     ForwardingRule ruleToDelete = safeRetry.doRetry(
       { executor.timeExecute(
-        compute.globalForwardingRules().get(project, forwardingRuleName),
-        "compute.globalForwardingRules.get",
-        executor.TAG_SCOPE, executor.SCOPE_GLOBAL)
+          compute.globalForwardingRules().get(project, forwardingRuleName),
+          "compute.globalForwardingRules.get",
+          executor.TAG_SCOPE, executor.SCOPE_GLOBAL)
       },
       "global forwarding rule ${forwardingRuleName}",
       null,
@@ -1924,9 +1934,9 @@ class GCEUtil {
                                           GoogleExecutorTraits executor) {
     ForwardingRule ruleToDelete = safeRetry.doRetry(
       { executor.timeExecute(
-        compute.forwardingRules().get(project, region, forwardingRuleName),
-        "compute.forwardingRules.get",
-        executor.TAG_SCOPE, executor.SCOPE_REGIONAL, executor.TAG_REGION, region)
+          compute.forwardingRules().get(project, region, forwardingRuleName),
+          "compute.forwardingRules.get",
+          executor.TAG_SCOPE, executor.SCOPE_REGIONAL, executor.TAG_REGION, region)
       },
       "forwarding rule ${forwardingRuleName}",
       null,

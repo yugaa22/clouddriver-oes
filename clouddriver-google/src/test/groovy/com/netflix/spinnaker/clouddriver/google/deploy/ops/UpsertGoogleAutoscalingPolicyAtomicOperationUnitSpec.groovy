@@ -103,7 +103,7 @@ class UpsertGoogleAutoscalingPolicyAtomicOperationUnitSpec extends Specification
     def regionalTimerId = GoogleApiTestUtils.makeOkId(registry, "compute.regionAutoscalers.insert", [scope: "regional", region: REGION])
     registry.timer(regionalTimerId)
 
-    @Subject def operation = Spy(UpsertGoogleAutoscalingPolicyAtomicOperation, constructorArgs: [description])
+    @Subject def operation = new UpsertGoogleAutoscalingPolicyAtomicOperation(description)
     operation.registry = registry
     operation.googleClusterProvider = googleClusterProviderMock
     operation.googleOperationPoller = operationPollerMock
@@ -164,7 +164,7 @@ class UpsertGoogleAutoscalingPolicyAtomicOperationUnitSpec extends Specification
     def regionUpdateMock = Mock(Compute.RegionAutoscalers.Update)
     def regionalTimerId = GoogleApiTestUtils.makeOkId(registry, "compute.regionAutoscalers.update", [scope: "regional", region: REGION])
 
-    @Subject def operation = Spy(UpsertGoogleAutoscalingPolicyAtomicOperation, constructorArgs: [description])
+    @Subject def operation = new UpsertGoogleAutoscalingPolicyAtomicOperation(description)
     operation.registry = registry
     operation.googleClusterProvider = googleClusterProviderMock
     operation.googleOperationPoller = operationPollerMock
@@ -235,7 +235,7 @@ class UpsertGoogleAutoscalingPolicyAtomicOperationUnitSpec extends Specification
     def regionAutoscalerMock = Mock(Compute.RegionAutoscalers)
     def regionUpdateMock = Mock(Compute.RegionAutoscalers.Update)
 
-    @Subject def operation = Spy(UpsertGoogleAutoscalingPolicyAtomicOperation, constructorArgs: [description])
+    @Subject def operation = new UpsertGoogleAutoscalingPolicyAtomicOperation(description)
     operation.registry = registry
     operation.googleClusterProvider = googleClusterProviderMock
     operation.googleOperationPoller = operationPollerMock
