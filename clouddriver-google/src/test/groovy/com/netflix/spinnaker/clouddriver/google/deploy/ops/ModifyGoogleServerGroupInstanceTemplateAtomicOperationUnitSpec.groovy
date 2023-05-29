@@ -346,11 +346,11 @@ class ModifyGoogleServerGroupInstanceTemplateAtomicOperationUnitSpec extends Spe
 
       def exc = thrown GoogleOperationException
       exc.message == "Instance templates must have exactly one network interface defined. " +
-                     "Instance template $ORIG_INSTANCE_TEMPLATE_NAME has $exceptionMsgSizeDescriptor."
+                     "Instance template $ORIG_INSTANCE_TEMPLATE_NAME has $exceptionMsgSizeDescriptor"
 
     where:
       networkInterfaces                                                                    | exceptionMsgSizeDescriptor
-      null                                                                                 | null
+      null                                                                                 | "no network interfaces defined"
       []                                                                                   | 0
       [new NetworkInterface(network: NETWORK_1), new NetworkInterface(network: NETWORK_2)] | 2
   }
@@ -410,11 +410,11 @@ class ModifyGoogleServerGroupInstanceTemplateAtomicOperationUnitSpec extends Spe
 
       def exc = thrown GoogleOperationException
       exc.message == "Instance templates must have at least one disk defined. " +
-                     "Instance template $ORIG_INSTANCE_TEMPLATE_NAME has $exceptionMsgSizeDescriptor."
+                     "Instance template $ORIG_INSTANCE_TEMPLATE_NAME has $exceptionMsgSizeDescriptor"
 
     where:
       disks                                    | exceptionMsgSizeDescriptor
-      null                                     | null
+      null                                     | "no disk type defined"
       []                                       | 0
   }
 }
