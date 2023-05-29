@@ -627,7 +627,7 @@ class GCEUtil {
       AttachedDiskInitializeParams attachedDiskInitializeParams = bootDisk.getInitializeParams()
       image = getLocalName(attachedDiskInitializeParams.getSourceImage())
       disks = diskProperty.stream().map(attachedDisk -> {
-        AttachedDiskInitializeParams initializeParams = attachedDisk.getProperties().get("initializeParams")
+        AttachedDiskInitializeParams initializeParams = attachedDisk.get("initializeParams")
 
         new GoogleDisk(type: initializeParams.diskType,
           sizeGb: initializeParams.diskSizeGb,
