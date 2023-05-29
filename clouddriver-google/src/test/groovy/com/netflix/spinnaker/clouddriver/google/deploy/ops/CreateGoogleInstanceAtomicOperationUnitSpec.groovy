@@ -38,7 +38,7 @@ import com.netflix.spinnaker.clouddriver.google.security.GoogleNamedAccountCrede
 import com.netflix.spinnaker.clouddriver.google.security.TestDefaults
 import com.netflix.spinnaker.clouddriver.google.batch.GoogleBatchRequest
 import com.netflix.spinnaker.config.GoogleConfiguration
-import static org.mockito.Mockito.mock
+import groovy.mock.interceptor.MockFor
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -54,19 +54,19 @@ class CreateGoogleInstanceAtomicOperationUnitSpec extends Specification implemen
   def registry = new DefaultRegistry()
 
   def setupSpec() {
-    TaskRepository.threadLocalTask.set(mock(Task))
+    TaskRepository.threadLocalTask.set(Mock(Task))
   }
 
   void "should create instance"() {
     setup:
-      def computeMock = mock(Compute)
-      def googleBatchMock = mock(GoogleBatchRequest)
+      def computeMock = new MockFor(Compute)
+      def googleBatchMock = new MockFor(GoogleBatchRequest)
       def imageProjects = [PROJECT_NAME] + BASE_IMAGE_PROJECTS
-      def listMock = mock(Compute.Images.List)
+      def listMock = new MockFor(Compute.Images.List)
 
-      def googleNetworkProviderMock = mock(GoogleNetworkProvider)
-      def instancesMock = mock(Compute.Instances)
-      def instancesInsertMock = mock(Compute.Instances.Insert)
+      def googleNetworkProviderMock = Mock(GoogleNetworkProvider)
+      def instancesMock = Mock(Compute.Instances)
+      def instancesInsertMock = Mock(Compute.Instances.Insert)
 
       def httpTransport = GoogleNetHttpTransport.newTrustedTransport()
       def jsonFactory = JacksonFactory.defaultInstance
@@ -161,10 +161,10 @@ class CreateGoogleInstanceAtomicOperationUnitSpec extends Specification implemen
 
   void "should fail to create instance because image is invalid"() {
     setup:
-      def computeMock = Mock(Compute)
-      def batchMock = Mock(BatchRequest)
+      def computeMock = new MockFor(Compute)
+      def batchMock = new MockFor(BatchRequest)
       def imageProjects = [PROJECT_NAME] + BASE_IMAGE_PROJECTS
-      def listMock = Mock(Compute.Images.List)
+      def listMock = new MockFor(Compute.Images.List)
 
       def httpTransport = GoogleNetHttpTransport.newTrustedTransport()
       def jsonFactory = JacksonFactory.defaultInstance

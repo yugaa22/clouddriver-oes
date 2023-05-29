@@ -73,7 +73,7 @@ class DeleteGoogleAutoscalingPolicyAtomicOperationUnitSpec extends Specification
       region: REGION,
       accountName: ACCOUNT_NAME,
       credentials: credentials)
-    @Subject def operation = Spy(DeleteGoogleAutoscalingPolicyAtomicOperation, constructorArgs: [description])
+    @Subject def operation = new DeleteGoogleAutoscalingPolicyAtomicOperation(description)
     operation.registry = registry
     operation.googleClusterProvider = googleClusterProviderMock
     operation.googleOperationPoller = operationPollerMock
@@ -134,7 +134,7 @@ class DeleteGoogleAutoscalingPolicyAtomicOperationUnitSpec extends Specification
           "compute.regionInstanceGroupManagers.setAutoHealingPolicies",
           [scope: "regional", region: REGION])
 
-    @Subject def operation = Spy(DeleteGoogleAutoscalingPolicyAtomicOperation, constructorArgs: [description])
+    @Subject def operation = new DeleteGoogleAutoscalingPolicyAtomicOperation(description)
     operation.registry = registry
     operation.googleClusterProvider = googleClusterProviderMock
     operation.googleOperationPoller = operationPollerMock
@@ -190,7 +190,7 @@ class DeleteGoogleAutoscalingPolicyAtomicOperationUnitSpec extends Specification
       serviceAccounts: [[email: 'serviceAccount@google.com']]
     ])
 
-    @Subject def operation = Spy(DeleteGoogleAutoscalingPolicyAtomicOperation, constructorArgs: [description])
+    @Subject def operation = new DeleteGoogleAutoscalingPolicyAtomicOperation(description)
     operation.registry = registry
     operation.googleClusterProvider = googleClusterProviderMock
     operation.googleOperationPoller = operationPollerMock
