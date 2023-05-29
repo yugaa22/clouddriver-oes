@@ -380,9 +380,9 @@ class GCEUtil {
 
     def forwardingRules = safeRetry.doRetry(
       { return executor.timeExecute(
-          compute.forwardingRules().list(projectName, region),
-          "compute.forwardingRules.list",
-          executor.TAG_SCOPE, executor.SCOPE_GLOBAL
+        compute.forwardingRules().list(projectName, region),
+        "compute.forwardingRules.list",
+        executor.TAG_SCOPE, executor.SCOPE_GLOBAL
         ).items
       },
       "regional forwarding rules",
