@@ -379,8 +379,7 @@ class GCEUtil {
     task.updateStatus phase, "Looking up regional load balancers $forwardingRuleNames..."
 
     def forwardingRules = safeRetry.doRetry(
-      {
-        return executor.timeExecute(
+      { return executor.timeExecute(
           compute.forwardingRules().list(projectName, region),
           "compute.forwardingRules.list",
           executor.TAG_SCOPE, executor.SCOPE_GLOBAL
