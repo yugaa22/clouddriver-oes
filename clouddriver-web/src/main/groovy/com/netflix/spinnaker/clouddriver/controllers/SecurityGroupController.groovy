@@ -65,7 +65,7 @@ class SecurityGroupController {
       objs
     }) doOnError {
       log.error("Unable to list security groups", it)
-    } toBlocking() first()
+    } blockingGet()
   }
 
   @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
@@ -84,7 +84,7 @@ class SecurityGroupController {
       }
       objs[obj.cloudProvider][obj.region] << obj.summary
       objs
-    }) toBlocking() first()
+    }) blockingGet()
   }
 
   @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
@@ -101,7 +101,7 @@ class SecurityGroupController {
       }
       objs[obj.cloudProvider] << obj.summary
       objs
-    }) toBlocking() first()
+    }) blockingGet()
   }
 
   @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
@@ -118,7 +118,7 @@ class SecurityGroupController {
       }
       objs[obj.region] << obj.summary
       objs
-    }) toBlocking() first()
+    }) blockingGet()
   }
 
   @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
@@ -133,7 +133,7 @@ class SecurityGroupController {
     } reduce(sortedTreeSet, { Set objs, SecurityGroup obj ->
       objs << obj.summary
       objs
-    }) toBlocking() first()
+    }) blockingGet()
   }
 
   @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")
@@ -151,7 +151,7 @@ class SecurityGroupController {
       }
       objs[obj.region] << obj.summary
       objs
-    }) toBlocking() first()
+    }) blockingGet()
   }
 
   @PreAuthorize("hasPermission(#account, 'ACCOUNT', 'READ')")

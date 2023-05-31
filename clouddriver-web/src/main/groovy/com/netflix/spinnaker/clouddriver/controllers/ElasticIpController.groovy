@@ -44,7 +44,7 @@ class ElasticIpController {
     } reduce(new HashSet<ElasticIp>(), { Set elasticIps, ElasticIp elasticIp ->
       elasticIps << elasticIp
       elasticIps
-    }) toBlocking() first()
+    }) blockingGet()
   }
 
   @RequestMapping(method = RequestMethod.GET, value = "/{account}", params = ['region'])
@@ -54,6 +54,6 @@ class ElasticIpController {
     } reduce(new HashSet<ElasticIp>(), { Set elasticIps, ElasticIp elasticIp ->
       elasticIps << elasticIp
       elasticIps
-    }) toBlocking() first()
+    }) blockingGet()
   }
 }
