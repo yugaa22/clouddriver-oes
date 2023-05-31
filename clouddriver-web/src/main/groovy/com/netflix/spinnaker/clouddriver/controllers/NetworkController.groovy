@@ -44,7 +44,7 @@ class NetworkController {
       }
       networks[network.cloudProvider] << network
       networks
-    }) toBlocking() first()
+    }) blockingGet()
   }
 
   @RequestMapping(method = RequestMethod.GET, value = "/{cloudProvider}")
