@@ -1,4 +1,4 @@
-FROM  quay.io/opsmxpublic/ubifips:8.8
+FROM  quay.io/opsmxpublic/ubifips:8.7
 MAINTAINER sig-platform@spinnaker.io
 LABEL name='clouddriver'
 LABEL maintainer='info@opsmx.io'
