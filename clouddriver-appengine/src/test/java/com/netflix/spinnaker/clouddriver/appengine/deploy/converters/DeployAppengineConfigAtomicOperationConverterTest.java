@@ -17,10 +17,10 @@
 
 package com.netflix.spinnaker.clouddriver.appengine.deploy.converters;
 
-import static org.springframework.test.util.AssertionErrors.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 import com.google.common.collect.ImmutableMap;
 import com.netflix.spinnaker.clouddriver.appengine.deploy.description.DeployAppengineConfigDescription;

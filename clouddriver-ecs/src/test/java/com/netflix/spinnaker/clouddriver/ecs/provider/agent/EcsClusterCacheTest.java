@@ -17,10 +17,9 @@
 package com.netflix.spinnaker.clouddriver.ecs.provider.agent;
 
 import static com.netflix.spinnaker.clouddriver.ecs.cache.Keys.Namespace.ECS_CLUSTERS;
-import static org.springframework.test.util.AssertionErrors.assertTrue;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 import com.amazonaws.services.ecs.model.ListClustersRequest;
 import com.amazonaws.services.ecs.model.ListClustersResult;
@@ -29,20 +28,17 @@ import com.netflix.spinnaker.cats.cache.CacheData;
 import com.netflix.spinnaker.clouddriver.ecs.cache.Keys;
 import com.netflix.spinnaker.clouddriver.ecs.cache.client.EcsClusterCacheClient;
 import com.netflix.spinnaker.clouddriver.ecs.cache.model.EcsCluster;
-
 import java.util.Collection;
-
 import org.junit.jupiter.api.Test;
 import spock.lang.Subject;
 
 public class EcsClusterCacheTest extends CommonCachingAgent {
   @Subject
   private final EcsClusterCachingAgent agent =
-    new EcsClusterCachingAgent(
-      netflixAmazonCredentials, REGION, clientProvider, credentialsProvider);
+      new EcsClusterCachingAgent(
+          netflixAmazonCredentials, REGION, clientProvider, credentialsProvider);
 
-  @Subject
-  private final EcsClusterCacheClient client = new EcsClusterCacheClient(providerCache);
+  @Subject private final EcsClusterCacheClient client = new EcsClusterCacheClient(providerCache);
 
   @Test
   public void shouldRetrieveFromWrittenCache() {
@@ -54,7 +50,7 @@ public class EcsClusterCacheTest extends CommonCachingAgent {
     // When
     CacheResult cacheResult = agent.loadData(providerCache);
     when(providerCache.get(ECS_CLUSTERS.toString(), key))
-      .thenReturn(cacheResult.getCacheResults().get(ECS_CLUSTERS.toString()).iterator().next());
+        .thenReturn(cacheResult.getCacheResults().get(ECS_CLUSTERS.toString()).iterator().next());
 
     // Then
     Collection<CacheData> cacheData = cacheResult.getCacheResults().get(ECS_CLUSTERS.toString());
@@ -64,20 +60,20 @@ public class EcsClusterCacheTest extends CommonCachingAgent {
     assertTrue("Expected 1 CacheData but returned " + cacheData.size(), cacheData.size() == 1);
     String retrievedKey = cacheData.iterator().next().getId();
     assertTrue(
-      "Expected CacheData with ID " + key + " but retrieved ID " + retrievedKey,
-      retrievedKey.equals(key));
+        "Expected CacheData with ID " + key + " but retrieved ID " + retrievedKey,
+        retrievedKey.equals(key));
 
     assertTrue(
-      "Expected cluster name to be " + CLUSTER_NAME_1 + " but got " + ecsCluster.getName(),
-      CLUSTER_NAME_1.equals(ecsCluster.getName()));
+        "Expected cluster name to be " + CLUSTER_NAME_1 + " but got " + ecsCluster.getName(),
+        CLUSTER_NAME_1.equals(ecsCluster.getName()));
     assertTrue(
-      "Expected cluster ARN to be " + CLUSTER_ARN_1 + " but got " + ecsCluster.getArn(),
-      CLUSTER_ARN_1.equals(ecsCluster.getArn()));
+        "Expected cluster ARN to be " + CLUSTER_ARN_1 + " but got " + ecsCluster.getArn(),
+        CLUSTER_ARN_1.equals(ecsCluster.getArn()));
     assertTrue(
-      "Expected cluster account to be " + ACCOUNT + " but got " + ecsCluster.getAccount(),
-      ACCOUNT.equals(ecsCluster.getAccount()));
+        "Expected cluster account to be " + ACCOUNT + " but got " + ecsCluster.getAccount(),
+        ACCOUNT.equals(ecsCluster.getAccount()));
     assertTrue(
-      "Expected cluster region to be " + REGION + " but got " + ecsCluster.getRegion(),
-      REGION.equals(ecsCluster.getRegion()));
+        "Expected cluster region to be " + REGION + " but got " + ecsCluster.getRegion(),
+        REGION.equals(ecsCluster.getRegion()));
   }
 }

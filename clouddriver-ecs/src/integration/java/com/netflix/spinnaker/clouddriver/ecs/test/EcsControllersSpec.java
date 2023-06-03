@@ -18,10 +18,10 @@ package com.netflix.spinnaker.clouddriver.ecs.test;
 import static io.restassured.RestAssured.get;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.springframework.test.util.AssertionErrors.assertTrue;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 import com.amazonaws.services.ecs.AmazonECS;
 import com.amazonaws.services.ecs.model.Cluster;

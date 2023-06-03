@@ -17,8 +17,8 @@
 package com.netflix.spinnaker.clouddriver.ecs.cache;
 
 import static com.netflix.spinnaker.clouddriver.ecs.cache.Keys.Namespace.IAM_ROLE;
-import static org.springframework.test.util.AssertionErrors.assertTrue;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.spinnaker.cats.cache.DefaultCacheData;
@@ -28,7 +28,6 @@ import com.netflix.spinnaker.clouddriver.ecs.provider.agent.IamRoleCachingAgent;
 import com.netflix.spinnaker.clouddriver.ecs.provider.agent.IamTrustRelationship;
 import java.util.Collections;
 import java.util.Map;
-
 import org.junit.jupiter.api.Test;
 import spock.lang.Subject;
 

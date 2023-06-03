@@ -17,10 +17,10 @@
 
 package com.netflix.spinnaker.clouddriver.appengine.deploy.ops;
 
-import static org.springframework.test.util.AssertionErrors.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.spinnaker.clouddriver.appengine.deploy.description.DeployAppengineConfigDescription;

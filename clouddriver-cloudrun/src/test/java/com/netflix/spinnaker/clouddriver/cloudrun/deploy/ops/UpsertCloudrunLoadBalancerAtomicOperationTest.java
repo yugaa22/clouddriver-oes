@@ -1,8 +1,8 @@
 package com.netflix.spinnaker.clouddriver.cloudrun.deploy.ops;
 
-import static org.springframework.test.util.AssertionErrors.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 import com.google.api.services.run.v1.CloudRun;
 import com.netflix.spinnaker.clouddriver.cloudrun.CloudrunJobExecutor;
