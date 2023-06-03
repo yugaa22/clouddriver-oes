@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConditionalOnProperty("kubernetes.enabled")
+@ConditionalOnProperty(prefix = "kubernetes", name = "enabled", havingValue = "true")
 @RequiredArgsConstructor
 @Slf4j
 class KubernetesArtifactConfiguration {
