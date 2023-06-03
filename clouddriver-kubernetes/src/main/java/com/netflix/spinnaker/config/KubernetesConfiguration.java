@@ -34,6 +34,7 @@ import com.netflix.spinnaker.credentials.definition.CredentialsDefinitionSource;
 import com.netflix.spinnaker.credentials.definition.CredentialsParser;
 import com.netflix.spinnaker.credentials.poller.Poller;
 import javax.annotation.Nullable;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -44,6 +45,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+@Slf4j
 @Configuration
 @EnableConfigurationProperties
 @EnableScheduling
@@ -54,6 +56,7 @@ public class KubernetesConfiguration {
   @RefreshScope
   @ConfigurationProperties("kubernetes")
   public KubernetesConfigurationProperties kubernetesConfigurationProperties() {
+    log.info("###################*************** : kubernetes initializing");
     return new KubernetesConfigurationProperties();
   }
 
@@ -61,6 +64,7 @@ public class KubernetesConfiguration {
   @RefreshScope
   @ConfigurationProperties("kubernetes")
   public KubernetesAccountProperties kubernetesAccountProperties() {
+    log.info("###################*************** : KubernetesAccountProperties initializing");
     return new KubernetesAccountProperties();
   }
 
@@ -94,6 +98,8 @@ public class KubernetesConfiguration {
       CredentialsParser<ManagedAccount, KubernetesNamedAccountCredentials> credentialsParser,
       CredentialsRepository<KubernetesNamedAccountCredentials> kubernetesCredentialsRepository) {
 
+    log.info("###################*************** : kubernetesCredentialsLoader initializing");
+
     if (kubernetesCredentialSource == null) {
       kubernetesCredentialSource = accountProperties::getAccounts;
     }
@@ -116,6 +122,8 @@ public class KubernetesConfiguration {
       parameterizedContainer = CredentialsDefinitionSource.class)
   public CredentialsInitializerSynchronizable kubernetesCredentialsInitializerSynchronizable(
       AbstractCredentialsLoader<KubernetesNamedAccountCredentials> loader) {
+    log.info(
+        "###################*************** : kubernetesCredentialsInitializerSynchronizable initializing");
     final Poller<KubernetesNamedAccountCredentials> poller = new Poller<>(loader);
     return new CredentialsInitializerSynchronizable() {
       @Override
