@@ -49,7 +49,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Configuration
 @EnableConfigurationProperties
 @EnableScheduling
-@ConditionalOnProperty(prefix = "kubernetes", name = "enabled")
+@ConditionalOnProperty(prefix = "kubernetes", name = "enabled", havingValue = "true")
 @ComponentScan({"com.netflix.spinnaker.clouddriver.kubernetes"})
 public class KubernetesConfiguration {
   @Bean
