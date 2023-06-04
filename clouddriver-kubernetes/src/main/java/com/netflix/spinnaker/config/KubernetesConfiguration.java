@@ -49,7 +49,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Configuration
 @EnableConfigurationProperties
 @EnableScheduling
-@ConditionalOnProperty(prefix = "kubernetes", name = "enabled", havingValue = "true")
+@ConditionalOnProperty("kubernetes.enabled")
 @ComponentScan({"com.netflix.spinnaker.clouddriver.kubernetes"})
 public class KubernetesConfiguration {
   @Bean
@@ -73,7 +73,6 @@ public class KubernetesConfiguration {
       Registry registry,
       CredentialsRepository<KubernetesNamedAccountCredentials> credentialsRepository,
       KubernetesConfigurationProperties kubernetesConfigurationProperties) {
-    log.info("###################*************** : kubernetesHealthIndicator initializing");
     return new KubernetesHealthIndicator(
         registry, credentialsRepository, kubernetesConfigurationProperties);
   }
