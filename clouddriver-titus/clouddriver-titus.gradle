@@ -42,7 +42,7 @@ dependencies {
   implementation "org.slf4j:slf4j-api"
   implementation "org.springframework.boot:spring-boot-actuator"
   implementation "org.springframework.boot:spring-boot-starter-web"
-  implementation "org.yaml:snakeyaml"
+  implementation "org.yaml:snakeyaml:2.0"
 
   testImplementation "cglib:cglib-nodep:3.3.0"
   testImplementation "junit:junit"
