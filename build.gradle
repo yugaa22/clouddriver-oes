@@ -66,6 +66,7 @@ subprojects {
       implementation("io.netty:netty-codec-http:4.1.91.Final")
       implementation("org.apache.ivy:ivy:2.5.1")
       implementation("org.json:json:20230227")
+      implementation("org.yaml:snakeyaml:2.0")
 
       annotationProcessor platform("io.spinnaker.kork:kork-bom:$korkVersion")
       annotationProcessor "org.projectlombok:lombok"
