@@ -14,7 +14,7 @@ import com.netflix.spinnaker.credentials.NoopCredentialsLifecycleHandler;
 import java.lang.reflect.Field;
 import java.util.List;
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 public class DeployCloudrunConfigDescriptionValidatorTest {
   DeployCloudrunConfigDescriptionValidator deployCloudrunConfigDescriptionValidator;
