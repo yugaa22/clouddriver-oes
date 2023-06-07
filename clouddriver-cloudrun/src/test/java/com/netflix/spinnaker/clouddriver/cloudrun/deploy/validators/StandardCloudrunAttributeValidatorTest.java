@@ -12,7 +12,7 @@ import com.netflix.spinnaker.credentials.CredentialsRepository;
 import com.netflix.spinnaker.credentials.MapBackedCredentialsRepository;
 import com.netflix.spinnaker.credentials.NoopCredentialsLifecycleHandler;
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 public class StandardCloudrunAttributeValidatorTest {
   StandardCloudrunAttributeValidator standardCloudrunAttributeValidator;

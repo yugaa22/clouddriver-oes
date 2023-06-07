@@ -15,7 +15,7 @@ import com.netflix.spinnaker.clouddriver.jobs.JobExecutor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 public class DeleteCloudrunLoadBalancerAtomicOperationTest {
   DeleteCloudrunLoadBalancerAtomicOperation deleteCloudrunLoadBalancerAtomicOperation;

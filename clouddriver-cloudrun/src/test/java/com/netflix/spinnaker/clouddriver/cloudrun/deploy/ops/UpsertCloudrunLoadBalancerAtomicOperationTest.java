@@ -1,6 +1,6 @@
 package com.netflix.spinnaker.clouddriver.cloudrun.deploy.ops;
 
-import static org.springframework.test.util.AssertionErrors.assertTrue;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 public class UpsertCloudrunLoadBalancerAtomicOperationTest {
 
