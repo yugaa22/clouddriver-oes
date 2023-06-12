@@ -67,7 +67,7 @@ class DockerRegistryImageLookupController {
   List<Map> find(LookupOptions lookupOptions) {
     def account = lookupOptions.account ?: ""
 
-    log.info("########### LOOKUP: {}", lookupOptions)
+    log.info("########### LOOKUP: {}, ::: {}", lookupOptions.getAccount(), lookupOptions.getQ())
 
     Set<CacheData> images
     if (lookupOptions.q) {
@@ -91,6 +91,8 @@ class DockerRegistryImageLookupController {
       account = account ?: '*'
 
       def key = Keys.getTaggedImageKey(account, image, tag)
+
+      log.info("########### QUERRY EMPTY : {}, ", key, lookupOptions.account)
 
       // without trackDigests, all information is available in the image keys, so don't bother fetching attributes
       if (trackDigestsDisabled) {

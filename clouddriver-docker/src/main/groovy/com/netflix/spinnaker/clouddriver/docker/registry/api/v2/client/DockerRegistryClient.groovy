@@ -124,6 +124,8 @@ class DockerRegistryClient {
 
     DockerRegistryClient build() {
 
+      log.info("#############******* : {}", address)
+
       if (password && passwordFile || password && passwordCommand || passwordFile && passwordCommand) {
         throw new IllegalArgumentException('Error, at most one of "password", "passwordFile", "passwordCommand" or "dockerconfigFile" can be specified')
       }

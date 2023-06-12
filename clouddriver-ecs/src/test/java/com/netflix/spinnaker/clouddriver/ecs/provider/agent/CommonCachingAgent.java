@@ -28,7 +28,6 @@ import com.netflix.spinnaker.clouddriver.aws.security.AmazonClientProvider;
 import com.netflix.spinnaker.clouddriver.aws.security.NetflixAmazonCredentials;
 import org.junit.jupiter.api.BeforeAll;
 
-
 public class CommonCachingAgent {
   static final String REGION = "us-west-2";
   static final String ACCOUNT_ID = "012345678910";
