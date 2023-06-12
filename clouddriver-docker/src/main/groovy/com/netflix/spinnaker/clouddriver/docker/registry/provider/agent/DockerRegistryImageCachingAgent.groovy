@@ -87,6 +87,7 @@ class DockerRegistryImageCachingAgent implements CachingAgent, AccountAware, Age
   }
 
   private Map<String, Set<String>> loadTags() {
+    log.info("Registries List: {}", credentials)
     credentials.repositories.findAll { it ->
       threadCount == 1 || (it.hashCode() % threadCount).abs() == index
     }.collectEntries { repository ->

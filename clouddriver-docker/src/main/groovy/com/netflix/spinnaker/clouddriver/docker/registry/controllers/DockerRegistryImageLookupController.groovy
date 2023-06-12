@@ -23,12 +23,14 @@ import com.netflix.spinnaker.clouddriver.docker.registry.cache.Keys
 import com.netflix.spinnaker.clouddriver.docker.registry.provider.DockerRegistryProviderUtils
 import com.netflix.spinnaker.clouddriver.docker.registry.security.DockerRegistryNamedAccountCredentials
 import com.netflix.spinnaker.clouddriver.security.AccountCredentialsProvider
+import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
+@Slf4j
 @RestController
 @RequestMapping(["/dockerRegistry/images", "/titus/images"])
 class DockerRegistryImageLookupController {
@@ -65,6 +67,8 @@ class DockerRegistryImageLookupController {
   List<Map> find(LookupOptions lookupOptions) {
     def account = lookupOptions.account ?: ""
 
+    log.info("########### LOOKUP: {}", lookupOptions)
+
     Set<CacheData> images
     if (lookupOptions.q) {
       def key = Keys.getImageIdKey("*${lookupOptions.q}*")
@@ -92,6 +96,8 @@ class DockerRegistryImageLookupController {
       if (trackDigestsDisabled) {
         return listAllImagesWithoutDigests(key, lookupOptions)
       }
+
+      log.info("########### QUERRY EMPTY : {}", lookupOptions)
 
       images = DockerRegistryProviderUtils.getAllMatchingKeyPattern(cacheView, Keys.Namespace.TAGGED_IMAGE.ns, key)
     }
