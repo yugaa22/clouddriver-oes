@@ -33,7 +33,6 @@ import com.netflix.spinnaker.credentials.definition.BasicCredentialsLoader;
 import com.netflix.spinnaker.credentials.definition.CredentialsDefinitionSource;
 import com.netflix.spinnaker.credentials.poller.Poller;
 import javax.annotation.Nullable;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -59,7 +58,8 @@ public class DockerRegistryConfiguration {
   @RefreshScope
   @ConfigurationProperties("docker-registry")
   public DockerRegistryConfigurationProperties dockerRegistryConfigurationProperties() {
-    DockerRegistryConfigurationProperties dockerRegistryConfigurationProperties = new DockerRegistryConfigurationProperties();
+    DockerRegistryConfigurationProperties dockerRegistryConfigurationProperties =
+        new DockerRegistryConfigurationProperties();
     log.info("000000000000000000000 : {}", dockerRegistryConfigurationProperties.getAccounts());
     return dockerRegistryConfigurationProperties;
   }
