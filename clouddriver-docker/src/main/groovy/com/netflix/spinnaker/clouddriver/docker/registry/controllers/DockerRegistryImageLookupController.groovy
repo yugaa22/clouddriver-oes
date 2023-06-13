@@ -92,7 +92,7 @@ class DockerRegistryImageLookupController {
 
       def key = Keys.getTaggedImageKey(account, image, tag)
 
-      log.info("########### QUERRY EMPTY : {}, ", key, lookupOptions.account)
+      log.info("########### QUERRY EMPTY : {}, {}", key, lookupOptions.account)
 
       // without trackDigests, all information is available in the image keys, so don't bother fetching attributes
       if (trackDigestsDisabled) {
@@ -168,15 +168,18 @@ class DockerRegistryImageLookupController {
 
   private List<Map> listAllImagesWithoutDigests(String key, LookupOptions lookupOptions) {
     def images = cacheView.filterIdentifiers(Keys.Namespace.TAGGED_IMAGE.ns, key)
+    log.info("listAllImagesWithoutDigests : {}, images : {} :: {}", lookupOptions.getAccount(), images, lookupOptions.count)
     if (lookupOptions.count) {
       images = images.take(lookupOptions.count)
     }
     return images.findResults {
       def parse = Keys.parse(it)
+      log.info("listAllImagesWithoutDigests : {}, images : {} :: parse {}", lookupOptions.getAccount(), it, parse)
       if (!parse) {
         return null
       }
       def credentials = (DockerRegistryNamedAccountCredentials) accountCredentialsProvider.getCredentials((String) parse.account)
+      log.info("listAllImagesWithoutDigests : {}, images : {} :: credentials {}", lookupOptions.getAccount(), it, credentials)
       if (!credentials) {
         return null
       } else {
