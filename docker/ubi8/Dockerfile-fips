@@ -29,6 +29,7 @@ RUN fips-mode-setup --enable
 RUN update-crypto-policies --set FIPS
 
 RUN yum install -y python38 
+RUN pip install PyYAML==5.4.1
 ARG TARGETARCH
 
 
