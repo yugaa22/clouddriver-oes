@@ -69,7 +69,8 @@ tasks.withType(Zip){
 }
 
 run {
-  jvmArgs = ['--add-opens=java.base/sun.net=ALL-UNNAMED', '--add-exports=java.base/sun.net=ALL-UNNAMED', '--add-opens=java.base/java.time=ALL-UNNAMED']
+  jvmArgs = ['--add-opens=java.base/sun.net=ALL-UNNAMED', '--add-exports=java.base/sun.net=ALL-UNNAMED', '--add-opens=java.base/java.time=ALL-UNNAMED',
+             '--add-exports=java.base/sun.security.rsa=ALL-UNNAMED','--add-exports=java.base/sun.security.pkcs=ALL-UNNAMED', '--add-exports=java.base/sun.security.x509=ALL-UNNAMED']
 }
 tasks.withType(Test).configureEach{
   jvmArgs = ['--add-opens=java.base/sun.net=ALL-UNNAMED']
