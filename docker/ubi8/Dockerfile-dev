@@ -79,9 +79,20 @@ COPY jaeger/opentelemetry-javaagent.jar /opt/jaeger/opentelemetry-javaagent.jar
 #RUN yum -y remove  vim  jq unzip 
 RUN yum -y remove clean all && rm -rf /var/cache
 
+
+
 RUN adduser spinnaker
 RUN mkdir -p /opt/clouddriver/plugins
+
+#custom plugin zip files adding
+#ARG CUSTOMPLUGIN_RELEASEVERSION
+#ENV CUSTOMPLUGIN_RELEASEVERSION=$CUSTOMPLUGIN_RELEASEVERSION
+
+RUN wget -O Armory.ObservabilityPlugin-armory-observability-plugin-v1.4.2-SNAPSHOT.zip -c https://github.com/OpsMx/armory-observability-plugin/releases/download/v1.0.0/armory-observability-plugin-v1.4.2-SNAPSHOT.zip -P /opt/clouddriver/plugins 
+RUN mv Armory.ObservabilityPlugin-armory-observability-plugin-v1.4.2-SNAPSHOT.zip /opt/clouddriver/plugins/
+RUN chmod -R 777 /opt/orca/plugins/
 RUN chown -R spinnaker:spinnaker /opt/
+
 RUN mkdir -p /etc/pki/tls/certs
 RUN chmod -R 777 /etc/pki/tls/certs
 RUN chmod -R 777 /var/
