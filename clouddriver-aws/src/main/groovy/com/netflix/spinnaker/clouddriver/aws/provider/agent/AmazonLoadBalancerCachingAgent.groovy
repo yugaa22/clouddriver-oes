@@ -32,6 +32,7 @@ import com.netflix.spinnaker.clouddriver.aws.edda.EddaApi
 import com.netflix.spinnaker.clouddriver.aws.security.AmazonClientProvider
 import com.netflix.spinnaker.clouddriver.aws.security.NetflixAmazonCredentials
 import com.netflix.spinnaker.clouddriver.cache.OnDemandAgent
+import com.netflix.spinnaker.clouddriver.core.provider.agent.Namespace
 import com.netflix.spinnaker.clouddriver.model.LoadBalancer
 
 import static com.netflix.spinnaker.clouddriver.core.provider.agent.Namespace.*
@@ -55,9 +56,9 @@ class AmazonLoadBalancerCachingAgent extends AbstractAmazonLoadBalancerCachingAg
 
   @Override
   Optional<Map<String, String>> getCacheKeyPatterns() {
-    return [
+    return Optional.ofNullable([
       (LOAD_BALANCERS.ns): Keys.getLoadBalancerKey('*', account.name, region, 'vpc-????????', null)
-    ]
+    ])
   }
 
   @Override
