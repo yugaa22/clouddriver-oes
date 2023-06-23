@@ -44,7 +44,7 @@ ENV PATH "$PATH:/usr/local/bin/:/opt/google-cloud-sdk/bin/:/usr/local/bin/aws-ia
 USER root
 #RUN yum -y install bash jq  tar unzip wget procps  java-17-openjdk-devel.x86_64 vim  net-tools curl git 
 
-RUN yum -y install  wget git
+RUN yum -y install  wget git python2
 
 # AWS CLI
 RUN yum -y install python3-pip && \
@@ -73,12 +73,25 @@ RUN wget https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_RE
 
 COPY clouddriver-web/build/install/clouddriver /opt/clouddriver
 
+
+
 #RUN yum -y remove  tar  curl 
 #RUN yum -y remove  vim  jq unzip 
 RUN yum -y remove clean all && rm -rf /var/cache
 
 RUN adduser spinnaker
 RUN mkdir -p /opt/clouddriver/plugins
+
+
+#custom plugin zip files adding
+#ARG CUSTOMPLUGIN_RELEASEVERSION
+#ENV CUSTOMPLUGIN_RELEASEVERSION=$CUSTOMPLUGIN_RELEASEVERSION
+
+RUN wget -O Armory.ObservabilityPlugin-armory-observability-plugin-v1.4.2-SNAPSHOT.zip -c https://github.com/OpsMx/armory-observability-plugin/releases/download/v1.0.0/armory-observability-plugin-v1.4.2-SNAPSHOT.zip -P /opt/clouddriver/plugins 
+RUN mv Armory.ObservabilityPlugin-armory-observability-plugin-v1.4.2-SNAPSHOT.zip /opt/clouddriver/plugins/
+RUN chmod -R 777 /opt/clouddriver/plugins/
+RUN chown -R spinnaker:spinnaker /opt/
+
 RUN chown -R spinnaker:spinnaker /opt/
 RUN mkdir -p /etc/pki/tls/certs
 RUN chmod -R 777 /etc/pki/tls/certs
