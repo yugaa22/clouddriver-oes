@@ -17,11 +17,11 @@
 package com.netflix.spinnaker.clouddriver.ecs.provider.agent;
 
 import static com.netflix.spinnaker.clouddriver.ecs.cache.Keys.Namespace.IAM_ROLE;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
-import static org.springframework.test.util.AssertionErrors.assertTrue;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.util.AssertionErrors.assertEquals;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagement;
@@ -34,7 +34,6 @@ import com.netflix.spinnaker.clouddriver.aws.security.NetflixAmazonCredentials;
 import com.netflix.spinnaker.clouddriver.ecs.cache.Keys;
 import com.netflix.spinnaker.clouddriver.ecs.cache.model.IamRole;
 import java.util.*;
-
 import org.junit.jupiter.api.Test;
 import spock.lang.Subject;
 

@@ -26,7 +26,6 @@ import io.kubernetes.client.openapi.models.V1ObjectMeta;
 import io.kubernetes.client.openapi.models.V1Pod;
 import io.kubernetes.client.openapi.models.V1PodCondition;
 import io.kubernetes.client.openapi.models.V1PodStatus;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;

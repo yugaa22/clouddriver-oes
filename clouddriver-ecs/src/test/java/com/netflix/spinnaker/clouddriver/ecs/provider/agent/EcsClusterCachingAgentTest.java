@@ -17,10 +17,9 @@
 package com.netflix.spinnaker.clouddriver.ecs.provider.agent;
 
 import static com.netflix.spinnaker.clouddriver.ecs.cache.Keys.Namespace.ECS_CLUSTERS;
-import static org.springframework.test.util.AssertionErrors.assertTrue;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 import com.amazonaws.services.ecs.model.ListClustersRequest;
 import com.amazonaws.services.ecs.model.ListClustersResult;
@@ -32,7 +31,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.junit.jupiter.api.Test;
 import spock.lang.Subject;
 
