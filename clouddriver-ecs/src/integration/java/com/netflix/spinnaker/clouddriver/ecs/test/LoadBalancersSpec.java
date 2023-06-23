@@ -18,8 +18,8 @@ package com.netflix.spinnaker.clouddriver.ecs.test;
 import static com.netflix.spinnaker.clouddriver.core.provider.agent.Namespace.TARGET_GROUPS;
 import static com.netflix.spinnaker.clouddriver.ecs.cache.Keys.Namespace.SERVICES;
 import static io.restassured.RestAssured.get;
-import static org.springframework.test.util.AssertionErrors.assertTrue;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 import com.amazonaws.services.ecs.model.LoadBalancer;
 import com.netflix.spinnaker.cats.agent.DefaultCacheResult;

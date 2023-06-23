@@ -17,8 +17,8 @@
 package com.netflix.spinnaker.clouddriver.ecs.cache;
 
 import static com.netflix.spinnaker.clouddriver.ecs.cache.Keys.Namespace.ECS_CLUSTERS;
-import static org.springframework.test.util.AssertionErrors.assertTrue;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 import com.netflix.spinnaker.cats.cache.DefaultCacheData;
 import com.netflix.spinnaker.clouddriver.ecs.cache.client.EcsClusterCacheClient;
@@ -26,7 +26,6 @@ import com.netflix.spinnaker.clouddriver.ecs.cache.model.EcsCluster;
 import com.netflix.spinnaker.clouddriver.ecs.provider.agent.EcsClusterCachingAgent;
 import java.util.Collections;
 import java.util.Map;
-
 import org.junit.jupiter.api.Test;
 import spock.lang.Subject;
 

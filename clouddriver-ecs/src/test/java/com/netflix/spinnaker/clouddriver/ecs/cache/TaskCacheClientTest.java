@@ -17,8 +17,8 @@
 package com.netflix.spinnaker.clouddriver.ecs.cache;
 
 import static com.netflix.spinnaker.clouddriver.ecs.cache.Keys.Namespace.TASKS;
-import static org.springframework.test.util.AssertionErrors.assertTrue;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.util.AssertionErrors.assertTrue;
 
 import com.amazonaws.services.ecs.model.Task;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,7 +28,6 @@ import com.netflix.spinnaker.clouddriver.ecs.provider.agent.TaskCachingAgent;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
-
 import org.junit.jupiter.api.Test;
 import spock.lang.Subject;
 
