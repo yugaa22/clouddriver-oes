@@ -95,4 +95,5 @@ jobs:
       - name: Save changes
         run: |
           kubectl exec -it spin-spinnaker-halyard-0 -- bash -c "hal deploy apply"
+          kubectl rollout status deployment/${{ env.K8S_DEPLOYMENT_NAME }} -n ${{ env.K8S_NAMESPACE }}
 
