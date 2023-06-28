@@ -88,8 +88,11 @@ jobs:
         with:
           kubeconfig: ${{ secrets.KUBECONFIG }}
 
-      - name: Update Kubernetes deployment
+      - name: Edit clouddriver.yml
         run: |
-          kubectl set image deployment/${{ env.K8S_DEPLOYMENT_NAME }} ${{ env.K8S_SERVICE_NAME }}="${{ env.CONTAINER_REGISTRY }}/${{ steps.build_variables.outputs.REPO }}:${{ steps.build_variables.outputs.VERSION }}-dev" -n ${{ env.K8S_NAMESPACE }}
-          kubectl rollout status deployment/${{ env.K8S_DEPLOYMENT_NAME }} -n ${{ env.K8S_NAMESPACE }}
+          kubectl exec -it spin-spinnaker-halyard-0 -- bash -c "cd /home/spinnaker/.hal/default/service-settings && sed -i '2d' clouddriver.yml && sed -i '1s/^/#/' clouddriver.yml && sed -i '1s/^/artifactId: ${{ env.CONTAINER_REGISTRY }}/${{ steps.build_variables.outputs.REPO }}:${{ steps.build_variables.outputs.VERSION }}-dev\n/' clouddriver.yml"
+
+      - name: Save changes
+        run: |
+          kubectl exec -it spin-spinnaker-halyard-0 -- bash -c "hal deploy apply"
 
