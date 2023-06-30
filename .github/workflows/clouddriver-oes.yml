@@ -44,6 +44,8 @@ jobs:
      
           ./gradlew --no-daemon -PenableCrossCompilerPlugin=true clouddriver-web:installDist -x test 
           
+          #./gradlew --no-daemon clouddriver-web:installDist -x test
+          
             #extra_opts='"--add-opens=java.base/sun.net=ALL-UNNAMED" "--add-exports=java.base/sun.net=ALL-UNNAMED" "--add-opens=java.base/java.time=ALL-UNNAMED"'
             
             
@@ -57,7 +59,7 @@ jobs:
             
                 sed "s/^\(DEFAULT_JVM_OPTS\)\s*=\s*'.*'\$/\1='$extra_opts_escaped'/"  -i clouddriver-web/build/install/clouddriver/bin/clouddriver
                 
-               # cat clouddriver-web/build/install/clouddriver/bin/clouddriver
+              cat clouddriver-web/build/install/clouddriver/bin/clouddriver
               
       - name: dockerBuildpush
         uses: docker/build-push-action@v2
