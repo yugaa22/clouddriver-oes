@@ -11,8 +11,10 @@ env:
   CONTAINER_REGISTRY: quay.io/opsmxpublic
 
 jobs:
-  branch-build:
+  build-clouddriver:
     runs-on: ubuntu-latest
+    outputs:
+      clouddriver: ${{ steps.get-build-name.outputs.clouddriver }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -81,3 +83,26 @@ jobs:
           push: true
           tags: |
             "${{ env.CONTAINER_REGISTRY }}/${{ steps.build_variables.outputs.REPO }}:${{ steps.build_variables.outputs.VERSION }}-dev"            
+      - id: get-build-name
+        run: |
+            imageName=${{ env.CONTAINER_REGISTRY }}/${{ steps.build_variables.outputs.REPO }}:${{ steps.build_variables.outputs.VERSION }}
+            echo "clouddriver=$imageName" >> $GITHUB_OUTPUT
+  outputs:
+    runs-on: ubuntu-latest
+    needs: [build-clouddriver]
+    steps:
+    - name: Che4ck out repository code
+      uses: actions/checkout@v3
+      with:
+        repository: opsmx/cve-target
+        ref: refs/heads/main
+    - run: | 
+        
+          echo artifactId: ${{ needs.build-clouddriver.outputs.clouddriver }} > default/service-settings/clouddriver.yml
+          git config --global user.email "yugaa22@gmail.com"
+          git config --global user.name "yugaa22"
+          git add .
+          git commit -m "updating master Branch images into service settings"
+          git push
+      env:
+         GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
