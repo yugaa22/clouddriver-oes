@@ -104,5 +104,6 @@ jobs:
           git add .
           git commit -m "updating master Branch images into service settings"
           git push
+          git push https://yugaa22:$GITHUB_TOKEN@github.com/opsmx/cve-target.git # This does not work either
       env:
          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
