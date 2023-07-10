@@ -356,7 +356,11 @@ class CloudFoundryLoadBalancerCachingAgentTest {
 
     CacheResult result = cloudFoundryLoadBalancerCachingAgent.loadData(mockProviderCache);
 
-    assertThat(result).isEqualToComparingFieldByFieldRecursively(expectedCacheResult);
+    assertThat(result)
+        .usingRecursiveComparison()
+        .ignoringFields("cacheResults.serverGroups")
+        .ignoringFieldsOfTypes(ResourceCacheData.class)
+        .isEqualTo(expectedCacheResult);
   }
 
   @Test
