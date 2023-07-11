@@ -30,15 +30,7 @@ import com.netflix.spinnaker.cats.agent.DefaultCacheResult;
 import com.netflix.spinnaker.cats.agent.ExecutionInstrumentation;
 import com.netflix.spinnaker.cats.cluster.DefaultAgentIntervalProvider;
 import com.netflix.spinnaker.cats.test.TestAgent;
-<<<<<<< HEAD
 import java.util.*;
-=======
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
->>>>>>> 8d6a4e7d2 (fix(cats-redis): release Semaphore to avoid leaking (#5903))
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -78,15 +70,9 @@ public class ClusteredSortAgentSchedulerTest {
   @Test
   public void testRunningAgentsSemaphore() {
     when(jedis.zrangeByScore(eq(ClusteredSortAgentScheduler.WORKING_SET), anyString(), anyString()))
-<<<<<<< HEAD
         .thenReturn(new ArrayList<>());
     when(jedis.zrangeByScore(eq(ClusteredSortAgentScheduler.WAITING_SET), anyString(), anyString()))
         .thenReturn(Arrays.asList("testAgentType"));
-=======
-        .thenReturn(new HashSet<>());
-    when(jedis.zrangeByScore(eq(ClusteredSortAgentScheduler.WAITING_SET), anyString(), anyString()))
-        .thenReturn(Set.of("testAgentType"));
->>>>>>> 8d6a4e7d2 (fix(cats-redis): release Semaphore to avoid leaking (#5903))
 
     clusteredSortAgentScheduler.saturatePool();
 
@@ -102,15 +88,9 @@ public class ClusteredSortAgentSchedulerTest {
     CountDownLatch latch = new CountDownLatch(1);
 
     when(jedis.zrangeByScore(eq(ClusteredSortAgentScheduler.WORKING_SET), anyString(), anyString()))
-<<<<<<< HEAD
         .thenReturn(new ArrayList<>());
     when(jedis.zrangeByScore(eq(ClusteredSortAgentScheduler.WAITING_SET), anyString(), anyString()))
         .thenReturn(Arrays.asList(agent1.getAgentType(), agent2.getAgentType()));
-=======
-        .thenReturn(new HashSet<>());
-    when(jedis.zrangeByScore(eq(ClusteredSortAgentScheduler.WAITING_SET), anyString(), anyString()))
-        .thenReturn(Set.of(agent1.getAgentType(), agent2.getAgentType()));
->>>>>>> 8d6a4e7d2 (fix(cats-redis): release Semaphore to avoid leaking (#5903))
     when(jedis.scriptExists(anyString())).thenReturn(true);
     clusteredSortAgentScheduler.schedule(agent1, agentExecution, executionInstrumentation);
     clusteredSortAgentScheduler.schedule(agent2, agentExecution, executionInstrumentation);
