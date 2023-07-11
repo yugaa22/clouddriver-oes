@@ -1676,27 +1676,4 @@ final class ReplacerTest {
 
     return gson.fromJson(cronJob, KubernetesManifest.class);
   }
-
-  private KubernetesManifest getCronJobWithOneContainerWithImageTag() {
-    String cronJob =
-        json.serialize(
-            new V1beta1CronJobBuilder()
-                .withNewSpec()
-                .withNewJobTemplate()
-                .withNewSpec()
-                .withNewTemplate()
-                .withNewSpec()
-                .addNewContainer()
-                .withName("my-image-with-tag")
-                .withImage("gcr.io/my-repository/my-image:original-tag")
-                .endContainer()
-                .endSpec()
-                .endTemplate()
-                .endSpec()
-                .endJobTemplate()
-                .endSpec()
-                .build());
-
-    return gson.fromJson(cronJob, KubernetesManifest.class);
-  }
 }
