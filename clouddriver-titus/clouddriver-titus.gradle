@@ -2,7 +2,7 @@ apply plugin: "com.google.protobuf"
 
 ext {
   protobufVersion = '3.21.12'
-  grpcVersion = '1.45.1'
+  grpcVersion = '1.53.0'
 }
 
 dependencies {
@@ -53,6 +53,7 @@ dependencies {
   testImplementation "org.spockframework:spock-spring"
   testImplementation "org.springframework:spring-test"
   testImplementation "io.spinnaker.kork:kork-test"
+  testImplementation "org.mockito:mockito-core"
 }
 
 sourceSets {
