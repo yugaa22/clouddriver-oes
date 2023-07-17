@@ -42,4 +42,6 @@ dependencies {
   testImplementation "org.spockframework:spock-core:2.4-M1-groovy-4.0"
   testImplementation "org.spockframework:spock-spring"
   testImplementation "org.springframework:spring-test"
+  testImplementation "io.mockk:mockk:1.13.5"
+
 }
