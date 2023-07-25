@@ -10,8 +10,8 @@ import com.netflix.spinnaker.clouddriver.cloudrun.security.CloudrunNamedAccountC
 import com.netflix.spinnaker.credentials.CredentialsRepository;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class DisableCloudrunAtomicOperationConverterTest {
   DisableCloudrunAtomicOperationConverter disableCloudrunAtomicOperationConverter;
@@ -24,7 +24,7 @@ public class DisableCloudrunAtomicOperationConverterTest {
         }
       };
 
-  @Before
+  @BeforeEach
   public void init() {
     disableCloudrunAtomicOperationConverter = new DisableCloudrunAtomicOperationConverter();
     credentialsRepository = mock(CredentialsRepository.class);

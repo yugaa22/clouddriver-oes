@@ -45,7 +45,6 @@ dependencies {
   implementation "org.yaml:snakeyaml:2.0"
 
   testImplementation "cglib:cglib-nodep:3.3.0"
-  testImplementation "junit:junit"
   testImplementation "org.hamcrest:hamcrest-core"
   testImplementation "org.objenesis:objenesis:2.5.1"
   testImplementation "org.slf4j:slf4j-simple"

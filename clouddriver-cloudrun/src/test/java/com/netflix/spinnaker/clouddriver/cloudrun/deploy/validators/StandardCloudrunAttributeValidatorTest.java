@@ -11,8 +11,8 @@ import com.netflix.spinnaker.clouddriver.deploy.ValidationErrors;
 import com.netflix.spinnaker.credentials.CredentialsRepository;
 import com.netflix.spinnaker.credentials.MapBackedCredentialsRepository;
 import com.netflix.spinnaker.credentials.NoopCredentialsLifecycleHandler;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class StandardCloudrunAttributeValidatorTest {
   StandardCloudrunAttributeValidator standardCloudrunAttributeValidator;
@@ -20,7 +20,7 @@ public class StandardCloudrunAttributeValidatorTest {
   CloudrunNamedAccountCredentials mockcredentials;
   ValidationErrors errors;
 
-  @Before
+  @BeforeEach
   public void init() {
     errors = mock(ValidationErrors.class);
     standardCloudrunAttributeValidator =

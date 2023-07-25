@@ -43,6 +43,5 @@ dependencies {
   testImplementation "org.junit.jupiter:junit-jupiter-api"
   testImplementation "org.junit.jupiter:junit-jupiter-engine"
   testImplementation "org.mockito:mockito-core"
-  testImplementation "junit:junit:4.4"
 
 }
