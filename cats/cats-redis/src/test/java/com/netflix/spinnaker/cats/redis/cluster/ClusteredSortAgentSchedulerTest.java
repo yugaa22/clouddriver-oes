@@ -35,8 +35,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
@@ -52,7 +52,7 @@ public class ClusteredSortAgentSchedulerTest {
 
   private Optional<Semaphore> runningAgents;
 
-  @Before
+  @BeforeEach
   public void setUp() throws IllegalAccessException {
     when(jedisPool.getResource()).thenReturn(jedis);
     when(jedis.scriptLoad(anyString())).thenReturn("testScriptSha");

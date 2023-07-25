@@ -35,10 +35,10 @@ import com.netflix.spinnaker.clouddriver.google.security.FakeGoogleCredentials;
 import com.netflix.spinnaker.clouddriver.google.security.GoogleNamedAccountCredentials;
 import java.io.IOException;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(JUnitPlatform.class)
+@ExtendWith(SpringExtension.class)
 final class ImagesTest {
 
   private static final int CLOCK_STEP_TIME_MS = 1234;

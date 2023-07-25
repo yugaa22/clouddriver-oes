@@ -25,14 +25,14 @@ import com.netflix.spinnaker.clouddriver.google.deploy.description.SetStatefulDi
 import com.netflix.spinnaker.clouddriver.google.security.FakeGoogleCredentials;
 import com.netflix.spinnaker.clouddriver.google.security.GoogleNamedAccountCredentials;
 import org.assertj.core.api.Condition;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
-@RunWith(JUnit4.class)
+@ExtendWith(SpringExtension.class)
 public class SetStatefulDiskDescriptionValidatorTest {
 
   private static final String ACCOUNT_NAME = "spintest";
@@ -46,7 +46,7 @@ public class SetStatefulDiskDescriptionValidatorTest {
 
   private SetStatefulDiskDescriptionValidator validator;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     validator = new SetStatefulDiskDescriptionValidator();
   }

@@ -27,10 +27,10 @@ import com.google.api.services.compute.model.Image;
 import java.io.IOException;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(JUnitPlatform.class)
+@ExtendWith(SpringExtension.class)
 final class GetFirstBatchComputeRequestTest {
 
   @Test
