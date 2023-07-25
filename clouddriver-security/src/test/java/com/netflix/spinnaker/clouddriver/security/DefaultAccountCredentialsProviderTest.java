@@ -26,11 +26,11 @@ import com.google.common.collect.ImmutableList;
 import com.netflix.spinnaker.credentials.CompositeCredentialsRepository;
 import java.util.HashSet;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.runner.JUnitPlatform;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.AdditionalMatchers;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(JUnitPlatform.class)
+@ExtendWith(SpringExtension.class)
 public class DefaultAccountCredentialsProviderTest {
 
   @Test

@@ -27,4 +27,9 @@ dependencies {
   testImplementation "org.objenesis:objenesis:3.3"
   testImplementation "org.spockframework:spock-core"
   testImplementation "org.spockframework:spock-spring"
+  testImplementation "org.springframework:spring-test"
+  testImplementation "org.springframework.boot:spring-boot-test"
+}
+test {
+  useJUnitPlatform()
 }

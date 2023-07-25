@@ -53,3 +53,6 @@ dependencies {
   testImplementation "org.springframework.boot:spring-boot-test"
   testImplementation "org.apache.groovy:groovy-test:4.0.11"
 }
+test {
+  useJUnitPlatform()
+}

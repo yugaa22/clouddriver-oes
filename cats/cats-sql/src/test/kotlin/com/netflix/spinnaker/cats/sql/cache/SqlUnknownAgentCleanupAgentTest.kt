@@ -27,12 +27,18 @@ import com.netflix.spinnaker.clouddriver.core.provider.agent.Namespace.INSTANCES
 import com.netflix.spinnaker.clouddriver.core.provider.agent.Namespace.SERVER_GROUPS
 import com.netflix.spinnaker.config.SqlConstraintsInitializer
 import com.netflix.spinnaker.kork.sql.test.SqlTestUtil
+import com.zaxxer.hikari.HikariConfig
+import com.zaxxer.hikari.HikariDataSource
 import de.huxhorn.sulky.ulid.ULID
 import dev.minutest.junit.JUnit5Minutests
 import dev.minutest.rootContext
+import org.jooq.DSLContext
 import org.jooq.SQLDialect
+import org.jooq.impl.DSL
 import org.jooq.impl.DSL.field
 import org.jooq.impl.DSL.table
+import org.jooq.impl.DefaultConfiguration
+import org.jooq.impl.DefaultDSLContext
 import org.junit.jupiter.api.Assumptions.assumeTrue
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.springframework.beans.factory.ObjectProvider
@@ -54,7 +60,7 @@ class SqlUnknownAgentCleanupAgentTest : JUnit5Minutests {
 
     after {
       SqlTestUtil.cleanupDb(dslContext)
-      //dslContext.close()
+      dslContext.close()
     }
 
     context("test and prod accounts exist") {
@@ -283,3 +289,4 @@ class SqlUnknownAgentCleanupAgentTest : JUnit5Minutests {
     override fun getIfAvailable(): ProviderRegistry = obj
   }
 }
+

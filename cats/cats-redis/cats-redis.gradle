@@ -17,6 +17,5 @@ dependencies {
   testImplementation "org.apache.commons:commons-lang3"
   testImplementation "org.assertj:assertj-core"
   testImplementation "org.mockito:mockito-core"
-  testImplementation "junit:junit:4.13.2"
   testImplementation "org.spockframework:spock-core:2.4-M1-groovy-4.0"
 }
