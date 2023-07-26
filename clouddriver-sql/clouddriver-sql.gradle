@@ -44,7 +44,6 @@ dependencies {
 
   testImplementation "cglib:cglib-nodep:3.3.0"
   testImplementation "org.objenesis:objenesis:3.3"
-  testImplementation "org.junit.platform:junit-platform-runner"
   testImplementation "org.junit.jupiter:junit-jupiter-api"
   testImplementation "org.springframework:spring-test"
   testImplementation "org.springframework.boot:spring-boot-test"

@@ -14,9 +14,7 @@ dependencies {
   implementation "org.apache.groovy:groovy"
   implementation "org.apache.groovy:groovy-json"
   implementation "org.apache.commons:commons-lang3"
-  implementation ("com.google.apis:google-api-services-compute:beta-rev20201102-1.30.10") {
-    force = true
-  }
+  implementation ("com.google.apis:google-api-services-compute:beta-rev20201102-1.30.10")
   implementation "com.google.guava:guava"
   implementation "com.google.apis:google-api-services-iam:v1-rev267-1.25.0"
   implementation 'com.google.auth:google-auth-library-oauth2-http'
@@ -43,7 +41,6 @@ dependencies {
   testImplementation "org.apache.httpcomponents:httpmime"
   testImplementation "org.assertj:assertj-core"
   testImplementation "org.junit.jupiter:junit-jupiter-api"
-  testImplementation "org.junit.platform:junit-platform-runner"
   testImplementation "org.mockito:mockito-core"
   testImplementation "org.mockito:mockito-junit-jupiter"
   testImplementation "org.objenesis:objenesis:2.5.1"
