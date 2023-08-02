@@ -36,6 +36,9 @@ import com.netflix.spinnaker.clouddriver.orchestration.AtomicOperation
 import com.netflix.spinnaker.clouddriver.orchestration.AtomicOperationsRegistry
 import com.netflix.spinnaker.clouddriver.orchestration.OrchestrationProcessor
 import org.springframework.beans.factory.annotation.Autowired
+import com.google.api.services.compute.Compute.RegionAutoscalers
+import com.google.api.services.compute.Compute.Autoscalers
+import com.google.api.services.compute.Compute.RegionInstanceGroupManagers
 
 class UpsertGoogleAutoscalingPolicyAtomicOperation extends GoogleAtomicOperation<Void> {
   private static final String BASE_PHASE = "UPSERT_SCALING_POLICY"
@@ -61,6 +64,11 @@ class UpsertGoogleAutoscalingPolicyAtomicOperation extends GoogleAtomicOperation
 
   @Autowired
   ObjectMapper objectMapper
+
+/*
+  @Autowired
+  com.google.api.services.compute.model.InstanceGroupManager content
+*/
 
   private final UpsertGoogleAutoscalingPolicyDescription description
 
@@ -95,7 +103,7 @@ class UpsertGoogleAutoscalingPolicyAtomicOperation extends GoogleAtomicOperation
     def serverGroup = GCEUtil.queryServerGroup(googleClusterProvider, accountName, region, serverGroupName)
     def isRegional = serverGroup.regional
     def zone = serverGroup.zone
-
+    def instanceGroupManager ="my-instance-group"
     def autoscaler = null
     if (description.autoscalingPolicy) {
       def ancestorAutoscalingPolicyDescription = serverGroup.autoscalingPolicy
@@ -108,19 +116,39 @@ class UpsertGoogleAutoscalingPolicyAtomicOperation extends GoogleAtomicOperation
             description.autoscalingPolicy))
 
         if (isRegional) {
-          def updateOp = timeExecute(
+
+          /*def updateOp = timeExecute(
             compute.regionAutoscalers().update(project, region, autoscaler),
             "compute.regionAutoscalers.update",
             TAG_SCOPE, SCOPE_REGIONAL, TAG_REGION, region)
           googleOperationPoller.waitForRegionalOperation(compute, project, region,
-            updateOp.getName(), null, task, "autoScaler ${autoscaler.getName()} for server group $serverGroupName", BASE_PHASE)
+            updateOp.getName(), null, task, "autoScaler ${autoscaler.getName()} for server group $serverGroupName", BASE_PHASE)*/
+
+           println("DEBUG1-update : [REGIONAL] : [compute=${compute}] : [regionAutoscalers()=${compute.regionAutoscalers()}]")
+          println("DEBUG1-update : [REGIONAL] : [project=${project}] : [region=${region}] : [autoscaler=${autoscaler}]")
+          println("DEBUG1-update : [REGIONAL] : [TAG_SCOPE=${TAG_SCOPE}] : [SCOPE_REGIONAL=${SCOPE_REGIONAL}] : [TAG_REGION=${TAG_REGION}] : [region=${region}]")
+          com.google.api.services.compute.Compute.RegionAutoscalers regionAutoscalers = compute.regionAutoscalers()
+          regionAutoscalers.update(project, region, autoscaler).execute()
+
+         /* println("DEBUG1-update : [REGIONAL] : [compute=${compute}] : [regionInstanceGroupManagers()=${compute.regionInstanceGroupManagers()}]")
+          println("DEBUG1-insert : [REGIONAL] : [project=${project}] : [region=${region}] : [instanceGroupManager=${instanceGroupManager}]: [content=${content}]")
+          com.google.api.services.compute.Compute.RegionInstanceGroupManagers regionAutoscalers = compute.regionInstanceGroupManagers()
+          regionAutoscalers.update(project, region, instanceGroupManager, content).execute()*/
+
         } else {
-          def updateOp = timeExecute(
+        /*  def updateOp = timeExecute(
             compute.autoscalers().update(project, zone, autoscaler),
             "compute.autoscalers.update",
             TAG_SCOPE, SCOPE_ZONAL, TAG_ZONE, zone)
           googleOperationPoller.waitForZonalOperation(compute, project, zone,
             updateOp.getName(), null, task, "autoScaler ${autoscaler.getName()} for server group $serverGroupName", BASE_PHASE)
+        */
+
+          println("DEBUG2-update : [ZONAL] : [compute=${compute}] : [autoscalers()=${compute.autoscalers()}]")
+          println("DEBUG2-update : [ZONAL] : [project=${project}] : [zone=${zone}] : [autoscaler=${autoscaler}]")
+          println("DEBUG2-update : [ZONAL] : [TAG_SCOPE=${TAG_SCOPE}] : [SCOPE_ZONAL=${SCOPE_ZONAL}] : [TAG_ZONE=${TAG_ZONE}] : [zone=${zone}]")
+          com.google.api.services.compute.Compute.Autoscalers autoscalers = compute.autoscalers()
+          autoscalers.update(project, zone, autoscaler).execute()
         }
       } else {
         task.updateStatus BASE_PHASE, "Creating new autoscaler for $serverGroupName..."
@@ -130,19 +158,38 @@ class UpsertGoogleAutoscalingPolicyAtomicOperation extends GoogleAtomicOperation
           normalizeNewAutoscalingPolicy(description.autoscalingPolicy))
 
         if (isRegional) {
+
+          /*
           def insertOp = timeExecute(
             compute.regionAutoscalers().insert(project, region, autoscaler),
             "compute.regionAutoscalers.insert",
             TAG_SCOPE, SCOPE_REGIONAL, TAG_REGION, region)
           googleOperationPoller.waitForRegionalOperation(compute, project, region,
-            insertOp.getName(), null, task, "autoScaler ${autoscaler.getName()} for server group $serverGroupName", BASE_PHASE)
+            insertOp.getName(), null, task, "autoScaler ${autoscaler.getName()} for server group $serverGroupName", BASE_PHASE)*/
+
+          RegionAutoscalers regionAutoscalers = compute.regionAutoscalers()
+
+         println("DEBUG1-insert : [REGIONAL] : [compute=${compute}] : [regionAutoscalers()=${regionAutoscalers}]")
+          println("DEBUG1-insert : [REGIONAL] : [project=${project}] : [region=${region}] : [autoscaler=${autoscaler}]")
+          regionAutoscalers.insert(project, region, autoscaler).execute()
+
+        /*  println("DEBUG1-insert : [REGIONAL] : [compute=${compute}] : [regionInstanceGroupManagers()=${compute.regionInstanceGroupManagers()}]")
+          println("DEBUG1-insert : [REGIONAL] : [project=${project}] : [region=${region}] : [instanceGroupManager=${instanceGroupManager}]: [content=${content}]")
+          com.google.api.services.compute.Compute.RegionInstanceGroupManagers regionAutoscalers = compute.regionInstanceGroupManagers()
+          regionAutoscalers.insert(project, region, content).execute()*/
         } else {
-          def insertOp = timeExecute(
+          /*def insertOp = timeExecute(
             compute.autoscalers().insert(project, zone, autoscaler),
             "compute.autoscalers.insert",
             TAG_SCOPE, SCOPE_ZONAL, TAG_ZONE, zone)
           googleOperationPoller.waitForZonalOperation(compute, project, zone,
-            insertOp.getName(), null, task, "autoScaler ${autoscaler.getName()} for server group $serverGroupName", BASE_PHASE)
+            insertOp.getName(), null, task, "autoScaler ${autoscaler.getName()} for server group $serverGroupName", BASE_PHASE)*/
+
+          println("DEBUG2-insert : [ZONAL] : [compute=${compute}] : [autoscalers()=${compute.autoscalers()}]")
+          println("DEBUG2-insert : [ZONAL] : [project=${project}] : [zone=${zone}] : [autoscaler=${autoscaler}]")
+          com.google.api.services.compute.Compute.Autoscalers request = compute.autoscalers()
+          request.insert(project, zone, autoscaler).execute()
+
         }
       }
     }
@@ -327,71 +374,152 @@ class UpsertGoogleAutoscalingPolicyAtomicOperation extends GoogleAtomicOperation
                             String groupUrl,
                             autoscaler) {
     def groupName = Utils.getLocalName(groupUrl)
+    String templateUrl = null
+    //def instanceGroupManager ="my-instance-group"
     def groupRegion = Utils.getRegionFromGroupUrl(groupUrl)
 
-    String templateUrl = null
     switch (Utils.determineServerGroupType(groupUrl)) {
       case GoogleServerGroup.ServerGroupType.REGIONAL:
-        templateUrl = timeExecute(
+
+        /*templateUrl = timeExecute(
           compute.regionInstanceGroupManagers().get(project, groupRegion, groupName),
           "compute.regionInstanceGroupManagers.get",
           TAG_SCOPE, SCOPE_REGIONAL, TAG_REGION, groupRegion)
-          .getInstanceTemplate()
+          .getInstanceTemplate()*/
+
+        /*   println("DEBUG1-get : [REGIONAL] : [compute=${compute}] : [regionInstanceGroupManagers()=${compute.regionInstanceGroupManagers()}]")
+        println("DEBUG1-get : [REGIONAL] : [project=${project}] : [groupRegion=${groupRegion}] : [instanceGroupManager=${instanceGroupManager}]")
+        println("DEBUG1-get : [REGIONAL] : [TAG_SCOPE=${TAG_SCOPE}] : [SCOPE_REGIONAL=${SCOPE_REGIONAL}] :" +
+          " [TAG_REGION=${TAG_REGION}] : [groupRegion=${groupRegion}]")
+        RegionInstanceGroupManagers regionAutoscalers = compute.regionInstanceGroupManagers()
+        def regionAutoscalerList = regionAutoscalers.get(project, groupRegion, instanceGroupManager).execute()*/
+
+/*
+        println("DEBUG1-get : [REGIONAL] : [compute=${compute}] : [regionAutoscalers()=${compute.regionAutoscalers()}]")
+        println("DEBUG1-get : [REGIONAL] : [project=${project}] : [groupRegion=${groupRegion}] : [groupName=${groupName}]")
+        println("DEBUG1-get : [REGIONAL] : [TAG_SCOPE=${TAG_SCOPE}] : [SCOPE_REGIONAL=${SCOPE_REGIONAL}] : [TAG_REGION=${TAG_REGION}] : [groupRegion=${groupRegion}]")
+
+        com.google.api.services.compute.Compute.RegionAutoscalers regionAutoscalers = compute.regionAutoscalers()
+        def regionAutoscalerList = regionAutoscalers.get(project, groupRegion, groupName).execute()
+
+        if (regionAutoscalerList != null) {
+          templateUrl = regionAutoscalerList.getInstanceTemplate()
+          println "DEBUG1-get : [REGIONAL] : [regionAutoscalers Name: ${regionAutoscalerList.getName()}]"
+          println "DEBUG1-get : [REGIONAL] : [regionAutoscalers Target: ${regionAutoscalerList.getTarget()}]"
+          println "DEBUG1-get : [REGIONAL] : [Instance Template Link: ${templateUrl}]"
+        } else {
+          println "DEBUG1-get : [REGIONAL] : [regionAutoscalers ${regionAutoscalerList} not found in the specified region and project.]"
+        }*/
+
+        println("DEBUG1-get : [REGIONAL] : [compute=${compute}] : [regionAutoscalers()=${compute.regionAutoscalers()}]")
+        println("DEBUG1-get : [REGIONAL] : [project=${project}] : [groupRegion=${groupRegion}] : [groupName=${groupName}]")
+        println("DEBUG1-get : [REGIONAL] : [TAG_SCOPE=${TAG_SCOPE}] : [SCOPE_REGIONAL=${SCOPE_REGIONAL}] : [TAG_REGION=${TAG_REGION}] : [groupRegion=${groupRegion}]")
+        com.google.api.services.compute.Compute.RegionAutoscalers regionAutoscalers = compute.regionAutoscalers()
+        Compute.RegionAutoscalers.Get getOperation = regionAutoscalers.get(project, groupRegion, groupName)
+        if (getOperation != null) {
+          def regionInstanceGroupManagerList = getOperation.execute()
+
+          if (regionInstanceGroupManagerList != null) {
+            templateUrl = regionInstanceGroupManagerList.getInstanceTemplate()
+            println "DEBUG1-get : [REGIONAL] : [regionAutoscalerList Name: ${regionInstanceGroupManagerList.getName()}]"
+            println "DEBUG1-get : [REGIONAL] : [regionAutoscalerList Target: ${regionInstanceGroupManagerList.getTarget()}]"
+            println "DEBUG1-get : [REGIONAL] : [Instance Template Link: ${templateUrl}]"
+          } else {
+            println "DEBUG1-get : [REGIONAL] : [regionAutoscalerList ${regionInstanceGroupManagerList} not found in the specified region and project.]"
+          }
+        } else {
+          println "DEBUG1-get : [REGIONAL] : [getOperation ${getOperation} not found in the specified region and project.]"
+        }
         break
       case GoogleServerGroup.ServerGroupType.ZONAL:
         def groupZone = Utils.getZoneFromGroupUrl(groupUrl)
-        templateUrl = timeExecute(
+        /*templateUrl = timeExecute(
           compute.instanceGroupManagers().get(project, groupZone, groupName),
           "compute.instanceGroupManagers.get",
           TAG_SCOPE, SCOPE_ZONAL, TAG_ZONE, groupZone)
-          .getInstanceTemplate()
+          .getInstanceTemplate()*/
+        println("DEBUG2-get : [ZONAL] : [compute=${compute}] : [autoscalers()=${compute.autoscalers()}]")
+        println("DEBUG2-get : [ZONAL] : [project=${project}] : [groupZone=${groupZone}] : [groupName=${groupName}]")
+        println("DEBUG2-get : [ZONAL] : [TAG_SCOPE=${TAG_SCOPE}] : [SCOPE_ZONAL=${SCOPE_ZONAL}] : [TAG_ZONE=${TAG_ZONE}] : [groupZone=${groupZone}]")
+
+        com.google.api.services.compute.Compute.Autoscalers autoscalers = compute.autoscalers()
+        Compute.Autoscalers.Get getOperation = autoscalers.get(project, groupZone, groupName)
+        if (getOperation != null) {
+          def instanceGroupManagerList = getOperation.execute()
+
+          if (instanceGroupManagerList != null) {
+            templateUrl = instanceGroupManagerList.getInstanceTemplate()
+            println "DEBUG2-get : [ZONAL] : [Autoscalers Name: ${instanceGroupManagerList.getName()}]"
+            println "DEBUG2-get : [ZONAL] : [Autoscalers Target: ${instanceGroupManagerList.getTarget()}]"
+            println "DEBUG2-get : [ZONAL] : [Instance Template Link: ${templateUrl}]"
+          } else {
+            println "DEBUG2-get : [ZONAL] : [Autoscalers ${instanceGroupManagerList} not found in the specified region and project.]"
+          }
+        } else {
+          println "DEBUG2-get : [ZONAL] : [getOperation ${getOperation} not found in the specified region and project.]"
+        }
         break
       default:
         throw new IllegalStateException("Server group referenced by ${groupUrl} has illegal type.")
         break
     }
 
-    InstanceTemplate template = timeExecute(
-      compute.instanceTemplates().get(project, Utils.getLocalName(templateUrl)),
-      "compute.instancesTemplates.get",
-      TAG_SCOPE, SCOPE_GLOBAL)
-    def instanceDescription = GCEUtil.buildInstanceDescriptionFromTemplate(project, template)
+    if (templateUrl != null) {
+      /*InstanceTemplate template = timeExecute(
+        compute.instanceTemplates().get(project, Utils.getLocalName(templateUrl)),
+        "compute.instancesTemplates.get",
+        TAG_SCOPE, SCOPE_GLOBAL)*/
+      def instanceTemplateName = "your_instance_template_name"
 
-    def templateOpMap = [
-      image              : instanceDescription.image,
-      instanceType       : instanceDescription.instanceType,
-      credentials        : credentials.getName(),
-      disks              : instanceDescription.disks,
-      instanceMetadata   : instanceDescription.instanceMetadata,
-      tags               : instanceDescription.tags,
-      network            : instanceDescription.network,
-      subnet             : instanceDescription.subnet,
-      serviceAccountEmail: instanceDescription.serviceAccountEmail,
-      authScopes         : instanceDescription.authScopes,
-      preemptible        : instanceDescription.preemptible,
-      automaticRestart   : instanceDescription.automaticRestart,
-      onHostMaintenance  : instanceDescription.onHostMaintenance,
-      region             : groupRegion,
-      serverGroupName    : groupName
-    ]
+      // Call the get() method to retrieve the instance template
+      InstanceTemplate template = compute.instanceTemplates().get(project, instanceTemplateName).execute()
+      if (template != null) {
+        println "Instance Template Name: ${template.getName()}"
+        println "Instance Template Self Link: ${template.getSelfLink()}"
 
-    if (instanceDescription.minCpuPlatform) {
-      templateOpMap.minCpuPlatform = instanceDescription.minCpuPlatform
-    }
+        def instanceDescription = GCEUtil.buildInstanceDescriptionFromTemplate(project, template)
 
-    def instanceMetadata = templateOpMap?.instanceMetadata
-    if (instanceMetadata && autoscaler) {
-      instanceMetadata.(GCEUtil.AUTOSCALING_POLICY) = objectMapper.writeValueAsString(autoscaler)
-    } else if (autoscaler) {
-      templateOpMap.instanceMetadata = [
-        (GCEUtil.AUTOSCALING_POLICY): objectMapper.writeValueAsString(autoscaler)
-      ]
-    }
+        def templateOpMap = [
+          image              : instanceDescription.image,
+          instanceType       : instanceDescription.instanceType,
+          credentials        : credentials.getName(),
+          disks              : instanceDescription.disks,
+          instanceMetadata   : instanceDescription.instanceMetadata,
+          tags               : instanceDescription.tags,
+          network            : instanceDescription.network,
+          subnet             : instanceDescription.subnet,
+          serviceAccountEmail: instanceDescription.serviceAccountEmail,
+          authScopes         : instanceDescription.authScopes,
+          preemptible        : instanceDescription.preemptible,
+          automaticRestart   : instanceDescription.automaticRestart,
+          onHostMaintenance  : instanceDescription.onHostMaintenance,
+          region             : groupRegion,
+          serverGroupName    : groupName
+        ]
 
-    if (templateOpMap.instanceMetadata) {
-      def converter = atomicOperationsRegistry.getAtomicOperationConverter('modifyGoogleServerGroupInstanceTemplateDescription', 'gce')
-      AtomicOperation templateOp = converter.convertOperation(templateOpMap)
-      orchestrationProcessor.process('gce', [templateOp], UUID.randomUUID().toString())
+        if (instanceDescription.minCpuPlatform) {
+          templateOpMap.minCpuPlatform = instanceDescription.minCpuPlatform
+        }
+
+        def instanceMetadata = templateOpMap?.instanceMetadata
+        if (instanceMetadata && autoscaler) {
+          instanceMetadata.(GCEUtil.AUTOSCALING_POLICY) = objectMapper.writeValueAsString(autoscaler)
+        } else if (autoscaler) {
+          templateOpMap.instanceMetadata = [
+            (GCEUtil.AUTOSCALING_POLICY): objectMapper.writeValueAsString(autoscaler)
+          ]
+        }
+
+        if (templateOpMap.instanceMetadata) {
+          def converter = atomicOperationsRegistry.getAtomicOperationConverter('modifyGoogleServerGroupInstanceTemplateDescription', 'gce')
+          AtomicOperation templateOp = converter.convertOperation(templateOpMap)
+          orchestrationProcessor.process('gce', [templateOp], UUID.randomUUID().toString())
+        }
+      } else {
+        println "Instance Template not found in the specified project."
+      }
+    }else {
+      println "Instance Template Link not found in the specified project."
     }
   }
 }
