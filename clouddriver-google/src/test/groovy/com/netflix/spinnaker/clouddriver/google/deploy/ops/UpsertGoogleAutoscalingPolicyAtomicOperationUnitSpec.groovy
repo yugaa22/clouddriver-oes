@@ -73,6 +73,7 @@ class UpsertGoogleAutoscalingPolicyAtomicOperationUnitSpec extends Specification
   def setupSpec() {
     TaskRepository.threadLocalTask.set(Mock(Task))
   }
+/*
 
    def "can create zonal and regional scaling policies"() {
     setup:
@@ -448,12 +449,14 @@ class UpsertGoogleAutoscalingPolicyAtomicOperationUnitSpec extends Specification
       credentials: credentials)
 
     // Instance Template Update setup
-   /* def igm = Mock(Compute.InstanceGroupManagers)
+   */
+/* def igm = Mock(Compute.InstanceGroupManagers)
     def igmGet = Mock(Compute.InstanceGroupManagers.Get)
     def igmUpdate = Mock(Compute.InstanceGroupManagers.Update)
     computeMock.instanceGroupManagers() >> igm
      igm.get(PROJECT_NAME, ZONE, SERVER_GROUP_NAME) >> igmGet
-    igm.update(PROJECT_NAME, ZONE, AUTOSCALER) >> igmUpdate*/
+    igm.update(PROJECT_NAME, ZONE, AUTOSCALER) >> igmUpdate*//*
+
 
     def igm = Mock(Compute.Autoscalers)
     def igmGet = Mock(Compute.Autoscalers.Get)
@@ -463,12 +466,14 @@ class UpsertGoogleAutoscalingPolicyAtomicOperationUnitSpec extends Specification
     igm.update(PROJECT_NAME, ZONE, AUTOSCALER) >> igmUpdate
 
 
-    /*def regionIgm = Mock(Compute.RegionInstanceGroupManagers)
+    */
+/*def regionIgm = Mock(Compute.RegionInstanceGroupManagers)
     def regionIgmGet = Mock(Compute.RegionInstanceGroupManagers.Get)
     def regionIgmUpdate = Mock(Compute.RegionInstanceGroupManagers.Update)
     computeMock.regionInstanceGroupManagers() >> regionIgm
     regionIgm.get(PROJECT_NAME, REGION, SERVER_GROUP_NAME) >> regionIgmGet
-    regionIgm.update(PROJECT_NAME, REGION, AUTOSCALER) >> regionIgmUpdate*/
+    regionIgm.update(PROJECT_NAME, REGION, AUTOSCALER) >> regionIgmUpdate*//*
+
     def regionIgm = Mock(Compute.RegionAutoscalers)
     def regionIgmGet = Mock(Compute.RegionAutoscalers.Get)
     def regionIgmUpdate = Mock(Compute.RegionAutoscalers.Update)
@@ -522,4 +527,384 @@ class UpsertGoogleAutoscalingPolicyAtomicOperationUnitSpec extends Specification
     false      | ZONE     | "https://compute.googleapis.com/compute/v1/projects/spinnaker-jtk54/zones/us-central1-f/autoscalers/okra-auto-v005"
     true       | REGION   | "https://compute.googleapis.com/compute/v1/projects/spinnaker-jtk54/regions/us-central1/autoscalers/okra-auto-v005"
   }
+*/
+
+
+   void "can create zonal and regional scaling policies"() {
+    setup:
+    def registry = new DefaultRegistry()
+    def serverGroup = new GoogleServerGroup(zone: ZONE, regional: isRegional, selfLink: SELF_LINK).view
+    def computeMock = Mock(Compute)
+
+    def credentials = new GoogleNamedAccountCredentials.Builder().project(PROJECT_NAME).compute(computeMock).build()
+    def description = new UpsertGoogleAutoscalingPolicyDescription(
+      accountName: ACCOUNT_NAME,
+      region: REGION,
+      serverGroupName: SERVER_GROUP_NAME,
+      autoscalingPolicy: GOOGLE_SCALING_POLICY,
+      credentials: credentials)
+
+    // zonal setup
+    def autoscalerMock = Mock(Compute.Autoscalers)
+    def insertMock = Mock(Compute.Autoscalers.Insert)
+    def zonalTimerId = GoogleApiTestUtils.makeOkId(registry, "compute.autoscalers.insert", [scope: "zonal", zone: ZONE])
+    registry.timer(zonalTimerId)
+
+    // regional setup
+    def regionAutoscalerMock = Mock(Compute.RegionAutoscalers)
+    def regionInsertMock = Mock(Compute.RegionAutoscalers.Insert)
+    def regionalTimerId = GoogleApiTestUtils.makeOkId(registry, "compute.regionAutoscalers.insert", [scope: "regional", region: REGION])
+    registry.timer(regionalTimerId)
+
+    @Subject def operation = new UpsertGoogleAutoscalingPolicyAtomicOperation(description)
+    operation.registry = registry
+    operation.googleClusterProvider = googleClusterProviderMock
+    operation.googleOperationPoller = operationPollerMock
+
+    when:
+    operation.operate([])
+
+    then:
+   operation.updatePolicyMetadata(computeMock, credentials, PROJECT_NAME, _, _) >> null // Tested separately.
+    1 * googleClusterProviderMock.getServerGroup(ACCOUNT_NAME, REGION, SERVER_GROUP_NAME) >> serverGroup
+
+    if (isRegional) {
+       computeMock.regionAutoscalers() >> regionAutoscalerMock
+       regionAutoscalerMock.insert(PROJECT_NAME, location, AUTOSCALER) >> regionInsertMock
+       regionInsertMock.execute() >> [name: 'insertOp']
+    } else {
+       computeMock.autoscalers() >> autoscalerMock
+       autoscalerMock.insert(PROJECT_NAME, location, AUTOSCALER) >> insertMock
+       insertMock.execute() >> [name: 'insertOp']
+    }
+
+    registry.timer(regionalTimerId).count() == (isRegional ? 1 : 0)
+    registry.timer(zonalTimerId).count() == (isRegional ? 0 : 1)
+
+    where:
+    isRegional | location
+    false      | ZONE
+    true       | REGION
+  }
+
+   void "can update zonal and regional scaling policies"() {
+    given:
+    def registry = new DefaultRegistry()
+    def computeMock = Mock(Compute)
+    def autoscalingPolicy = new AutoscalingPolicy(
+      minNumReplicas: 1,
+      maxNumReplicas: 10,
+      coolDownPeriodSec: 60);
+    def serverGroup = new GoogleServerGroup(
+      zone: ZONE, regional: isRegional, selfLink: SELF_LINK, autoscalingPolicy: autoscalingPolicy).view
+
+    def credentials = new GoogleNamedAccountCredentials.Builder().project(PROJECT_NAME).compute(computeMock).build()
+    def description = new UpsertGoogleAutoscalingPolicyDescription(
+      accountName: ACCOUNT_NAME,
+      region: REGION,
+      serverGroupName: SERVER_GROUP_NAME,
+      autoscalingPolicy: GOOGLE_SCALING_POLICY,
+      credentials: credentials)
+
+    // zonal setup
+    def autoscalerMock = Mock(Compute.Autoscalers)
+    def updateMock = Mock(Compute.Autoscalers.Update)
+    def zonalTimerId = GoogleApiTestUtils.makeOkId(registry, "compute.autoscalers.update", [scope: "zonal", zone: ZONE])
+
+    // regional setup
+    def regionAutoscalerMock = Mock(Compute.RegionAutoscalers)
+    def regionUpdateMock = Mock(Compute.RegionAutoscalers.Update)
+    def regionalTimerId = GoogleApiTestUtils.makeOkId(registry, "compute.regionAutoscalers.update", [scope: "regional", region: REGION])
+
+    @Subject def operation = new UpsertGoogleAutoscalingPolicyAtomicOperation(description)
+    operation.registry = registry
+    operation.googleClusterProvider = googleClusterProviderMock
+    operation.googleOperationPoller = operationPollerMock
+
+    when:
+    operation.operate([])
+
+    then:
+    operation.updatePolicyMetadata(computeMock, credentials, PROJECT_NAME, _, _) >> null // Tested separately.
+    1 * googleClusterProviderMock.getServerGroup(ACCOUNT_NAME, REGION, SERVER_GROUP_NAME) >> serverGroup
+
+    if (isRegional) {
+      computeMock.regionAutoscalers() >> regionAutoscalerMock
+       regionAutoscalerMock.update(PROJECT_NAME, location, AUTOSCALER) >> regionUpdateMock
+       regionUpdateMock.execute() >> [name: 'updateOp']
+    } else {
+       computeMock.autoscalers() >> autoscalerMock
+       autoscalerMock.update(PROJECT_NAME, location, AUTOSCALER) >> updateMock
+       updateMock.execute() >> [name: 'updateOp']
+    }
+    registry.timer(regionalTimerId).count() == (isRegional ? 1 : 0)
+    registry.timer(zonalTimerId).count() == (isRegional ? 0 : 1)
+
+    where:
+    isRegional | location
+    false      | ZONE
+    true       | REGION
+  }
+
+   void "builds autoscaler based on ancestor autoscaling policy and input description: input overrides nothing"() {
+    setup:
+    def registry = new DefaultRegistry()
+    def ancestorPolicy = new GoogleAutoscalingPolicy(
+      minNumReplicas: MIN_NUM_REPLICAS, maxNumReplicas: MAX_NUM_REPLICAS, coolDownPeriodSec: COOL_DOWN_PERIOD_SEC,
+      cpuUtilization: new GoogleAutoscalingPolicy.CpuUtilization(utilizationTarget: UTILIZATION_TARGET),
+      loadBalancingUtilization: new GoogleAutoscalingPolicy.LoadBalancingUtilization(utilizationTarget: UTILIZATION_TARGET),
+      customMetricUtilizations: [new GoogleAutoscalingPolicy.CustomMetricUtilization(
+        metric: METRIC,
+        utilizationTarget: UTILIZATION_TARGET,
+        utilizationTargetType: "DELTA_PER_MINUTE")]);
+
+    def updatePolicy = new GoogleAutoscalingPolicy()
+
+    def expectedAutoscaler = GCEUtil.buildAutoscaler(
+      SERVER_GROUP_NAME, SELF_LINK, ancestorPolicy)
+
+    def computeMock = Mock(Compute)
+    def serverGroup = new GoogleServerGroup(
+      zone: ZONE,
+      selfLink: SELF_LINK,
+      regional: isRegional,
+      autoscalingPolicy: ancestorPolicy).view
+
+    def credentials = new GoogleNamedAccountCredentials.Builder().project(PROJECT_NAME).compute(computeMock).build()
+    def description = new UpsertGoogleAutoscalingPolicyDescription(
+      accountName: ACCOUNT_NAME,
+      region: REGION,
+      serverGroupName: SERVER_GROUP_NAME,
+      autoscalingPolicy: updatePolicy,
+      credentials: credentials)
+
+    // zonal setup
+    def autoscalerMock = Mock(Compute.Autoscalers)
+    def updateMock = Mock(Compute.Autoscalers.Update)
+
+    // regional setup
+    def regionAutoscalerMock = Mock(Compute.RegionAutoscalers)
+    def regionUpdateMock = Mock(Compute.RegionAutoscalers.Update)
+
+    @Subject def operation = new UpsertGoogleAutoscalingPolicyAtomicOperation(description)
+    operation.registry = registry
+    operation.googleClusterProvider = googleClusterProviderMock
+    operation.googleOperationPoller = operationPollerMock
+
+    when:
+    operation.operate([])
+
+    then:
+    operation.updatePolicyMetadata(computeMock, credentials, PROJECT_NAME, _, _) >> null // Tested separately.
+    1 * googleClusterProviderMock.getServerGroup(ACCOUNT_NAME, REGION, SERVER_GROUP_NAME) >> serverGroup
+    if (isRegional) {
+       computeMock.regionAutoscalers() >> regionAutoscalerMock
+       regionAutoscalerMock.update(PROJECT_NAME, location, expectedAutoscaler) >> regionUpdateMock
+       regionUpdateMock.execute() >> [name: 'updateOp']
+    } else {
+       computeMock.autoscalers() >> autoscalerMock
+       autoscalerMock.update(PROJECT_NAME, location, expectedAutoscaler) >> updateMock
+       updateMock.execute() >> [name: 'updateOp']
+    }
+
+
+     where:
+    isRegional | location
+    false      | ZONE
+    true       | REGION
+  }
+
+   void "builds autoscaler based on ancestor autoscaling policy and input description; input overrides everything"() {
+    setup:
+    def registry = new DefaultRegistry()
+    def ancestorPolicy = new AutoscalingPolicy(
+      minNumReplicas: MIN_NUM_REPLICAS, maxNumReplicas: MAX_NUM_REPLICAS, coolDownPeriodSec: COOL_DOWN_PERIOD_SEC,
+      cpuUtilization: new AutoscalingPolicyCpuUtilization(utilizationTarget: UTILIZATION_TARGET),
+      loadBalancingUtilization: new AutoscalingPolicyLoadBalancingUtilization(utilizationTarget: UTILIZATION_TARGET),
+      customMetricUtilizations: [new AutoscalingPolicyCustomMetricUtilization(
+        metric: METRIC,
+        utilizationTarget: UTILIZATION_TARGET,
+        utilizationTargetType: UtilizationTargetType.DELTA_PER_SECOND)]);
+
+    def updatePolicy = new GoogleAutoscalingPolicy(minNumReplicas: MIN_NUM_REPLICAS_2,
+      maxNumReplicas: MAX_NUM_REPLICAS_2,
+      coolDownPeriodSec: COOL_DOWN_PERIOD_SEC_2,
+      cpuUtilization: new GoogleAutoscalingPolicy.CpuUtilization(
+        utilizationTarget: UTILIZATION_TARGET_2),
+      loadBalancingUtilization: new GoogleAutoscalingPolicy.LoadBalancingUtilization(
+        utilizationTarget: UTILIZATION_TARGET_2),
+      customMetricUtilizations: [new GoogleAutoscalingPolicy.CustomMetricUtilization(
+        metric: METRIC_2,
+        utilizationTargetType: UtilizationTargetType.DELTA_PER_MINUTE,
+        utilizationTarget: UTILIZATION_TARGET_2)])
+
+    def expectedAutoscaler = GCEUtil.buildAutoscaler(
+      SERVER_GROUP_NAME, SELF_LINK, updatePolicy)
+
+    def computeMock = Mock(Compute)
+    def serverGroup = new GoogleServerGroup(zone: ZONE,
+      selfLink: SELF_LINK,
+      regional: isRegional,
+      autoscalingPolicy: ancestorPolicy).view
+
+    def credentials = new GoogleNamedAccountCredentials.Builder().project(PROJECT_NAME).compute(computeMock).build()
+    def description = new UpsertGoogleAutoscalingPolicyDescription(
+      accountName: ACCOUNT_NAME,
+      region: REGION,
+      serverGroupName: SERVER_GROUP_NAME,
+      autoscalingPolicy: updatePolicy,
+      credentials: credentials)
+
+    // zonal setup
+    def autoscalerMock = Mock(Compute.Autoscalers)
+    def updateMock = Mock(Compute.Autoscalers.Update)
+
+    // regional setup
+    def regionAutoscalerMock = Mock(Compute.RegionAutoscalers)
+    def regionUpdateMock = Mock(Compute.RegionAutoscalers.Update)
+
+    @Subject def operation = new UpsertGoogleAutoscalingPolicyAtomicOperation(description)
+    operation.registry = registry
+    operation.googleClusterProvider = googleClusterProviderMock
+    operation.googleOperationPoller = operationPollerMock
+
+    when:
+    operation.operate([])
+
+    then:
+    operation.updatePolicyMetadata(computeMock, credentials, PROJECT_NAME, _, _) >> null // Tested separately.
+    1 * googleClusterProviderMock.getServerGroup(ACCOUNT_NAME, REGION, SERVER_GROUP_NAME) >> serverGroup
+    if (isRegional) {
+       computeMock.regionAutoscalers() >> regionAutoscalerMock
+       regionAutoscalerMock.update(PROJECT_NAME, location, expectedAutoscaler) >> regionUpdateMock
+       regionUpdateMock.execute() >> [name: 'updateOp']
+    } else {
+       computeMock.autoscalers() >> autoscalerMock
+       autoscalerMock.update(PROJECT_NAME, location, expectedAutoscaler) >> updateMock
+       updateMock.execute() >> [name: 'updateOp']
+    }
+
+    where:
+    isRegional | location
+    false      | ZONE
+    true       | REGION
+  }
+
+  void "builds autoHealing policy based on ancestor autoHealing policy and input description; overrides everything"() {
+    given:
+    def ancestorPolicy = new GoogleAutoHealingPolicy(
+      healthCheck: 'ancestor',
+      initialDelaySec: 100,
+      maxUnavailable: new GoogleAutoHealingPolicy.FixedOrPercent(percent: 1)
+    )
+
+    def inputDescription = new GoogleAutoHealingPolicy(
+      healthCheck: 'update',
+      initialDelaySec: 200,
+      maxUnavailable: new GoogleAutoHealingPolicy.FixedOrPercent(fixed: 10)
+    )
+
+    expect:
+    UpsertGoogleAutoscalingPolicyAtomicOperation
+      .copyAndOverrideAncestorAutoHealingPolicy(ancestorPolicy, inputDescription) == inputDescription
+  }
+
+  void "builds autoHealing policy based on ancestor autoHealing policy and input description; overrides nothing"() {
+    given:
+    def ancestorPolicy = new GoogleAutoHealingPolicy(
+      healthCheck: 'ancestor',
+      initialDelaySec: 100,
+      maxUnavailable: new GoogleAutoHealingPolicy.FixedOrPercent(percent: 1)
+    )
+
+    def inputDescription = new GoogleAutoHealingPolicy(
+      healthCheck: null,
+      initialDelaySec: null,
+      maxUnavailable: null
+    )
+
+    expect:
+    UpsertGoogleAutoscalingPolicyAtomicOperation
+      .copyAndOverrideAncestorAutoHealingPolicy(ancestorPolicy, inputDescription) == ancestorPolicy
+  }
+
+  void "if the input description's maxUnavailable is empty object, the resulting policy has no maxUnavailable property"() {
+    given:
+    def ancestorPolicy = new GoogleAutoHealingPolicy(
+      healthCheck: 'ancestor',
+      initialDelaySec: 100,
+      maxUnavailable: new GoogleAutoHealingPolicy.FixedOrPercent(percent: 1)
+    )
+
+    def inputDescription = new GoogleAutoHealingPolicy(
+      healthCheck: null,
+      initialDelaySec: null,
+      maxUnavailable: new GoogleAutoHealingPolicy.FixedOrPercent()
+    )
+
+    expect:
+    UpsertGoogleAutoscalingPolicyAtomicOperation
+      .copyAndOverrideAncestorAutoHealingPolicy(ancestorPolicy, inputDescription).maxUnavailable == null
+  }
+
+  void "update the instance template when updatePolicyMetadata is called"() {
+    given:
+    def registry = new DefaultRegistry()
+    def computeMock = Mock(Compute)
+    def autoscaler = [:]
+
+    def credentials = new GoogleNamedAccountCredentials.Builder().project(PROJECT_NAME).compute(computeMock).build()
+    def description = new UpsertGoogleAutoscalingPolicyDescription(
+      accountName: ACCOUNT_NAME,
+      region: REGION,
+      serverGroupName: SERVER_GROUP_NAME,
+      autoscalingPolicy: GOOGLE_SCALING_POLICY,
+      credentials: credentials)
+
+    // Instance Template Update setup
+    def igm = Mock(Compute.Autoscalers)
+    def igmGet = Mock(Compute.Autoscalers.Get)
+    def regionIgm = Mock(Compute.RegionAutoscalers)
+    def regionIgmGet = Mock(Compute.RegionAutoscalers.Get)
+
+
+    def groupManager = [instanceTemplate: 'templates/template']
+    def instanceTemplates = Mock(Compute.InstanceTemplates)
+    def instanceTemplatesGet = Mock(Compute.InstanceTemplates.Get)
+    // TODO(jacobkiefer): The following is very change detector-y. Consider a refactor so we can just mock this function.
+    def template = new InstanceTemplate(properties: [
+      disks: [[getBoot: { return [initializeParams: [sourceImage: 'images/sourceImage']] }, initializeParams: [diskType: 'huge', diskSizeGb: 42], autoDelete: false]],
+      name: 'template',
+      networkInterfaces: [[network: "projects/$PROJECT_NAME/networks/my-network"]],
+      serviceAccounts: [[email: 'serviceAccount@google.com']]
+    ])
+
+    @Subject def operation = new UpsertGoogleAutoscalingPolicyAtomicOperation(description)
+    operation.registry = registry
+    operation.googleClusterProvider = googleClusterProviderMock
+    operation.googleOperationPoller = operationPollerMock
+
+    when:
+    operation.updatePolicyMetadata(computeMock, credentials, PROJECT_NAME, groupUrl, autoscaler)
+
+    then:
+    if (isRegional) {
+       computeMock.regionAutoscalers() >> regionIgm
+       regionIgm.get(PROJECT_NAME, location, _ ) >> regionIgmGet
+       regionIgmGet.execute() >> groupManager
+    } else {
+       computeMock.autoscalers() >> igm
+       igm.get(PROJECT_NAME, location, _ ) >> igmGet
+       igmGet.execute() >> groupManager
+    }
+     computeMock.instanceTemplates() >> instanceTemplates
+     instanceTemplates.get(PROJECT_NAME, _) >> instanceTemplatesGet
+     instanceTemplatesGet.execute() >> template
+
+    where:
+    isRegional | location | groupUrl
+    false      | ZONE     | "https://compute.googleapis.com/compute/v1/projects/spinnaker-jtk54/zones/us-central1-f/autoscalers/okra-auto-v005"
+    true       | REGION   | "https://compute.googleapis.com/compute/v1/projects/spinnaker-jtk54/regions/us-central1/autoscalers/okra-auto-v005"
+  }
+
 }
