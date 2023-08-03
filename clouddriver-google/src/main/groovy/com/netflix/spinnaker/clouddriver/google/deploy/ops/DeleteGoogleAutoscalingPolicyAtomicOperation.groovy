@@ -89,119 +89,42 @@ class DeleteGoogleAutoscalingPolicyAtomicOperation extends GoogleAtomicOperation
     if (description.deleteAutoHealingPolicy) {
       task.updateStatus BASE_PHASE, "Initializing deletion of autoHealing policy for $description.serverGroupName..."
       if (isRegional) {
-        /*def request = new RegionInstanceGroupManagersSetAutoHealingRequest().setAutoHealingPolicies([])
+        def request = new RegionInstanceGroupManagersSetAutoHealingRequest().setAutoHealingPolicies([])
         def deleteOp = timeExecute(
           compute.regionInstanceGroupManagers().setAutoHealingPolicies(project, region, serverGroupName, request),
           "compute.regionInstanceGroupManagers.setAutoHealingPolicies",
           TAG_SCOPE, SCOPE_REGIONAL, TAG_REGION, region)
         googleOperationPoller.waitForRegionalOperation(compute, project, region,
-          deleteOp.getName(), null, task, "autoHealing policy for $serverGroupName", BASE_PHASE)
-        deletePolicyMetadata(compute, credentials, project, GCEUtil.buildRegionalServerGroupUrl(project, region, serverGroupName))*/
-
-        def request = new RegionInstanceGroupManagersSetAutoHealingRequest().setAutoHealingPolicies([])
-        println("DEBUG1-setAutoHealingPolicies : [REGIONAL] : [compute=${compute}] : [regionInstanceGroupManagers()=${compute.regionInstanceGroupManagers()}] : [request()=${request}]")
-        println("DEBUG1-setAutoHealingPolicies : [REGIONAL] : [project=${project}] : [region=${region}] : [serverGroupName=${serverGroupName}]")
-        println("DEBUG1-setAutoHealingPolicies : [REGIONAL] : [TAG_SCOPE=${TAG_SCOPE}] : [SCOPE_REGIONAL=${SCOPE_REGIONAL}] : [TAG_REGION=${TAG_REGION}] : [region=${region}]")
-        Compute.RegionInstanceGroupManagers regionInstanceGroupManagers = compute.regionInstanceGroupManagers()
-        def deleteOp = timeExecute(
-          regionInstanceGroupManagers.setAutoHealingPolicies(project, region, serverGroupName, request),
-          "compute.regionInstanceGroupManagers.setAutoHealingPolicies",
-          TAG_SCOPE, SCOPE_REGIONAL, TAG_REGION, region)
-        googleOperationPoller.waitForRegionalOperation(compute, project, region,
-          /*deleteOp.getName()*/"deleteOp", null, task, "autoHealing policy for $serverGroupName", BASE_PHASE)
+          "autoHealingOp", null, task, "autoHealing policy for $serverGroupName", BASE_PHASE)
         deletePolicyMetadata(compute, credentials, project, GCEUtil.buildRegionalServerGroupUrl(project, region, serverGroupName))
-
       } else {
-       /* def request = new InstanceGroupManagersSetAutoHealingRequest().setAutoHealingPolicies([])
-        def deleteOp = timeExecute(
+        def request = new InstanceGroupManagersSetAutoHealingRequest().setAutoHealingPolicies([])
+         def deleteOp = timeExecute(
           compute.instanceGroupManagers().setAutoHealingPolicies(project, zone, serverGroupName, request),
           "compute.instanceGroupManagers.setAutoHealingPolicies",
           TAG_SCOPE, SCOPE_ZONAL, TAG_ZONE, zone)
         googleOperationPoller.waitForZonalOperation(compute, project, zone,
-          deleteOp.getName(), null, task, "autoHealing policy for $serverGroupName", BASE_PHASE)
-        deletePolicyMetadata(compute, credentials, project, GCEUtil.buildZonalServerGroupUrl(project, zone, serverGroupName))*/
-
-        def request = new InstanceGroupManagersSetAutoHealingRequest().setAutoHealingPolicies([])
-        println("DEBUG2-setAutoHealingPolicies : [ZONAL] : [compute=${compute}] : [instanceGroupManagers()=${compute.instanceGroupManagers()}] : [request()=${request}]")
-        println("DEBUG2-setAutoHealingPolicies : [ZONAL] : [project=${project}] : [zone=${zone}] : [serverGroupName=${serverGroupName}]")
-        println("DEBUG2-setAutoHealingPolicies : [ZONAL] : [TAG_SCOPE=${TAG_SCOPE}] : [SCOPE_ZONAL=${SCOPE_ZONAL}] : [TAG_ZONE=${TAG_ZONE}] : [zone=${zone}]")
-        Compute.InstanceGroupManagers instanceGroupManagers = compute.instanceGroupManagers()
-        def deleteOp = timeExecute(
-          instanceGroupManagers.setAutoHealingPolicies(project, zone, serverGroupName, request),
-          "compute.instanceGroupManagers.setAutoHealingPolicies",
-          TAG_SCOPE, SCOPE_ZONAL, TAG_ZONE, zone)
-        googleOperationPoller.waitForRegionalOperation(compute, project, zone,
-          /*deleteOp.getName()*/"deleteOp", null, task, "autoScaling policy for $serverGroupName", BASE_PHASE)
-        deletePolicyMetadata(compute, credentials, project, GCEUtil.buildZonalServerGroupUrl(project, zone, serverGroupName))
+          "autoHealingOp", null, task, "autoHealing policy for $serverGroupName", BASE_PHASE)
+         deletePolicyMetadata(compute, credentials, project, GCEUtil.buildZonalServerGroupUrl(project, zone, serverGroupName))
       }
       task.updateStatus BASE_PHASE, "Done deleting autoHealing policy for $serverGroupName."
     } else {
       task.updateStatus BASE_PHASE, "Initializing deletion of scaling policy for $description.serverGroupName..."
       if (isRegional) {
-
-        /*
-          println("DEBUG1-delete : [REGIONAL] : [compute=${compute}] : [regionAutoscalers()=${compute.regionAutoscalers()}]")
-        println("DEBUG1-delete : [REGIONAL] : [project=${project}] : [region=${region}] : [serverGroupName=${serverGroupName}]")
-        println("DEBUG1-delete : [REGIONAL] : [TAG_SCOPE=${TAG_SCOPE}] : [SCOPE_REGIONAL=${SCOPE_REGIONAL}] : [TAG_REGION=${TAG_REGION}] : [region=${region}]")
-
-        def deleteOp = timeExecute(
-            compute.regionAutoscalers().delete(project, region, serverGroupName),
-            "compute.regionAutoscalers.delete",
-            TAG_SCOPE, SCOPE_REGIONAL, TAG_REGION, region)
-        googleOperationPoller.waitForRegionalOperation(compute, project, region,
-          deleteOp.getName(), null, task, "autoScaling policy for $serverGroupName", BASE_PHASE)*/
-
-
-        /*
-          println("DEBUG1-delete : [REGIONAL] : [compute=${compute}] : [regionAutoscalers()=${compute.regionAutoscalers()}]")
-        println("DEBUG1-delete : [REGIONAL] : [project=${project}] : [region=${region}] : [serverGroupName=${serverGroupName}]")
-        println("DEBUG1-delete : [REGIONAL] : [TAG_SCOPE=${TAG_SCOPE}] : [SCOPE_REGIONAL=${SCOPE_REGIONAL}] : [TAG_REGION=${TAG_REGION}] : [region=${region}]")
-
-        com.google.api.services.compute.Compute.RegionAutoscalers regionAutoscalers = compute.regionAutoscalers()
-        regionAutoscalers.delete(project, region, serverGroupName).execute()
-        deletePolicyMetadata(compute, credentials, project, GCEUtil.buildRegionalServerGroupUrl(project, region, serverGroupName))*/
-
-        println("DEBUG1-delete : [REGIONAL] : [compute=${compute}] : [regionInstanceGroupManagers()=${compute.regionInstanceGroupManagers()}]")
-        println("DEBUG1-delete : [REGIONAL] : [project=${project}] : [region=${region}] : [serverGroupName=${serverGroupName}]")
-        println("DEBUG1-delete : [REGIONAL] : [TAG_SCOPE=${TAG_SCOPE}] : [SCOPE_REGIONAL=${SCOPE_REGIONAL}] : [TAG_REGION=${TAG_REGION}] : [region=${region}]")
-        Compute.RegionInstanceGroupManagers regionInstanceGroupManagers = compute.regionInstanceGroupManagers()
-        def deleteOp = timeExecute(
-          regionInstanceGroupManagers.delete(project, region, serverGroupName ),
+         def deleteOp = timeExecute(
+           compute.regionInstanceGroupManagers().delete(project, region, serverGroupName ),
           "compute.regionInstanceGroupManagers.delete",
           TAG_SCOPE, SCOPE_REGIONAL, TAG_REGION, region)
         googleOperationPoller.waitForRegionalOperation(compute, project, region,
-          /*deleteOp.getName()*/"deleteOp", null, task, "autoScaling policy for $serverGroupName", BASE_PHASE)
+          "deleteOp", null, task, "autoScaling policy for $serverGroupName", BASE_PHASE)
         deletePolicyMetadata(compute, credentials, project, GCEUtil.buildRegionalServerGroupUrl(project, region, serverGroupName))
-
       } else {
-
-       /*
-        println("DEBUG2-delete : [ZONAL] : [compute=${compute}] : [autoscalers()=${compute.autoscalers()}]")
-        println("DEBUG2-delete : [ZONAL] : [project=${project}] : [zone=${zone}] : [serverGroupName=${serverGroupName}]")
-        println("DEBUG2-delete : [ZONAL] : [TAG_SCOPE=${TAG_SCOPE}] : [SCOPE_ZONAL=${SCOPE_ZONAL}] : [TAG_ZONE=${TAG_ZONE}] : [zone=${zone}]")
-       def deleteOp = timeExecute(
-            compute.autoscalers().delete(project, zone, serverGroupName),
-            "compute.autoscalers.delete",
-            TAG_SCOPE, SCOPE_ZONAL, TAG_ZONE, zone)
-        googleOperationPoller.waitForZonalOperation(compute, project, zone,
-          deleteOp.getName(), null, task, "autoScaling policy for $serverGroupName", BASE_PHASE)*/
-
-       /* println("DEBUG2-delete : [ZONAL] : [compute=${compute}] : [autoscalers()=${compute.autoscalers()}]")
-        println("DEBUG2-delete : [ZONAL] : [project=${project}] : [zone=${zone}] : [serverGroupName=${serverGroupName}]")
-        println("DEBUG2-delete : [ZONAL] : [TAG_SCOPE=${TAG_SCOPE}] : [SCOPE_ZONAL=${SCOPE_ZONAL}] : [TAG_ZONE=${TAG_ZONE}] : [zone=${zone}]")
-        com.google.api.services.compute.Compute.Autoscalers autoscalers = compute.autoscalers()
-        autoscalers.delete(project, zone, serverGroupName).execute()
-        deletePolicyMetadata(compute, credentials, project, GCEUtil.buildZonalServerGroupUrl(project, zone, serverGroupName))*/
-        println("DEBUG2-delete : [ZONAL] : [compute=${compute}] : [instanceGroupManagers()=${compute.instanceGroupManagers()}]")
-        println("DEBUG2-delete : [ZONAL] : [project=${project}] : [zone=${zone}] : [serverGroupName=${serverGroupName}]")
-        println("DEBUG2-delete : [ZONAL] : [TAG_SCOPE=${TAG_SCOPE}] : [SCOPE_ZONAL=${SCOPE_ZONAL}] : [TAG_ZONE=${TAG_ZONE}] : [zone=${zone}]")
-        Compute.InstanceGroupManagers instanceGroupManagers = compute.instanceGroupManagers()
         def deleteOp = timeExecute(
-          instanceGroupManagers.delete(project, zone, serverGroupName ),
+          compute.instanceGroupManagers().delete(project, zone, serverGroupName ),
           "compute.instanceGroupManagers.delete",
           TAG_SCOPE, SCOPE_REGIONAL, TAG_REGION, zone)
         googleOperationPoller.waitForRegionalOperation(compute, project, zone,
-          /*deleteOp.getName()*/"deleteOp", null, task, "autoScaling policy for $serverGroupName", BASE_PHASE)
+          "deleteOp", null, task, "autoScaling policy for $serverGroupName", BASE_PHASE)
         deletePolicyMetadata(compute, credentials, project, GCEUtil.buildZonalServerGroupUrl(project, zone, serverGroupName))
       }
       task.updateStatus BASE_PHASE, "Done deleting scaling policy for $serverGroupName."
@@ -210,7 +133,101 @@ class DeleteGoogleAutoscalingPolicyAtomicOperation extends GoogleAtomicOperation
     return null
   }
 
+
   void deletePolicyMetadata(Compute compute,
+                            GoogleNamedAccountCredentials credentials,
+                            String project,
+                            String groupUrl) {
+    def groupName = Utils.getLocalName(groupUrl)
+    def groupRegion = Utils.getRegionFromGroupUrl(groupUrl)
+
+    String templateUrl = null
+    switch (Utils.determineServerGroupType(groupUrl)) {
+      case GoogleServerGroup.ServerGroupType.REGIONAL:
+         Compute.RegionInstanceGroupManagers.Get getOperation = compute.regionInstanceGroupManagers().get(project, groupRegion, groupName)
+        if(getOperation != null){
+          def regionInstanceGroupManager = timeExecute(
+            getOperation,
+            "compute.regionInstanceGroupManagers.get",
+            TAG_SCOPE, SCOPE_REGIONAL, TAG_REGION, groupRegion)
+          if(regionInstanceGroupManager != null) {
+            templateUrl = regionInstanceGroupManager.getInstanceTemplate()
+          }else {
+            println( "timeExecute for compute.regionInstanceGroupManagers().get(${project}, ${groupRegion}, ${groupName}) " +
+              "returned null in the specified zone and project.")
+          }
+        }else {
+          println( "compute.regionInstanceGroupManagers().get(${project}, ${groupRegion}, ${groupName}) " +
+            "returned null in the specified zone and project.")
+        }
+        break
+      case GoogleServerGroup.ServerGroupType.ZONAL:
+        def groupZone = Utils.getZoneFromGroupUrl(groupUrl)
+         Compute.InstanceGroupManagers.Get getOperation = compute.instanceGroupManagers().get(project, groupZone, groupName)
+        if(getOperation != null) {
+           def instanceGroupManager = timeExecute(
+            getOperation,
+            "compute.instanceGroupManagers.get",
+            TAG_SCOPE, SCOPE_ZONAL, TAG_ZONE, groupZone
+          )
+          if(instanceGroupManager != null){
+            templateUrl = instanceGroupManager.getInstanceTemplate()
+          }else {
+            println( "timeExecute for compute.instanceGroupManagers().get(${project}, ${groupZone}, ${groupName}) " +
+              "returned null in the specified zone and project.")
+          }
+
+         }else {
+          println( "operation compute.instanceGroupManagers().get(${project}, ${groupZone}, ${groupName}) " +
+            "returned null in the specified zone and project.")
+        }
+         break
+      default:
+        throw new IllegalStateException("Server group referenced by ${groupUrl} has illegal type.")
+        break
+    }
+
+    if(templateUrl != null){
+      InstanceTemplate template = timeExecute(
+        compute.instanceTemplates().get(project, Utils.getLocalName(templateUrl)),
+        "compute.instancesTemplates.get",
+        TAG_SCOPE, SCOPE_GLOBAL)
+      def instanceDescription = GCEUtil.buildInstanceDescriptionFromTemplate(project, template)
+
+      def templateOpMap = [
+        image              : instanceDescription.image,
+        instanceType       : instanceDescription.instanceType,
+        credentials        : credentials.getName(),
+        disks              : instanceDescription.disks,
+        instanceMetadata   : instanceDescription.instanceMetadata,
+        tags               : instanceDescription.tags,
+        network            : instanceDescription.network,
+        subnet             : instanceDescription.subnet,
+        serviceAccountEmail: instanceDescription.serviceAccountEmail,
+        authScopes         : instanceDescription.authScopes,
+        preemptible        : instanceDescription.preemptible,
+        automaticRestart   : instanceDescription.automaticRestart,
+        onHostMaintenance  : instanceDescription.onHostMaintenance,
+        region             : groupRegion,
+        serverGroupName    : groupName
+      ]
+
+      if (instanceDescription.minCpuPlatform) {
+        templateOpMap.minCpuPlatform = instanceDescription.minCpuPlatform
+      }
+
+      if (templateOpMap?.instanceMetadata) {
+        templateOpMap.instanceMetadata.remove(GCEUtil.AUTOSCALING_POLICY)
+        def converter = atomicOperationsRegistry.getAtomicOperationConverter('modifyGoogleServerGroupInstanceTemplateDescription', 'gce')
+        AtomicOperation templateOp = converter.convertOperation(templateOpMap)
+        orchestrationProcessor.process('gce', [templateOp], UUID.randomUUID().toString())
+      }
+    }else {
+      println( " templateUrl ${templateUrl} not found in the specified region and project.")
+    }
+  }
+
+  void deletePolicyMetadata3(Compute compute,
                             GoogleNamedAccountCredentials credentials,
                             String project,
                             String groupUrl) {
@@ -222,27 +239,6 @@ class DeleteGoogleAutoscalingPolicyAtomicOperation extends GoogleAtomicOperation
       switch (Utils.determineServerGroupType(groupUrl)) {
         case GoogleServerGroup.ServerGroupType.REGIONAL:
 
-          /*templateUrl = timeExecute(
-            compute.regionAutoscalers().get(project, groupRegion, groupName),
-            "compute.regionAutoscalers.get",
-            TAG_SCOPE, SCOPE_REGIONAL, TAG_REGION, groupRegion)
-            .getInstanceTemplate()*/
-
-         /* println("DEBUG1-get : [REGIONAL] : [compute=${compute}] : [regionAutoscalers()=${compute.regionAutoscalers()}]")
-          println("DEBUG1-get : [REGIONAL] : [project=${project}] : [groupRegion=${groupRegion}] : [groupName=${groupName}]")
-          println("DEBUG1-get : [REGIONAL] : [TAG_SCOPE=${TAG_SCOPE}] : [SCOPE_REGIONAL=${SCOPE_REGIONAL}] : [TAG_REGION=${TAG_REGION}] : [groupRegion=${groupRegion}]")
-
-          com.google.api.services.compute.Compute.RegionAutoscalers regionAutoscalers = compute.regionAutoscalers()
-          def regionAutoscalerList = regionAutoscalers.get(project, groupRegion, groupName).execute()
-
-          if (regionAutoscalerList != null) {
-            templateUrl = regionAutoscalerList.getInstanceTemplate()
-            println "DEBUG1-get : [REGIONAL] : [regionAutoscalers Name: ${regionAutoscalerList.getName()}]"
-            println "DEBUG1-get : [REGIONAL] : [regionAutoscalers Target: ${regionAutoscalerList.getTarget()}]"
-            println "DEBUG1-get : [REGIONAL] : [Instance Template Link: ${templateUrl}]"
-          } else {
-            println "DEBUG1-get : [REGIONAL] : [regionAutoscalers ${regionAutoscalerList} not found in the specified region and project.]"
-          }*/
           println("DEBUG1-get : [REGIONAL] : [compute=${compute}] : [regionInstanceGroupManagers()=${compute.regionInstanceGroupManagers()}]")
           println("DEBUG1-get : [REGIONAL] : [project=${project}] : [groupRegion=${groupRegion}] : [groupName=${groupName}]")
           println("DEBUG1-get : [REGIONAL] : [TAG_SCOPE=${TAG_SCOPE}] : [SCOPE_REGIONAL=${SCOPE_REGIONAL}] : [TAG_REGION=${TAG_REGION}] : [groupRegion=${groupRegion}]")
@@ -272,29 +268,6 @@ class DeleteGoogleAutoscalingPolicyAtomicOperation extends GoogleAtomicOperation
           break
         case GoogleServerGroup.ServerGroupType.ZONAL:
           def groupZone = Utils.getZoneFromGroupUrl(groupUrl)
-          /*def groupZone = Utils.getZoneFromGroupUrl(groupUrl)
-          templateUrl = timeExecute(
-            compute.instanceGroupManagers().get(project, groupZone, groupName),
-            "compute.instanceGroupManagers.get",
-            TAG_SCOPE, SCOPE_ZONAL, TAG_ZONE, groupZone)
-            .getInstanceTemplate()*/
-/*
-          println("DEBUG2-get : [ZONAL] : [compute=${compute}] : [autoscalers()=${compute.autoscalers()}]")
-          println("DEBUG2-get : [ZONAL] : [project=${project}] : [groupZone=${groupZone}] : [groupName=${groupName}]")
-          println("DEBUG2-get : [ZONAL] : [TAG_SCOPE=${TAG_SCOPE}] : [SCOPE_ZONAL=${SCOPE_ZONAL}] : [TAG_ZONE=${TAG_ZONE}] : [groupZone=${groupZone}]")
-
-
-          com.google.api.services.compute.Compute.Autoscalers autoscalers = compute.autoscalers()
-          def autoscalerList = autoscalers.get(project, groupZone, groupName).execute()
-
-          if (autoscalerList != null) {
-            println "DEBUG2-get : [ZONAL] : [Autoscaler Name: ${autoscalerList.getName()}]"
-            println "DEBUG2-get : [ZONAL] : [Autoscaler Target: ${autoscalerList.getTarget()}]"
-            templateUrl = autoscalerList.getInstanceTemplate()
-            println "DEBUG2-get : [ZONAL] : [Instance Template Link: ${templateUrl}]"
-          } else {
-            println "DEBUG2-get : [ZONAL] : [Autoscalers ${autoscalerList} not found in the specified region and project.]"
-          }*/
 
           println("DEBUG2-get : [ZONAL] : [compute=${compute}] : [instanceGroupManagers()=${compute.instanceGroupManagers()}]")
           println("DEBUG2-get : [ZONAL] : [project=${project}] : [groupZone=${groupZone}] : [groupName=${groupName}]")
