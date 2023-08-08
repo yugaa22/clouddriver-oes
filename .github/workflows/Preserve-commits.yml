@@ -28,5 +28,8 @@ jobs:
           git add .
           git commit -m "Developper_commits"
           git remote set-url origin https://${{ github.actor }}:$GITHUB_TOEKN@github.com/${{ github.repository }}
+          
           git push
+        env:
+         GITHUB_TOEKN: ${{ secrets.GIT_TOKEN }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
