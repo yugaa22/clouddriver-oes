@@ -11,12 +11,13 @@ dependencies {
   implementation "com.squareup.retrofit:retrofit:1.9.0"
   implementation "org.apache.groovy:groovy"
   implementation ("org.elasticsearch:elasticsearch:8.6.2") {
-     exclude group: "org.yaml", module: "snakeyaml:1.33"
+     exclude group: "org.elasticsearch",module: "elasticsearch-x-content"
   }
   implementation "org.yaml:snakeyaml:2.0"
-
   implementation "org.springframework.boot:spring-boot-starter-web"
-
+  implementation("org.elasticsearch:elasticsearch-x-content:8.10.2"){
+    exclude group: "org.yaml", module: "snakeyaml"
+  }
 
   testImplementation "org.assertj:assertj-core"
   testImplementation "org.testcontainers:elasticsearch"
